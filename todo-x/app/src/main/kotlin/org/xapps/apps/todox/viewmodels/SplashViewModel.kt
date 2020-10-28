@@ -1,8 +1,8 @@
 package org.xapps.apps.todox.viewmodels
 
+import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.ViewModel
-import javax.inject.Inject
 
 
-class SplashViewModel @Inject constructor() : ViewModel() {
+class SplashViewModel @ViewModelInject constructor() : ViewModel() {
 }

@@ -1,9 +1,9 @@
 package org.xapps.apps.todox.viewmodels
 
+import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.ViewModel
-import javax.inject.Inject
 
 
-class HomeViewModel @Inject constructor() : ViewModel() {
+class HomeViewModel @ViewModelInject constructor() : ViewModel() {
 
 }

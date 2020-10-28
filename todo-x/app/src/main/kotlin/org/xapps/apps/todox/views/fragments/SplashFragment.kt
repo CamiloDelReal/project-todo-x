@@ -6,28 +6,26 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.navigation.fragment.findNavController
-import org.xapps.apps.todox.R
+import androidx.fragment.app.viewModels
+import dagger.hilt.android.AndroidEntryPoint
+import org.xapps.apps.todox.databinding.FragmentSplashBinding
 import org.xapps.apps.todox.viewmodels.SplashViewModel
-import org.xapps.apps.todox.viewmodels.ViewModelFactory
 import javax.inject.Inject
 
 
+@AndroidEntryPoint
 class SplashFragment @Inject constructor() : Fragment() {
 
-    private lateinit var currentView: View
+    private lateinit var binding: FragmentSplashBinding
 
-    @Inject
-    lateinit var viewModelFactory: ViewModelFactory
-    private lateinit var viewModel: SplashViewModel
+    private val viewModel: SplashViewModel by viewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        currentView = inflater.inflate(R.layout.fragment_splash, container, false)
-        viewModel = viewModelFactory.create(SplashViewModel::class.java)
-        return currentView
+        binding = FragmentSplashBinding.inflate(layoutInflater)
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
