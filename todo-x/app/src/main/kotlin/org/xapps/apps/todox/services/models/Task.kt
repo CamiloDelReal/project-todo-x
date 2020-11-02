@@ -5,12 +5,15 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 
 
-@Entity(tableName = "todos")
-data class Todo(
+@Entity(tableName = "tasks")
+data class Task(
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "id")
     val id: Long = 0,
 
-    @ColumnInfo(name = "title")
-    var title: String
+    @ColumnInfo(name = "name")
+    var name: String,
+
+    @ColumnInfo(name = "category_id")
+    var categoryId: Long = 0
 )

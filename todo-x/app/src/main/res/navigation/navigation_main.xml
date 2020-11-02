@@ -8,7 +8,7 @@
     <fragment
         android:id="@+id/splashFragment"
         android:name="org.xapps.apps.todox.views.fragments.SplashFragment"
-        android:label="fragment_splash"
+        android:label="@string/empty"
         tools:layout="@layout/fragment_splash" >
         <action
             android:id="@+id/action_splashFragment_to_homeFragment"
@@ -17,6 +17,40 @@
     <fragment
         android:id="@+id/homeFragment"
         android:name="org.xapps.apps.todox.views.fragments.HomeFragment"
-        android:label="fragment_home"
-        tools:layout="@layout/fragment_home" />
+        android:label="@string/empty"
+        tools:layout="@layout/fragment_home" >
+        <action
+            android:id="@+id/action_homeFragment_to_toDoEditFragment"
+            app:destination="@id/editFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_categoryFragment"
+            app:destination="@id/categoryFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_calendarFragment"
+            app:destination="@id/calendarFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/editFragment"
+        android:name="org.xapps.apps.todox.views.fragments.EditFragment"
+        android:label="@string/empty"
+        tools:layout="@layout/fragment_edit" />
+    <fragment
+        android:id="@+id/calendarFragment"
+        android:name="org.xapps.apps.todox.views.fragments.CalendarFragment"
+        android:label="fragment_calendar"
+        tools:layout="@layout/fragment_calendar" >
+        <action
+            android:id="@+id/action_calendarFragment_to_editFragment"
+            app:destination="@id/editFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/categoryFragment"
+        android:name="org.xapps.apps.todox.views.fragments.CategoryFragment"
+        android:label="fragment_category"
+        tools:layout="@layout/fragment_category" >
+        <action
+            android:id="@+id/action_categoryFragment_to_editFragment"
+            app:destination="@id/editFragment" />
+    </fragment>
+
 </navigation>

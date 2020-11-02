@@ -1,6 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">ToDoX</string>
-
+    <string name="tasks_list">Tasks List</string>
+    <string name="tasks_schedule">Tasks Schedule</string>
+    <string name="home">Home</string>
+    <string name="empty" />
+    <string name="transition_bab">transition bab</string>
+    <string name="transition_fab">transition_fab</string>
+    <string name="search">Search</string>
+    <string name="more_options">More options</string>
+    <string name="tasks">Tasks</string>
+    <string name="schedule">Schedule</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="cancel">Cancel</string>
+    <string name="new_task">New Task</string>
+    <string name="calendar">Calendar</string>
+    <string name="dash_separator">-</string>
+    <string name="today">Today</string>
+    <string name="in_schedule">In Schedule</string>
+    <string name="high_priority">High priority</string>
+    <string name="my_tasks">My Tasks</string>
 </resources>

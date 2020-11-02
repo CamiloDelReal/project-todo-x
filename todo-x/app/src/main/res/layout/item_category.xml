@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="data"
+            type="org.xapps.apps.todox.services.models.Category" />
+
+        <import type="org.xapps.apps.todox.views.utils.ColorUtils" />
+        <import type="androidx.core.content.ContextCompat" />
+        <import type="org.xapps.apps.todox.R" />
+
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/_170sdp"
+        android:padding="@dimen/_6sdp">
+
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/rootLayout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:categoryBackground="@{data.color}">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:padding="@dimen/_12sdp">
+
+                <RelativeLayout
+                    android:layout_width="@dimen/_64sdp"
+                    android:layout_height="@dimen/_64sdp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent">
+
+                    <com.mikhaellopez.circularprogressbar.CircularProgressBar
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        app:progressBackgroundColor="@{ColorUtils.isDarkColor(data.color) ? ContextCompat.getColor(context, R.color.textOnDarkSecondary) : ContextCompat.getColor(context, R.color.textOnLightSecondary)}"
+                        app:cpb_background_progressbar_width="@dimen/_2sdp"
+                        app:cpb_progress="69"
+                        app:cpb_progress_direction="to_left"
+                        app:progressColor="@{ColorUtils.isDarkColor(data.color) ? @color/textOnDark : @color/textOnLight}"
+                        app:cpb_progressbar_width="@dimen/_3sdp"
+                        app:cpb_round_border="false" />
+
+                    <TextView
+                        style="@style/TextAppearance.MaterialComponents.Headline6"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerInParent="true"
+                        android:text="69%"
+                        android:textColor="@{ColorUtils.isDarkColor(data.color) ? @color/textOnDark : @color/textOnLight}"
+                        tools:text="69%" />
+
+                </RelativeLayout>
+
+                <TextView
+                    style="@style/TextAppearance.MaterialComponents.Headline6"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:text="@{data.name}"
+                    android:textColor="@{ColorUtils.isDarkColor(data.color) ? @color/textOnDark : @color/textOnLight}"
+                    app:layout_constraintBottom_toTopOf="@id/txvTasksToday"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    tools:text="Groceries" />
+
+                <TextView
+                    android:id="@+id/txvTasksToday"
+                    style="@style/TextAppearance.MaterialComponents.Caption"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:text="2 tasks for today"
+                    android:textColor="@{ColorUtils.isDarkColor(data.color) ? @color/textOnDark : @color/textOnLight }"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    tools:text="2 tasks for today" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </com.google.android.material.card.MaterialCardView>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</layout>

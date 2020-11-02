@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import dagger.hilt.android.AndroidEntryPoint
 import org.xapps.apps.todox.databinding.FragmentSplashBinding
 import org.xapps.apps.todox.viewmodels.SplashViewModel
@@ -33,7 +34,7 @@ class SplashFragment @Inject constructor() : Fragment() {
 
         Handler().postDelayed({
             context?.let {
- //               findNavController().navigate(SplashFragmentDirections.actionSplashFragmentToHomeFragment())
+                findNavController().navigate(SplashFragmentDirections.actionSplashFragmentToHomeFragment())
             }
         }, 2000)
     }

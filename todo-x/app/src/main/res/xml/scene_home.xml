@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="utf-8"?>
+<MotionScene xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <Transition
+        app:constraintSetEnd="@id/setCollapsed"
+        app:constraintSetStart="@id/setExpanded">
+
+        <OnSwipe
+            app:dragDirection="dragUp"
+            app:touchAnchorId="@+id/listCategory"
+            app:touchAnchorSide="top" />
+
+    </Transition>
+
+
+    <ConstraintSet android:id="@+id/setExpanded">
+
+        <Constraint
+            android:id="@+id/toolbar"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/_250sdp" />
+
+        <Constraint
+            android:id="@+id/txvTitle"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/_50sdp"
+            android:layout_marginTop="@dimen/_20sdp"
+            app:layout_constraintBottom_toBottomOf="@+id/h8"
+            app:layout_constraintEnd_toEndOf="@+id/v96"
+            app:layout_constraintStart_toStartOf="@+id/v4"
+            app:layout_constraintTop_toTopOf="@+id/h8">
+
+            <CustomAttribute
+                app:attributeName="textSize"
+                app:customDimension="@dimen/_12ssp" />
+        </Constraint>
+
+        <Constraint
+            android:id="@+id/layoutSummary"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/_8sdp"
+            android:alpha="1.0"
+            app:layout_constraintBottom_toBottomOf="@id/toolbar"
+            app:layout_constraintEnd_toStartOf="@id/v96"
+            app:layout_constraintStart_toEndOf="@id/v4" />
+
+        <Constraint
+            android:id="@+id/btnNewTask"
+            android:layout_width="@dimen/_120sdp"
+            android:layout_height="@dimen/_40sdp"
+            android:layout_marginTop="@dimen/_6sdp"
+            android:layout_marginEnd="@dimen/_6sdp"
+            app:layout_constraintEnd_toStartOf="@id/v50"
+            app:layout_constraintTop_toBottomOf="@id/txvTitle" />
+
+        <Constraint
+            android:id="@+id/btnCalendar"
+            android:layout_width="@dimen/_120sdp"
+            android:layout_height="@dimen/_40sdp"
+            android:layout_marginStart="@dimen/_6sdp"
+            android:layout_marginTop="@dimen/_6sdp"
+            app:layout_constraintStart_toEndOf="@id/v50"
+            app:layout_constraintTop_toBottomOf="@id/txvTitle" />
+
+    </ConstraintSet>
+
+
+    <ConstraintSet android:id="@+id/setCollapsed">
+
+        <Constraint
+            android:id="@+id/toolbar"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/_50sdp" />
+
+        <Constraint
+            android:id="@+id/txvTitle"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/_35sdp"
+            android:layout_marginTop="0dp"
+            app:layout_constraintBottom_toBottomOf="@+id/h8"
+            app:layout_constraintEnd_toEndOf="@+id/v96"
+            app:layout_constraintStart_toStartOf="@+id/v4"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <CustomAttribute
+                app:attributeName="textSize"
+                app:customDimension="@dimen/_8ssp" />
+        </Constraint>
+
+
+        <Constraint
+            android:id="@+id/layoutSummary"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/_8sdp"
+            android:alpha="0.0"
+            app:layout_constraintBottom_toBottomOf="@id/toolbar"
+            app:layout_constraintEnd_toStartOf="@id/v96"
+            app:layout_constraintStart_toEndOf="@id/v4" />
+
+        <Constraint
+            android:id="@+id/btnNewTask"
+            android:layout_width="@dimen/_38sdp"
+            android:layout_height="@dimen/_36sdp"
+            android:layout_marginEnd="@dimen/_6sdp"
+            app:layout_constraintEnd_toStartOf="@id/btnCalendar"
+            app:layout_constraintTop_toTopOf="@id/txvTitle"
+            app:layout_constraintBottom_toBottomOf="@id/txvTitle" />
+
+        <Constraint
+            android:id="@+id/btnCalendar"
+            android:layout_width="@dimen/_38sdp"
+            android:layout_height="@dimen/_36sdp"
+            app:layout_constraintEnd_toStartOf="@id/v96"
+            app:layout_constraintTop_toTopOf="@id/txvTitle"
+            app:layout_constraintBottom_toBottomOf="@id/txvTitle" />
+
+    </ConstraintSet>
+
+</MotionScene>

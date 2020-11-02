@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <declare-styleable name="SummaryItem">
+        <attr name="si_icon" format="reference" />
+        <attr name="si_title" format="string" />
+        <attr name="si_completed" format="string" />
+        <attr name="si_pending" format="string" />
+        <attr name="si_iconTint" format="reference" />
+        <attr name="si_iconBackground" format="reference" />
+    </declare-styleable>
+
+</resources>
