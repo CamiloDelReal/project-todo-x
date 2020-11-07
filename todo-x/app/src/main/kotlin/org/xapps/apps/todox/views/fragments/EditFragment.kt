@@ -24,6 +24,7 @@ class EditFragment @Inject constructor(): Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         binding = FragmentEditBinding.inflate(layoutInflater)
+        binding.lifecycleOwner = viewLifecycleOwner
         return binding.root
     }
 

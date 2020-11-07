@@ -20,7 +20,7 @@ object MaterialCardViewBindings {
         val bgColor = "#99${color.substring(1)}"
         val drawable: Drawable = DrawableBuilder()
             .rectangle()
-            .solidColor(bgColor.toColorInt())
+            .solidColor(color.toColorInt())
             .strokeWidth(2)
             .strokeColor(color.toColorInt())
             .cornerRadius(24)

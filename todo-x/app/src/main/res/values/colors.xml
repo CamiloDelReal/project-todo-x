@@ -1,16 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="primary">#24243e</color>
-    <color name="primaryDark">#0f0c29</color>
-    <color name="accent1">#43C6AC</color>
-    <color name="accent">#43C6AC</color>
+    <color name="blue_500">#2196f3</color>
+    <color name="blue_700">#1976d2</color>
+    <color name="orange_500">#ff9800</color>
+    <color name="orange_700">#f57c00</color>
+
+    <color name="white">#ffffff</color>
+    <color name="black">#000000</color>
 
     <color name="textOnLight">#000000</color>
     <color name="textOnLightSecondary">#99000000</color>
     <color name="textOnDark">#ffffff</color>
     <color name="textOnDarkSecondary">#99ffffff</color>
 
-    <color name="hightPriority">#ED213A</color>
-    <color name="inSchedule">#0575E6</color>
-    <color name="today">#ff6a00</color>
+    <color name="hightPriority">#f44336</color>
+    <color name="inSchedule">#2196f3</color>
+    <color name="today">#ff9800</color>
 </resources>

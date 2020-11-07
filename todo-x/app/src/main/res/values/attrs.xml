@@ -10,4 +10,10 @@
         <attr name="si_iconBackground" format="reference" />
     </declare-styleable>
 
+    <declare-styleable name="AboutReference">
+        <attr name="ar_text" format="string" />
+        <attr name="ar_link" format="string" />
+        <attr name="ar_icon" format="reference" />
+    </declare-styleable>
+
 </resources>

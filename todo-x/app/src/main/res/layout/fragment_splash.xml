@@ -6,7 +6,8 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:background="?attr/colorSurface">
 
         <androidx.constraintlayout.widget.Guideline
             android:id="@+id/vert50"
@@ -22,10 +23,10 @@
             android:orientation="horizontal"
             app:layout_constraintGuide_percent="0.5" />
 
-        <androidx.appcompat.widget.AppCompatImageView
-            android:layout_width="@dimen/_32sdp"
-            android:layout_height="@dimen/_32sdp"
-            android:src="@mipmap/ic_launcher"
+        <ImageView
+            android:layout_width="@dimen/_80sdp"
+            android:layout_height="@dimen/_80sdp"
+            android:src="@drawable/ic_icon_launcher_foreground"
             app:layout_constraintBottom_toBottomOf="@id/horz50"
             app:layout_constraintEnd_toEndOf="@id/vert50"
             app:layout_constraintStart_toStartOf="@id/vert50"

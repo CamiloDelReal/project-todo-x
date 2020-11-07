@@ -11,8 +11,6 @@
     <string name="more_options">More options</string>
     <string name="tasks">Tasks</string>
     <string name="schedule">Schedule</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="cancel">Cancel</string>
     <string name="new_task">New Task</string>
     <string name="calendar">Calendar</string>
@@ -21,4 +19,13 @@
     <string name="in_schedule">In Schedule</string>
     <string name="high_priority">High priority</string>
     <string name="my_tasks">My Tasks</string>
+    <string name="about">About</string>
+    <string name="dark_mode">Dark mode</string>
+    <string name="user_interface">User Interface</string>
+    <string name="fonts">Fonts</string>
+    <string name="poppins">Poppins</string>
+    <string name="poppins_url">https://fonts.google.com/specimen/Poppins</string>
+    <string name="icons">Icons</string>
+    <string name="material_design_icons_url">https://materialdesignicons.com/</string>
+    <string name="material_design_icons">Material Design Icons</string>
 </resources>

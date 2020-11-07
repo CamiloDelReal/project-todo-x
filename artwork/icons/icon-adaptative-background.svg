@@ -31,9 +31,9 @@
      showgrid="false"
      units="px"
      inkscape:window-width="1920"
-     inkscape:window-height="1015"
-     inkscape:window-x="0"
-     inkscape:window-y="28"
+     inkscape:window-height="1017"
+     inkscape:window-x="-8"
+     inkscape:window-y="-8"
      inkscape:window-maximized="1"
      showguides="true"
      inkscape:guide-bbox="true"
@@ -57,15 +57,9 @@
      transform="translate(0,-268.42498)">
     <path
        inkscape:connector-curvature="0"
-       style="opacity:1;fill:#fbc02d;fill-opacity:1;stroke:none;stroke-width:2.08252907;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:0.18823529;paint-order:fill markers stroke"
+       style="opacity:1;fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:2.08252907;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:0.18823529;paint-order:fill markers stroke"
        d="m 28.575,268.42498 v 28.575 H 0 v -28.575 z"
        id="rect815"
-       sodipodi:nodetypes="ccccc" />
-    <path
-       style="opacity:1;fill:#ffeb3b;fill-opacity:1;stroke:none;stroke-width:4.27189207;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:0.18823529;paint-order:fill markers stroke"
-       d="m 28.575,282.71248 v 14.2875 H 0 v -14.2875 z"
-       id="rect818"
-       inkscape:connector-curvature="0"
        sodipodi:nodetypes="ccccc" />
   </g>
 </svg>

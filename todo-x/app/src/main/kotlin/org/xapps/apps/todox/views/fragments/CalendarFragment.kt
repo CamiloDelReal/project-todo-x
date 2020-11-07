@@ -24,6 +24,7 @@ class CalendarFragment @Inject constructor(): Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         binding = FragmentCalendarBinding.inflate(layoutInflater)
+        binding.lifecycleOwner = viewLifecycleOwner
         return binding.root
     }
 

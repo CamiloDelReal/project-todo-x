@@ -7,6 +7,7 @@
     <androidx.constraintlayout.motion.widget.MotionLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:background="?attr/colorSurface"
         android:fitsSystemWindows="true"
         app:layoutDescription="@xml/scene_home">
 
@@ -123,6 +124,7 @@
             style="@style/TextAppearance.MaterialComponents.Body1"
             android:layout_width="0dp"
             android:layout_height="@dimen/_50sdp"
+            android:fontFamily="@font/poppins_bold"
             android:gravity="center_vertical"
             android:text="@string/my_tasks"
             android:textSize="@dimen/_32ssp" />
@@ -138,7 +140,7 @@
             android:textAllCaps="false"
             app:icon="@drawable/ic_plus"
             app:iconGravity="start"
-            app:iconPadding="@dimen/_12sdp"
+            app:iconPadding="@dimen/_8sdp"
             app:iconSize="@dimen/_14sdp" />
 
         <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
@@ -153,6 +155,21 @@
             app:icon="@drawable/ic_calendar"
             app:iconPadding="@dimen/_12sdp"
             app:iconSize="@dimen/_14sdp" />
+
+        <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+            android:id="@+id/btnMoreOptions"
+            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+            android:layout_width="@dimen/_38sdp"
+            android:layout_height="@dimen/_36sdp"
+            android:backgroundTint="?attr/colorSurface"
+            android:gravity="start|center_vertical"
+            android:textAllCaps="false"
+            app:icon="@drawable/ic_dots_vertical"
+            app:iconPadding="@dimen/_12sdp"
+            app:iconSize="@dimen/_14sdp"
+            app:layout_constraintBottom_toBottomOf="@id/txvTitle"
+            app:layout_constraintEnd_toStartOf="@id/v96"
+            app:layout_constraintTop_toTopOf="@id/txvTitle" />
 
     </androidx.constraintlayout.motion.widget.MotionLayout>
 

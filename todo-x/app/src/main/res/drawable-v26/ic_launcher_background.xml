@@ -9,17 +9,8 @@
         android:strokeAlpha="0.18823529"
         android:strokeLineJoin="round"
         android:strokeWidth="2.08252907"
-        android:fillColor="#fbc02d"
-        android:strokeColor="#00000000"
-        android:fillAlpha="1"
-        android:strokeLineCap="round"/>
-    <path
-        android:pathData="m28.575,14.2875v14.2875L0,28.575v-14.2875z"
-        android:strokeAlpha="0.18823529"
-        android:strokeLineJoin="round"
-        android:strokeWidth="4.27189207"
-        android:fillColor="#ffeb3b"
-        android:strokeColor="#00000000"
+        android:fillColor="#FFFFFF"
+        android:strokeColor="#00FFFFFF"
         android:fillAlpha="1"
         android:strokeLineCap="round"/>
 </vector>

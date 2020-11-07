@@ -24,6 +24,7 @@ class CategoryFragment @Inject constructor(): Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         binding = FragmentCategoryBinding.inflate(layoutInflater)
+        binding.lifecycleOwner = viewLifecycleOwner
         return binding.root
     }
 
