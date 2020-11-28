@@ -36,8 +36,8 @@
             android:id="@+id/action_homeFragment_to_aboutFragment"
             app:destination="@id/aboutFragment"
             app:enterAnim="@anim/translate_from_right"
-            app:exitAnim="@anim/translate_nothing"
-            app:popEnterAnim="@anim/translate_nothing"
+            app:exitAnim="@anim/translate_to_nothing"
+            app:popEnterAnim="@anim/translate_from_nothing"
             app:popExitAnim="@anim/translate_to_right" />
     </fragment>
     <fragment
