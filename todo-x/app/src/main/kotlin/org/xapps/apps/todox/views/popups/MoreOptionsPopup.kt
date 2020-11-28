@@ -8,12 +8,15 @@ import androidx.fragment.app.DialogFragment
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.content_popup_more_options.*
 import org.xapps.apps.todox.R
+import org.xapps.apps.todox.databinding.ContentPopupMoreOptionsBinding
 import org.xapps.apps.todox.services.settings.SettingsService
 import javax.inject.Inject
 
 
 @AndroidEntryPoint
 class MoreOptionsPopup @Inject constructor() : DialogFragment() {
+
+    private lateinit var bindings: ContentPopupMoreOptionsBinding
 
     @Inject
     lateinit var settings: SettingsService
@@ -22,14 +25,14 @@ class MoreOptionsPopup @Inject constructor() : DialogFragment() {
         super.onCreate(savedInstanceState)
 
         val style = STYLE_NO_FRAME
-        val theme = R.style.BasicPopupStyle
+        val theme = R.style.PopupStyle
         setStyle(style, theme)
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        val currentView = inflater.inflate(R.layout.content_popup_more_options, container, false)
-
-        return currentView
+        val layoutInflater = LayoutInflater.from(context)
+        bindings = ContentPopupMoreOptionsBinding.inflate(layoutInflater, container, false)
+        return bindings.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
