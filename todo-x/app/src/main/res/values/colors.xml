@@ -13,6 +13,9 @@
     <color name="textOnDark">#ffffff</color>
     <color name="textOnDarkSecondary">#99ffffff</color>
 
+    <color name="rippleOnLight">#42000000</color>
+    <color name="rippleOnDark">#42ffffff</color>
+
     <color name="hightPriority">#f44336</color>
     <color name="inSchedule">#2196f3</color>
     <color name="today">#ff9800</color>

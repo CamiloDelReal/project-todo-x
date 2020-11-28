@@ -24,7 +24,8 @@
             android:id="@+id/rootLayout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            app:categoryBackground="@{data.color}">
+            app:categoryBackground="@{data.color}"
+            app:rippleColor="@{ColorUtils.isDarkColor(data.color) ? @color/rippleOnDark : @color/rippleOnLight}">
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
