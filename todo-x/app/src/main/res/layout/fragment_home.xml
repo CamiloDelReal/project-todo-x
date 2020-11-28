@@ -126,7 +126,7 @@
             android:layout_height="@dimen/_50sdp"
             android:fontFamily="@font/poppins_bold"
             android:gravity="center_vertical"
-            android:text="@string/my_tasks"
+            android:text="@string/app_name"
             android:textSize="@dimen/_32ssp" />
 
         <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
