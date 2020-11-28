@@ -28,4 +28,18 @@
     <string name="icons">Icons</string>
     <string name="material_design_icons_url">https://materialdesignicons.com/</string>
     <string name="material_design_icons">Material Design Icons</string>
+    <string name="about_description_1">It\'s just another app for fun, but you can use it to organize your todos xD</string>
+    <string name="about_description_2">You can find us in GitHub (tap this text) and help us improve. All the tools and libraries use in this project are free, not all the icons shown in this section are provided from the corresponding project, in some we just take a picture and create an icon to use here :)</string>
+    <string name="project_github">https://github.com/CamiloDelReal/project-todo-x</string>
+    <string name="libraries_and_tools">Libraries and Tools</string>
+    <string name="android_jetpack">Android Jetpack</string>
+    <string name="android_jetpack_url">https://developer.android.com/jetpack</string>
+    <string name="android_kotlin">Android Kotlin</string>
+    <string name="android_kotlin_url">https://developer.android.com/kotlin</string>
+    <string name="sdp_url">https://github.com/intuit/sdp</string>
+    <string name="sdp">SDP</string>
+    <string name="ssp_url">https://github.com/intuit/ssp</string>
+    <string name="ssp">SSP</string>
+    <string name="timber">Timber</string>
+    <string name="timber_url">https://github.com/JakeWharton/timber</string>
 </resources>

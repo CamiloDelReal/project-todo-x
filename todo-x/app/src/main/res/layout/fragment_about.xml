@@ -18,19 +18,6 @@
         android:fitsSystemWindows="true"
         android:background="?attr/colorSurface">
 
-        <ImageButton
-            android:id="@+id/btnBack"
-            android:layout_width="?attr/actionBarSize"
-            android:layout_height="?attr/actionBarSize"
-            android:layout_marginEnd="@dimen/_4sdp"
-            android:background="?attr/selectableItemBackgroundBorderless"
-            android:elevation="2dp"
-            android:tint="?attr/colorOnSurface"
-            android:fitsSystemWindows="true"
-            android:src="@drawable/ic_arrow_left"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
         <androidx.core.widget.NestedScrollView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -43,7 +30,7 @@
                 android:paddingStart="@dimen/_12sdp"
                 android:paddingTop="?attr/actionBarSize"
                 android:paddingEnd="@dimen/_12sdp"
-                android:paddingBottom="?attr/actionBarSize">
+                android:paddingBottom="@dimen/_120sdp">
 
                 <ImageView
                     android:layout_width="@dimen/_64sdp"
@@ -72,6 +59,58 @@
                     android:text="@{version}"
                     android:textColor="?attr/colorOnSurface"
                     tools:text="0.1.0" />
+
+                <Space
+                    android:layout_width="wrap_content"
+                    android:layout_height="@dimen/_4sdp" />
+
+                <FrameLayout
+                    android:id="@+id/btnAboutLink"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:foreground="?attr/selectableItemBackground"
+                    android:padding="@dimen/_4sdp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+                        <TextView
+                            style="@style/TextAppearance.MaterialComponents.Body1"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:justificationMode="inter_word"
+                            android:text="@string/about_description_1"
+                            tools:targetApi="o" />
+
+                        <Space
+                            android:layout_width="wrap_content"
+                            android:layout_height="@dimen/_4sdp" />
+
+                        <TextView
+                            style="@style/TextAppearance.MaterialComponents.Body1"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:justificationMode="inter_word"
+                            android:text="@string/about_description_2"
+                            tools:targetApi="o" />
+
+                        <Space
+                            android:layout_width="wrap_content"
+                            android:layout_height="@dimen/_4sdp" />
+
+                        <TextView
+                            style="@style/TextAppearance.MaterialComponents.Caption"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:justificationMode="inter_word"
+                            android:text="@string/project_github"
+                            tools:targetApi="o" />
+
+                    </LinearLayout>
+
+                </FrameLayout>
 
                 <Space
                     android:layout_width="wrap_content"
@@ -129,10 +168,103 @@
                     app:ar_text="@string/material_design_icons"
                     app:ar_link="@string/material_design_icons_url" />
 
+                <Space
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/_18sdp" />
+
+                <TextView
+                    style="@style/TextAppearance.MaterialComponents.Caption"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/libraries_and_tools" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:alpha="0.1"
+                    android:background="?attr/colorOnSurface" />
+
+                <Space
+                    android:layout_width="wrap_content"
+                    android:layout_height="@dimen/_6sdp" />
+
+                <org.xapps.apps.todox.views.custom.AboutReference
+                    android:id="@+id/btnLinkAndroidJetpack"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:ar_icon="@drawable/ic_androidjetpack"
+                    app:ar_link="@string/android_jetpack_url"
+                    app:ar_text="@string/android_jetpack" />
+
+                <Space
+                    android:layout_width="wrap_content"
+                    android:layout_height="@dimen/_6sdp" />
+
+                <org.xapps.apps.todox.views.custom.AboutReference
+                    android:id="@+id/btnLinkAndroidKotlin"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:ar_icon="@drawable/ic_androidkotlin"
+                    app:ar_link="@string/android_kotlin_url"
+                    app:ar_text="@string/android_kotlin" />
+
+                <Space
+                    android:layout_width="wrap_content"
+                    android:layout_height="@dimen/_6sdp" />
+
+                <org.xapps.apps.todox.views.custom.AboutReference
+                    android:id="@+id/btnLinkSDP"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:ar_link="@string/sdp_url"
+                    app:ar_text="@string/sdp" />
+
+                <Space
+                    android:layout_width="wrap_content"
+                    android:layout_height="@dimen/_6sdp" />
+
+                <org.xapps.apps.todox.views.custom.AboutReference
+                    android:id="@+id/btnLinkSSP"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:ar_link="@string/ssp_url"
+                    app:ar_text="@string/ssp" />
+
+                <Space
+                    android:layout_width="wrap_content"
+                    android:layout_height="@dimen/_6sdp" />
+
+                <org.xapps.apps.todox.views.custom.AboutReference
+                    android:id="@+id/btnLinkTimber"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:ar_link="@string/timber_url"
+                    app:ar_text="@string/timber" />
+
 
             </LinearLayout>
 
         </androidx.core.widget.NestedScrollView>
+
+        <RelativeLayout
+            android:layout_width="?attr/actionBarSize"
+            android:layout_height="?attr/actionBarSize"
+            android:background="@drawable/ic_bg_back_btn_about"
+            android:fitsSystemWindows="true"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <ImageButton
+                android:id="@+id/btnBack"
+                android:layout_width="?attr/actionBarSize"
+                android:layout_height="?attr/actionBarSize"
+                android:layout_centerInParent="true"
+                android:layout_marginEnd="@dimen/_4sdp"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:src="@drawable/ic_arrow_left"
+                android:tint="?attr/colorOnSurface" />
+
+        </RelativeLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
