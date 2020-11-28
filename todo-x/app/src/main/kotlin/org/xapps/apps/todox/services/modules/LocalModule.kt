@@ -8,6 +8,7 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.components.ApplicationComponent
 import org.xapps.apps.todox.services.local.CategoryDao
+import org.xapps.apps.todox.services.local.ItemDao
 import org.xapps.apps.todox.services.local.TaskDao
 import javax.inject.Singleton
 
@@ -34,5 +35,10 @@ class LocalModule {
     @Provides
     fun provideTaskDao(localDatabaseService: LocalDatabaseService): TaskDao =
         localDatabaseService.taskDao()
+
+    @Singleton
+    @Provides
+    fun provideItemDao(localDatabaseService: LocalDatabaseService): ItemDao =
+        localDatabaseService.itemDao()
 
 }

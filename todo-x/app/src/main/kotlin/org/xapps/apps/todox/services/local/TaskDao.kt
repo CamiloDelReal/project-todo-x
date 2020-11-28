@@ -4,6 +4,7 @@ import androidx.room.*
 import kotlinx.coroutines.flow.Flow
 import org.xapps.apps.todox.services.models.Task
 import org.xapps.apps.todox.services.models.TaskAndCategory
+import org.xapps.apps.todox.services.models.TaskWithItems
 
 
 @Dao
@@ -48,6 +49,22 @@ interface TaskDao {
     @Transaction
     @Query("SELECT * FROM tasks WHERE id = :id")
     fun taskAndCategory(id: Long): TaskAndCategory
+
+    @Transaction
+    @Query("SELECT * FROM tasks")
+    fun tasksWithItemsAsync(): Flow<List<TaskWithItems>>
+
+    @Transaction
+    @Query("SELECT * FROM tasks")
+    fun tasksWithItems(): List<TaskWithItems>
+
+    @Transaction
+    @Query("SELECT * FROM tasks WHERE id = :id")
+    fun taskWithItemsAsync(id: Long): Flow<TaskWithItems>
+
+    @Transaction
+    @Query("SELECT * FROM tasks WHERE id = :id")
+    fun taskWithItems(id: Long): List<TaskWithItems>
 
     @Update
     suspend fun updateAsync(task: Task): Int
