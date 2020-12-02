@@ -14,7 +14,7 @@
             android:id="@+id/action_splashFragment_to_homeFragment"
             app:destination="@id/homeFragment"
             app:enterAnim="@anim/fade_in"
-            app:exitAnim="@anim/fade_out"
+            app:exitAnim="@anim/to_nothing"
             app:popUpTo="@id/splashFragment"
             app:popUpToInclusive="true" />
     </fragment>
@@ -36,8 +36,8 @@
             android:id="@+id/action_homeFragment_to_aboutFragment"
             app:destination="@id/aboutFragment"
             app:enterAnim="@anim/translate_from_right"
-            app:exitAnim="@anim/translate_to_nothing"
-            app:popEnterAnim="@anim/translate_from_nothing"
+            app:exitAnim="@anim/translate_alpha_to_nothing"
+            app:popEnterAnim="@anim/translate_alpha_from_nothing"
             app:popExitAnim="@anim/translate_to_right" />
     </fragment>
     <fragment

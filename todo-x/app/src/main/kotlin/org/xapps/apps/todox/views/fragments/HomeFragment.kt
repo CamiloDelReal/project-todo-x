@@ -5,6 +5,8 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.animation.Animation
+import android.view.animation.AnimationUtils
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.view.ViewCompat
 import androidx.fragment.app.Fragment
@@ -14,11 +16,13 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.fragment_home.*
+import org.xapps.apps.todox.R
 import org.xapps.apps.todox.databinding.FragmentHomeBinding
 import org.xapps.apps.todox.services.settings.SettingsService
 import org.xapps.apps.todox.viewmodels.HomeViewModel
 import org.xapps.apps.todox.views.adapters.CategoryAdapter
 import org.xapps.apps.todox.views.popups.MoreOptionsPopup
+import timber.log.Timber
 import javax.inject.Inject
 
 
@@ -38,7 +42,6 @@ class HomeFragment @Inject constructor() : Fragment() {
     ): View? {
         binding = FragmentHomeBinding.inflate(layoutInflater)
         binding.lifecycleOwner = viewLifecycleOwner
-        ViewCompat.setTranslationZ(binding.root, 1f)
         return binding.root
     }
 
@@ -85,4 +88,5 @@ class HomeFragment @Inject constructor() : Fragment() {
             super.onActivityResult(requestCode, resultCode, data)
         }
     }
+
 }

@@ -50,8 +50,8 @@
             android:id="@+id/listCategory"
             android:layout_width="0dp"
             android:layout_height="0dp"
-            android:paddingStart="@dimen/_6sdp"
-            android:paddingEnd="@dimen/_6sdp"
+            android:paddingStart="@dimen/home_recycler_view_padding"
+            android:paddingEnd="@dimen/home_recycler_view_padding"
             android:scrollbars="vertical"
             app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -65,7 +65,7 @@
         <View
             android:id="@+id/toolbar"
             android:layout_width="0dp"
-            android:layout_height="@dimen/_250sdp"
+            android:layout_height="@dimen/home_toolbar_height_expanded"
             android:background="?attr/colorSurface" />
 
         <LinearLayout
@@ -123,50 +123,53 @@
             android:id="@+id/txvTitle"
             style="@style/TextAppearance.MaterialComponents.Body1"
             android:layout_width="0dp"
-            android:layout_height="@dimen/_50sdp"
+            android:layout_height="@dimen/home_title_height_expanded"
             android:fontFamily="@font/poppins_bold"
             android:gravity="center_vertical"
             android:text="@string/app_name"
-            android:textSize="@dimen/_32ssp" />
+            android:textSize="@dimen/home_title_text_size_expanded" />
 
         <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
             android:id="@+id/btnNewTask"
             style="@style/Widget.MaterialComponents.Button.OutlinedButton"
-            android:layout_width="@dimen/_120sdp"
-            android:layout_height="@dimen/_40sdp"
+            android:layout_width="@dimen/home_button_width_expanded"
+            android:layout_height="@dimen/home_button_height_expanded"
             android:backgroundTint="?attr/colorSurface"
             android:gravity="start|center_vertical"
             android:text="@string/new_task"
             android:textAllCaps="false"
+            android:textSize="@dimen/home_button_text_size"
             app:icon="@drawable/ic_plus"
             app:iconGravity="start"
-            app:iconPadding="@dimen/_8sdp"
-            app:iconSize="@dimen/_14sdp" />
+            app:iconPadding="@dimen/home_button_icon_padding"
+            app:iconSize="@dimen/home_button_icon_size" />
 
         <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
             android:id="@+id/btnCalendar"
             style="@style/Widget.MaterialComponents.Button.OutlinedButton"
-            android:layout_width="@dimen/_120sdp"
-            android:layout_height="@dimen/_40sdp"
+            android:layout_width="@dimen/home_button_width_expanded"
+            android:layout_height="@dimen/home_button_height_expanded"
             android:backgroundTint="?attr/colorSurface"
             android:gravity="start|center_vertical"
             android:text="@string/calendar"
             android:textAllCaps="false"
+            android:textSize="@dimen/home_button_text_size"
             app:icon="@drawable/ic_calendar"
-            app:iconPadding="@dimen/_12sdp"
-            app:iconSize="@dimen/_14sdp" />
+            app:iconPadding="@dimen/home_button_icon_padding"
+            app:iconSize="@dimen/home_button_icon_size" />
 
         <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
             android:id="@+id/btnMoreOptions"
             style="@style/Widget.MaterialComponents.Button.OutlinedButton"
-            android:layout_width="@dimen/_38sdp"
-            android:layout_height="@dimen/_36sdp"
+            android:layout_width="@dimen/home_button_width_collapsed"
+            android:layout_height="@dimen/home_button_height_collapsed"
             android:backgroundTint="?attr/colorSurface"
             android:gravity="start|center_vertical"
             android:textAllCaps="false"
+            android:textSize="@dimen/home_button_text_size"
             app:icon="@drawable/ic_dots_vertical"
-            app:iconPadding="@dimen/_12sdp"
-            app:iconSize="@dimen/_14sdp"
+            app:iconPadding="@dimen/home_button_icon_padding"
+            app:iconSize="@dimen/home_button_icon_size"
             app:layout_constraintBottom_toBottomOf="@id/txvTitle"
             app:layout_constraintEnd_toStartOf="@id/v96"
             app:layout_constraintTop_toTopOf="@id/txvTitle" />

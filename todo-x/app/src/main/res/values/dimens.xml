@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="splash_logo_size">100dp</dimen>
+
+    <dimen name="home_button_width_expanded">140dp</dimen>
+    <dimen name="home_button_height_expanded">46dp</dimen>
+
+    <dimen name="home_button_width_collapsed">48dp</dimen>
+    <dimen name="home_button_height_collapsed">46dp</dimen>
+
+    <dimen name="home_button_icon_size">16dp</dimen>
+    <dimen name="home_button_icon_padding">8dp</dimen>
+
+    <dimen name="home_button_text_size">13sp</dimen>
+
+    <dimen name="home_button_margin_end">6dp</dimen>
+    <dimen name="home_button_margin_start">6dp</dimen>
+
+    <dimen name="home_title_height_expanded">70dp</dimen>
+    <dimen name="home_title_text_size_expanded">18sp</dimen>
+
+    <dimen name="home_title_height_collapsed">48dp</dimen>
+    <dimen name="home_title_text_size_collapsed">12sp</dimen>
+
+    <dimen name="home_title_margin_top_expanded">28dp</dimen>
+    <dimen name="home_title_margin_top_collapsed">0dp</dimen>
+
+    <dimen name="home_summary_margin_bottom">8dp</dimen>
+
+    <dimen name="home_toolbar_height_expanded">310dp</dimen>
+    <dimen name="home_toolbar_height_collapsed">60dp</dimen>
+
+    <dimen name="home_recycler_view_padding">8dp</dimen>
+
+    <dimen name="item_corner_radius">4dp</dimen>
+    <dimen name="popup_corner_radius">6dp</dimen>
+
+    <dimen name="item_category_height">220dp</dimen>
+    <dimen name="item_category_padding">6dp</dimen>
+    <dimen name="item_category_content_padding">16dp</dimen>
+    <dimen name="item_category_chart_size">80dp</dimen>
+    <dimen name="item_category_progress_background_size">2dp</dimen>
+    <dimen name="item_category_progress_foreground_size">3dp</dimen>
+
+    <dimen name="about_reference_padding">6dp</dimen>
+    <dimen name="about_reference_icon_size">40dp</dimen>
+    <dimen name="about_reference_content_space">12dp</dimen>
+
+    <dimen name="item_summary_padding">8dp</dimen>
+    <dimen name="item_summary_radius">12dp</dimen>
+    <dimen name="item_summary_separator_margin">8dp</dimen>
+    <dimen name="item_summary_icon_size">16dp</dimen>
+    <dimen name="item_summary_icon_background_size">26dp</dimen>
+    <dimen name="item_summary_content_space">16dp</dimen>
+
+    <dimen name="popup_more_options_width">230dp</dimen>
+    <dimen name="popup_more_options_padding">6dp</dimen>
+    <dimen name="popup_more_options_margin_top">16dp</dimen>
+    <dimen name="popup_more_options_margin_end">20dp</dimen>
+    <dimen name="popup_more_options_button_height">50dp</dimen>
+    <dimen name="popup_more_options_button_padding">24dp</dimen>
+    <dimen name="popup_more_options_button_padding_with_check">12dp</dimen>
+
+    <dimen name="about_padding">12dp</dimen>
+    <dimen name="about_header_content_padding">6dp</dimen>
+    <dimen name="about_icon_size">100dp</dimen>
+    <dimen name="about_space">12dp</dimen>
+    <dimen name="about_content_space">4dp</dimen>
+    <dimen name="about_section_space">18dp</dimen>
+    <dimen name="about_section_header_space">6dp</dimen>
+    <dimen name="about_section_item_space">6dp</dimen>
+    <dimen name="about_header_space">24dp</dimen>
+    <dimen name="about_separator_height">1dp</dimen>
+    <dimen name="about_back_button_margin">4dp</dimen>
+    <dimen name="about_back_button_radius">24dp</dimen>
+</resources>

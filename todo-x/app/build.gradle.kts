@@ -145,10 +145,6 @@ dependencies {
     implementation(Libraries.Hilt.VIEWMODEL)
     kapt(Libraries.Hilt.JETPACK_COMPILER)
 
-    // Scalable Units
-    implementation(Libraries.ScalableUnits.DP)
-    implementation(Libraries.ScalableUnits.SP)
-
     // Permissions
     implementation(Libraries.Permissions.DEXTER)
 

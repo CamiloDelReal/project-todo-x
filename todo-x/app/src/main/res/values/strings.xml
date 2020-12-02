@@ -42,4 +42,11 @@
     <string name="ssp">SSP</string>
     <string name="timber">Timber</string>
     <string name="timber_url">https://github.com/JakeWharton/timber</string>
+    <string name="create_task">Create Task</string>
+    <string name="name">Name</string>
+    <string name="date">Date</string>
+    <string name="start_time">Start Time</string>
+    <string name="end_time">End Time</string>
+    <string name="description">Description</string>
+    <string name="category">Category</string>
 </resources>

@@ -19,13 +19,13 @@
         <Constraint
             android:id="@+id/toolbar"
             android:layout_width="0dp"
-            android:layout_height="@dimen/_250sdp" />
+            android:layout_height="@dimen/home_toolbar_height_expanded" />
 
         <Constraint
             android:id="@+id/txvTitle"
             android:layout_width="0dp"
-            android:layout_height="@dimen/_50sdp"
-            android:layout_marginTop="@dimen/_20sdp"
+            android:layout_height="@dimen/home_title_height_expanded"
+            android:layout_marginTop="@dimen/home_title_margin_top_expanded"
             app:layout_constraintBottom_toBottomOf="@+id/h8"
             app:layout_constraintEnd_toEndOf="@+id/v96"
             app:layout_constraintStart_toStartOf="@+id/v4"
@@ -33,14 +33,14 @@
 
             <CustomAttribute
                 app:attributeName="textSize"
-                app:customDimension="@dimen/_12ssp" />
+                app:customDimension="@dimen/home_title_text_size_expanded" />
         </Constraint>
 
         <Constraint
             android:id="@+id/layoutSummary"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/_8sdp"
+            android:layout_marginBottom="@dimen/home_summary_margin_bottom"
             android:alpha="1.0"
             app:layout_constraintBottom_toBottomOf="@+id/toolbar"
             app:layout_constraintEnd_toStartOf="@+id/v96"
@@ -48,19 +48,17 @@
 
         <Constraint
             android:id="@+id/btnNewTask"
-            android:layout_width="@dimen/_120sdp"
-            android:layout_height="@dimen/_40sdp"
-            android:layout_marginTop="@dimen/_2sdp"
-            android:layout_marginEnd="@dimen/_6sdp"
+            android:layout_width="@dimen/home_button_width_expanded"
+            android:layout_height="@dimen/home_button_height_expanded"
+            android:layout_marginEnd="@dimen/home_button_margin_end"
             app:layout_constraintEnd_toStartOf="@+id/v50"
             app:layout_constraintTop_toBottomOf="@+id/txvTitle" />
 
         <Constraint
             android:id="@+id/btnCalendar"
-            android:layout_width="@dimen/_120sdp"
-            android:layout_height="@dimen/_40sdp"
-            android:layout_marginStart="@dimen/_6sdp"
-            android:layout_marginTop="@dimen/_2sdp"
+            android:layout_width="@dimen/home_button_width_expanded"
+            android:layout_height="@dimen/home_button_height_expanded"
+            android:layout_marginStart="@dimen/home_button_margin_start"
             app:layout_constraintStart_toEndOf="@+id/v50"
             app:layout_constraintTop_toBottomOf="@+id/txvTitle" />
 
@@ -72,13 +70,13 @@
         <Constraint
             android:id="@+id/toolbar"
             android:layout_width="0dp"
-            android:layout_height="@dimen/_50sdp" />
+            android:layout_height="@dimen/home_toolbar_height_collapsed" />
 
         <Constraint
             android:id="@+id/txvTitle"
             android:layout_width="0dp"
-            android:layout_height="@dimen/_35sdp"
-            android:layout_marginTop="0dp"
+            android:layout_height="@dimen/home_title_height_collapsed"
+            android:layout_marginTop="@dimen/home_title_margin_top_collapsed"
             app:layout_constraintBottom_toBottomOf="@+id/h8"
             app:layout_constraintEnd_toEndOf="@+id/v96"
             app:layout_constraintStart_toStartOf="@+id/v4"
@@ -86,7 +84,7 @@
 
             <CustomAttribute
                 app:attributeName="textSize"
-                app:customDimension="@dimen/_8ssp" />
+                app:customDimension="@dimen/home_title_text_size_collapsed" />
         </Constraint>
 
 
@@ -94,7 +92,7 @@
             android:id="@+id/layoutSummary"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/_8sdp"
+            android:layout_marginBottom="@dimen/home_summary_margin_bottom"
             android:alpha="0.0"
             app:layout_constraintBottom_toBottomOf="@+id/toolbar"
             app:layout_constraintEnd_toStartOf="@+id/v96"
@@ -102,19 +100,19 @@
 
         <Constraint
             android:id="@+id/btnNewTask"
-            android:layout_width="@dimen/_38sdp"
-            android:layout_height="@dimen/_36sdp"
-            android:layout_marginEnd="@dimen/_6sdp"
+            android:layout_width="@dimen/home_button_width_collapsed"
+            android:layout_height="@dimen/home_button_height_collapsed"
+            android:layout_marginEnd="@dimen/home_button_margin_end"
             app:layout_constraintEnd_toStartOf="@+id/btnCalendar"
             app:layout_constraintTop_toTopOf="@+id/txvTitle"
             app:layout_constraintBottom_toBottomOf="@+id/txvTitle" />
 
         <Constraint
             android:id="@+id/btnCalendar"
-            android:layout_width="@dimen/_38sdp"
-            android:layout_height="@dimen/_36sdp"
+            android:layout_width="@dimen/home_button_width_collapsed"
+            android:layout_height="@dimen/home_button_height_collapsed"
             app:layout_constraintEnd_toStartOf="@+id/btnMoreOptions"
-            android:layout_marginEnd="@dimen/_6sdp"
+            android:layout_marginEnd="@dimen/home_button_margin_end"
             app:layout_constraintTop_toTopOf="@+id/txvTitle"
             app:layout_constraintBottom_toBottomOf="@+id/txvTitle" />
 

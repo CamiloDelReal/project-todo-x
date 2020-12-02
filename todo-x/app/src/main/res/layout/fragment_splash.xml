@@ -24,8 +24,8 @@
             app:layout_constraintGuide_percent="0.5" />
 
         <ImageView
-            android:layout_width="@dimen/_80sdp"
-            android:layout_height="@dimen/_80sdp"
+            android:layout_width="@dimen/splash_logo_size"
+            android:layout_height="@dimen/splash_logo_size"
             android:src="@drawable/ic_icon_launcher_foreground"
             app:layout_constraintBottom_toBottomOf="@id/horz50"
             app:layout_constraintEnd_toEndOf="@id/vert50"

@@ -27,20 +27,20 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:paddingStart="@dimen/_12sdp"
+                android:paddingStart="@dimen/about_padding"
                 android:paddingTop="?attr/actionBarSize"
-                android:paddingEnd="@dimen/_12sdp"
-                android:paddingBottom="@dimen/_120sdp">
+                android:paddingEnd="@dimen/about_padding"
+                android:paddingBottom="@dimen/about_padding">
 
                 <ImageView
-                    android:layout_width="@dimen/_64sdp"
-                    android:layout_height="@dimen/_64sdp"
+                    android:layout_width="@dimen/about_icon_size"
+                    android:layout_height="@dimen/about_icon_size"
                     android:layout_gravity="center_horizontal"
                     android:src="@drawable/ic_launcher_rounded_corners" />
 
                 <Space
                     android:layout_width="wrap_content"
-                    android:layout_height="@dimen/_12sdp" />
+                    android:layout_height="@dimen/about_space" />
 
                 <TextView
                     style="@style/TextAppearance.MaterialComponents.Headline4"
@@ -62,14 +62,16 @@
 
                 <Space
                     android:layout_width="wrap_content"
-                    android:layout_height="@dimen/_4sdp" />
+                    android:layout_height="@dimen/about_content_space" />
 
-                <FrameLayout
+                <com.google.android.material.card.MaterialCardView
                     android:id="@+id/btnAboutLink"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:foreground="?attr/selectableItemBackground"
-                    android:padding="@dimen/_4sdp">
+                    app:cardCornerRadius="@dimen/item_corner_radius"
+                    app:cardElevation="0dp"
+                    app:cardUseCompatPadding="false"
+                    app:contentPadding="@dimen/about_header_content_padding">
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -86,7 +88,7 @@
 
                         <Space
                             android:layout_width="wrap_content"
-                            android:layout_height="@dimen/_4sdp" />
+                            android:layout_height="@dimen/about_content_space" />
 
                         <TextView
                             style="@style/TextAppearance.MaterialComponents.Body1"
@@ -98,7 +100,7 @@
 
                         <Space
                             android:layout_width="wrap_content"
-                            android:layout_height="@dimen/_4sdp" />
+                            android:layout_height="@dimen/about_content_space" />
 
                         <TextView
                             style="@style/TextAppearance.MaterialComponents.Caption"
@@ -110,11 +112,11 @@
 
                     </LinearLayout>
 
-                </FrameLayout>
+                </com.google.android.material.card.MaterialCardView>
 
                 <Space
                     android:layout_width="wrap_content"
-                    android:layout_height="@dimen/_24sdp" />
+                    android:layout_height="@dimen/about_header_space" />
 
                 <TextView
                     style="@style/TextAppearance.MaterialComponents.Caption"
@@ -124,13 +126,13 @@
 
                 <View
                     android:layout_width="match_parent"
-                    android:layout_height="1dp"
+                    android:layout_height="@dimen/about_separator_height"
                     android:alpha="0.1"
                     android:background="?attr/colorOnSurface" />
 
                 <Space
                     android:layout_width="wrap_content"
-                    android:layout_height="@dimen/_6sdp" />
+                    android:layout_height="@dimen/about_section_header_space" />
 
                 <org.xapps.apps.todox.views.custom.AboutReference
                     android:id="@+id/btnLinkGoogleFonts"
@@ -142,7 +144,7 @@
 
                 <Space
                     android:layout_width="match_parent"
-                    android:layout_height="@dimen/_18sdp" />
+                    android:layout_height="@dimen/about_section_space" />
 
                 <TextView
                     style="@style/TextAppearance.MaterialComponents.Caption"
@@ -152,13 +154,13 @@
 
                 <View
                     android:layout_width="match_parent"
-                    android:layout_height="1dp"
+                    android:layout_height="@dimen/about_separator_height"
                     android:alpha="0.1"
                     android:background="?attr/colorOnSurface" />
 
                 <Space
                     android:layout_width="wrap_content"
-                    android:layout_height="@dimen/_6sdp" />
+                    android:layout_height="@dimen/about_section_header_space" />
 
                 <org.xapps.apps.todox.views.custom.AboutReference
                     android:id="@+id/btnLinkMaterialDesignIcons"
@@ -170,7 +172,7 @@
 
                 <Space
                     android:layout_width="match_parent"
-                    android:layout_height="@dimen/_18sdp" />
+                    android:layout_height="@dimen/about_section_space" />
 
                 <TextView
                     style="@style/TextAppearance.MaterialComponents.Caption"
@@ -180,13 +182,13 @@
 
                 <View
                     android:layout_width="match_parent"
-                    android:layout_height="1dp"
+                    android:layout_height="@dimen/about_separator_height"
                     android:alpha="0.1"
                     android:background="?attr/colorOnSurface" />
 
                 <Space
                     android:layout_width="wrap_content"
-                    android:layout_height="@dimen/_6sdp" />
+                    android:layout_height="@dimen/about_section_header_space" />
 
                 <org.xapps.apps.todox.views.custom.AboutReference
                     android:id="@+id/btnLinkAndroidJetpack"
@@ -198,7 +200,7 @@
 
                 <Space
                     android:layout_width="wrap_content"
-                    android:layout_height="@dimen/_6sdp" />
+                    android:layout_height="@dimen/about_section_item_space" />
 
                 <org.xapps.apps.todox.views.custom.AboutReference
                     android:id="@+id/btnLinkAndroidKotlin"
@@ -210,32 +212,56 @@
 
                 <Space
                     android:layout_width="wrap_content"
-                    android:layout_height="@dimen/_6sdp" />
-
-                <org.xapps.apps.todox.views.custom.AboutReference
-                    android:id="@+id/btnLinkSDP"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    app:ar_link="@string/sdp_url"
-                    app:ar_text="@string/sdp" />
-
-                <Space
-                    android:layout_width="wrap_content"
-                    android:layout_height="@dimen/_6sdp" />
-
-                <org.xapps.apps.todox.views.custom.AboutReference
-                    android:id="@+id/btnLinkSSP"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    app:ar_link="@string/ssp_url"
-                    app:ar_text="@string/ssp" />
-
-                <Space
-                    android:layout_width="wrap_content"
-                    android:layout_height="@dimen/_6sdp" />
+                    android:layout_height="@dimen/about_section_item_space" />
 
                 <org.xapps.apps.todox.views.custom.AboutReference
                     android:id="@+id/btnLinkTimber"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:ar_link="@string/timber_url"
+                    app:ar_text="@string/timber" />
+
+                <org.xapps.apps.todox.views.custom.AboutReference
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:ar_link="@string/timber_url"
+                    app:ar_text="@string/timber" />
+<org.xapps.apps.todox.views.custom.AboutReference
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:ar_link="@string/timber_url"
+                    app:ar_text="@string/timber" />
+<org.xapps.apps.todox.views.custom.AboutReference
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:ar_link="@string/timber_url"
+                    app:ar_text="@string/timber" />
+<org.xapps.apps.todox.views.custom.AboutReference
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:ar_link="@string/timber_url"
+                    app:ar_text="@string/timber" />
+<org.xapps.apps.todox.views.custom.AboutReference
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:ar_link="@string/timber_url"
+                    app:ar_text="@string/timber" />
+<org.xapps.apps.todox.views.custom.AboutReference
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:ar_link="@string/timber_url"
+                    app:ar_text="@string/timber" />
+<org.xapps.apps.todox.views.custom.AboutReference
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:ar_link="@string/timber_url"
+                    app:ar_text="@string/timber" />
+<org.xapps.apps.todox.views.custom.AboutReference
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:ar_link="@string/timber_url"
+                    app:ar_text="@string/timber" />
+<org.xapps.apps.todox.views.custom.AboutReference
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     app:ar_link="@string/timber_url"
@@ -259,7 +285,7 @@
                 android:layout_width="?attr/actionBarSize"
                 android:layout_height="?attr/actionBarSize"
                 android:layout_centerInParent="true"
-                android:layout_marginEnd="@dimen/_4sdp"
+                android:layout_marginEnd="@dimen/about_back_button_margin"
                 android:background="?attr/selectableItemBackgroundBorderless"
                 android:src="@drawable/ic_arrow_left"
                 android:tint="?attr/colorOnSurface" />

@@ -8,6 +8,8 @@
     <color name="white">#ffffff</color>
     <color name="black">#000000</color>
 
+    <color name="edit_top_section">#343751</color>
+
     <color name="textOnLight">#000000</color>
     <color name="textOnLightSecondary">#99000000</color>
     <color name="textOnDark">#ffffff</color>

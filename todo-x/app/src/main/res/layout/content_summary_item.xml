@@ -13,29 +13,29 @@
             android:id="@+id/rootLayout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            app:cardCornerRadius="@dimen/_4sdp"
+            app:cardCornerRadius="@dimen/item_corner_radius"
             app:cardElevation="0dp"
             app:cardUseCompatPadding="false"
-            app:contentPadding="@dimen/_4sdp">
+            app:contentPadding="@dimen/about_reference_padding">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center_vertical"
                 android:orientation="horizontal"
-                android:paddingStart="@dimen/_8sdp"
-                android:paddingEnd="@dimen/_8sdp">
+                android:paddingStart="@dimen/item_summary_padding"
+                android:paddingEnd="@dimen/item_summary_padding">
 
                 <RelativeLayout
                     android:id="@+id/iconBackgroundLayout"
-                    android:layout_width="@dimen/_22sdp"
-                    android:layout_height="@dimen/_22sdp"
+                    android:layout_width="@dimen/item_summary_icon_background_size"
+                    android:layout_height="@dimen/item_summary_icon_background_size"
                     tools:background="@drawable/ic_bg_high_priority">
 
                     <ImageView
                         android:id="@+id/imgIcon"
-                        android:layout_width="@dimen/_12sdp"
-                        android:layout_height="@dimen/_12sdp"
+                        android:layout_width="@dimen/item_summary_icon_size"
+                        android:layout_height="@dimen/item_summary_icon_size"
                         android:layout_centerInParent="true"
                         tools:tint="@color/hightPriority"
                         tools:src="@drawable/ic_star" />
@@ -43,7 +43,7 @@
                 </RelativeLayout>
 
                 <Space
-                    android:layout_width="@dimen/_16sdp"
+                    android:layout_width="@dimen/item_summary_content_space"
                     android:layout_height="wrap_content" />
 
                 <LinearLayout
@@ -75,8 +75,8 @@
                             style="@style/TextAppearance.MaterialComponents.Caption"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginStart="@dimen/_8sdp"
-                            android:layout_marginEnd="@dimen/_8sdp"
+                            android:layout_marginStart="@dimen/item_summary_separator_margin"
+                            android:layout_marginEnd="@dimen/item_summary_separator_margin"
                             android:text="@string/dash_separator" />
 
                         <TextView

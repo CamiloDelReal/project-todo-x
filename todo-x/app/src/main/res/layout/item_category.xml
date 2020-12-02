@@ -17,8 +17,8 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="@dimen/_170sdp"
-        android:padding="@dimen/_6sdp">
+        android:layout_height="@dimen/item_category_height"
+        android:padding="@dimen/item_category_padding">
 
         <com.google.android.material.card.MaterialCardView
             android:id="@+id/rootLayout"
@@ -30,11 +30,11 @@
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:padding="@dimen/_12sdp">
+                android:padding="@dimen/item_category_content_padding">
 
                 <RelativeLayout
-                    android:layout_width="@dimen/_64sdp"
-                    android:layout_height="@dimen/_64sdp"
+                    android:layout_width="@dimen/item_category_chart_size"
+                    android:layout_height="@dimen/item_category_chart_size"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent">
 
@@ -42,11 +42,11 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         app:progressBackgroundColor="@{ColorUtils.isDarkColor(data.color) ? ContextCompat.getColor(context, R.color.textOnDarkSecondary) : ContextCompat.getColor(context, R.color.textOnLightSecondary)}"
-                        app:cpb_background_progressbar_width="@dimen/_2sdp"
+                        app:cpb_background_progressbar_width="@dimen/item_category_progress_background_size"
                         app:cpb_progress="69"
                         app:cpb_progress_direction="to_left"
                         app:progressColor="@{ColorUtils.isDarkColor(data.color) ? @color/textOnDark : @color/textOnLight}"
-                        app:cpb_progressbar_width="@dimen/_3sdp"
+                        app:cpb_progressbar_width="@dimen/item_category_progress_foreground_size"
                         app:cpb_round_border="false" />
 
                     <TextView
