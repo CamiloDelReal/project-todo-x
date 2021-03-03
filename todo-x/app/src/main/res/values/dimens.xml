@@ -45,11 +45,11 @@
     <dimen name="edit_title_margin_start_expended">20dp</dimen>
     <dimen name="edit_title_margin_bottom_expended">6dp</dimen>
 
-    <dimen name="edit_title_text_size_expanded">16sp</dimen>
-    <dimen name="edit_title_height_expanded">48dp</dimen>
+    <dimen name="edit_title_text_size_expanded">15sp</dimen>
+    <dimen name="edit_title_height_expanded">56dp</dimen>
 
-    <dimen name="edit_title_text_size_collapsed">12sp</dimen>
-    <dimen name="edit_title_height_collapsed">40dp</dimen>
+    <dimen name="edit_title_text_size_collapsed">11sp</dimen>
+    <dimen name="edit_title_height_collapsed">42dp</dimen>
 
     <dimen name="edit_important_icon_size">28dp</dimen>
 
@@ -62,11 +62,11 @@
     <dimen name="detail_category_toolbar_expanded">180dp</dimen>
     <dimen name="detail_category_toolbar_collapsed">60dp</dimen>
 
-    <dimen name="detail_category_title_text_size_expanded">16sp</dimen>
-    <dimen name="detail_category_title_height_expanded">48dp</dimen>
+    <dimen name="detail_category_title_text_size_expanded">15sp</dimen>
+    <dimen name="detail_category_title_height_expanded">56dp</dimen>
 
-    <dimen name="detail_category_title_text_size_collapsed">12sp</dimen>
-    <dimen name="detail_category_title_height_collapsed">40dp</dimen>
+    <dimen name="detail_category_title_text_size_collapsed">11sp</dimen>
+    <dimen name="detail_category_title_height_collapsed">42dp</dimen>
 
     <dimen name="detail_category_title_margin_start_expended">20dp</dimen>
     <dimen name="detail_category_title_margin_bottom_expended">10dp</dimen>
