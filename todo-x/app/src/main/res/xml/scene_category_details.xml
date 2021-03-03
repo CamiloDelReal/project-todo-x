@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="utf-8"?>
+<MotionScene xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <Transition
+        app:constraintSetEnd="@+id/setCollapsed"
+        app:constraintSetStart="@+id/setExpanded">
+
+        <OnSwipe
+            app:dragDirection="dragUp"
+            app:touchAnchorId="@+id/content"
+            app:touchAnchorSide="top" />
+
+    </Transition>
+
+    <ConstraintSet android:id="@+id/setExpanded">
+
+        <Constraint
+            android:id="@+id/toolbar"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/detail_category_toolbar_expanded" />
+
+        <Constraint
+            android:id="@+id/txvTitle"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/detail_category_title_height_expanded"
+            app:layout_constraintEnd_toEndOf="@id/toolbar"
+            app:layout_constraintBottom_toTopOf="@id/layoutSummary"
+            android:layout_marginBottom="@dimen/detail_category_title_margin_bottom_expended"
+            android:layout_marginStart="@dimen/detail_category_title_margin_start_expended"
+            app:layout_constraintStart_toStartOf="@id/toolbar">
+            <CustomAttribute
+                app:attributeName="textSize"
+                app:customDimension="@dimen/detail_category_title_text_size_expanded" />
+        </Constraint>
+
+        <Constraint
+            android:id="@+id/btnNewTask"
+            android:layout_width="@dimen/home_button_width_expanded"
+            android:layout_height="@dimen/home_button_height_expanded"
+            app:layout_constraintTop_toTopOf="@id/btnBack"
+            android:layout_marginEnd="@dimen/home_button_margin_end"
+            app:layout_constraintEnd_toStartOf="@id/btnMoreOptions"
+            app:layout_constraintBottom_toBottomOf="@id/btnBack" />
+
+        <Constraint
+            android:id="@+id/layoutSummary"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="@id/toolbar"
+            app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginStart="@dimen/detail_category_summary_start_margin"
+            android:layout_marginBottom="@dimen/detail_category_summary_bottom_margin"
+            android:alpha="1.0"/>
+
+        <Constraint android:id="@+id/progressbar">
+            <PropertySet
+                app:applyMotionScene="false"
+                app:visibilityMode="ignore" />
+        </Constraint>
+
+    </ConstraintSet>
+
+
+    <ConstraintSet android:id="@+id/setCollapsed">
+
+        <Constraint
+            android:id="@+id/toolbar"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/detail_category_toolbar_collapsed" />
+
+        <Constraint
+            android:id="@+id/txvTitle"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/detail_category_title_height_collapsed"
+            app:layout_constraintEnd_toStartOf="@id/btnNewTask"
+            app:layout_constraintBottom_toBottomOf="@id/btnBack"
+            app:layout_constraintStart_toEndOf="@id/btnBack"
+            app:layout_constraintTop_toTopOf="@id/btnBack">
+            <CustomAttribute
+                app:attributeName="textSize"
+                app:customDimension="@dimen/detail_category_title_text_size_collapsed" />
+        </Constraint>
+
+        <Constraint
+            android:id="@+id/btnNewTask"
+            android:layout_width="@dimen/home_button_width_collapsed"
+            android:layout_height="@dimen/home_button_height_collapsed"
+            app:layout_constraintTop_toTopOf="@id/btnBack"
+            app:layout_constraintEnd_toStartOf="@id/btnMoreOptions"
+            android:layout_marginEnd="@dimen/home_button_margin_end"
+            app:layout_constraintBottom_toBottomOf="@id/btnBack" />
+
+        <Constraint
+            android:id="@+id/layoutSummary"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="@id/toolbar"
+            app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginStart="@dimen/detail_category_summary_start_margin"
+            android:layout_marginBottom="@dimen/detail_category_summary_bottom_margin"
+            android:alpha="0.0"/>
+
+        <Constraint android:id="@+id/progressbar">
+            <PropertySet
+                app:applyMotionScene="false"
+                app:visibilityMode="ignore" />
+        </Constraint>
+
+    </ConstraintSet>
+
+</MotionScene>

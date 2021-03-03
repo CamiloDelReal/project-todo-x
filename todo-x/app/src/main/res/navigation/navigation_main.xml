@@ -9,7 +9,7 @@
         android:id="@+id/splashFragment"
         android:name="org.xapps.apps.todox.views.fragments.SplashFragment"
         android:label="@string/empty"
-        tools:layout="@layout/fragment_splash" >
+        tools:layout="@layout/fragment_splash">
         <action
             android:id="@+id/action_splashFragment_to_homeFragment"
             app:destination="@id/homeFragment"
@@ -22,16 +22,28 @@
         android:id="@+id/homeFragment"
         android:name="org.xapps.apps.todox.views.fragments.HomeFragment"
         android:label="@string/empty"
-        tools:layout="@layout/fragment_home" >
+        tools:layout="@layout/fragment_home">
         <action
-            android:id="@+id/action_homeFragment_to_toDoEditFragment"
-            app:destination="@id/editFragment" />
+            android:id="@+id/action_homeFragment_to_editTaskFragment"
+            app:destination="@id/editTaskFragment"
+            app:enterAnim="@anim/translate_from_bottom"
+            app:exitAnim="@anim/translate_alpha_to_nothing"
+            app:popEnterAnim="@anim/translate_alpha_from_nothing"
+            app:popExitAnim="@anim/translate_to_bottom" />
         <action
-            android:id="@+id/action_homeFragment_to_categoryFragment"
-            app:destination="@id/categoryFragment" />
+            android:id="@+id/action_homeFragment_to_categoryDetailsFragment"
+            app:destination="@id/categoryDetailsFragment"
+            app:enterAnim="@anim/translate_from_right"
+            app:exitAnim="@anim/translate_alpha_to_nothing"
+            app:popEnterAnim="@anim/translate_alpha_from_nothing"
+            app:popExitAnim="@anim/translate_to_right" />
         <action
             android:id="@+id/action_homeFragment_to_calendarFragment"
-            app:destination="@id/calendarFragment" />
+            app:destination="@id/calendarFragment"
+            app:enterAnim="@anim/translate_from_right"
+            app:exitAnim="@anim/translate_alpha_to_nothing"
+            app:popEnterAnim="@anim/translate_alpha_from_nothing"
+            app:popExitAnim="@anim/translate_to_right" />
         <action
             android:id="@+id/action_homeFragment_to_aboutFragment"
             app:destination="@id/aboutFragment"
@@ -41,32 +53,44 @@
             app:popExitAnim="@anim/translate_to_right" />
     </fragment>
     <fragment
-        android:id="@+id/editFragment"
-        android:name="org.xapps.apps.todox.views.fragments.EditFragment"
+        android:id="@+id/editTaskFragment"
+        android:name="org.xapps.apps.todox.views.fragments.EditTaskFragment"
         android:label="@string/empty"
-        tools:layout="@layout/fragment_edit" />
+        tools:layout="@layout/fragment_edit_task" />
     <fragment
         android:id="@+id/calendarFragment"
         android:name="org.xapps.apps.todox.views.fragments.CalendarFragment"
         android:label="fragment_calendar"
-        tools:layout="@layout/fragment_calendar" >
+        tools:layout="@layout/fragment_calendar">
         <action
-            android:id="@+id/action_calendarFragment_to_editFragment"
-            app:destination="@id/editFragment" />
+            android:id="@+id/action_calendarFragment_to_editTaskFragment"
+            app:destination="@id/editTaskFragment" />
     </fragment>
     <fragment
-        android:id="@+id/categoryFragment"
-        android:name="org.xapps.apps.todox.views.fragments.CategoryFragment"
+        android:id="@+id/categoryDetailsFragment"
+        android:name="org.xapps.apps.todox.views.fragments.CategoryDetailsFragment"
         android:label="fragment_category"
-        tools:layout="@layout/fragment_category" >
+        tools:layout="@layout/fragment_category_details">
         <action
-            android:id="@+id/action_categoryFragment_to_editFragment"
-            app:destination="@id/editFragment" />
+            android:id="@+id/action_categoryDetailsFragment_to_editTaskFragment"
+            app:destination="@id/editTaskFragment" />
+        <argument
+            android:name="categoryId"
+            android:defaultValue="-1L"
+            app:argType="long" />
+        <action
+            android:id="@+id/action_categoryDetailsFragment_to_taskDetailsFragment"
+            app:destination="@id/taskDetailsFragment" />
     </fragment>
     <fragment
         android:id="@+id/aboutFragment"
         android:name="org.xapps.apps.todox.views.fragments.AboutFragment"
         android:label="fragment_about"
         tools:layout="@layout/fragment_about" />
+    <fragment
+        android:id="@+id/taskDetailsFragment"
+        android:name="org.xapps.apps.todox.views.fragments.TaskDetailsFragment"
+        android:label="fragment_task_details"
+        tools:layout="@layout/fragment_task_details" />
 
 </navigation>

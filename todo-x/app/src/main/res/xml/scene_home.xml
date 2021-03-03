@@ -62,6 +62,12 @@
             app:layout_constraintStart_toEndOf="@+id/v50"
             app:layout_constraintTop_toBottomOf="@+id/txvTitle" />
 
+        <Constraint android:id="@+id/progressbar">
+            <PropertySet
+                app:applyMotionScene="false"
+                app:visibilityMode="ignore" />
+        </Constraint>
+
     </ConstraintSet>
 
 
@@ -103,18 +109,24 @@
             android:layout_width="@dimen/home_button_width_collapsed"
             android:layout_height="@dimen/home_button_height_collapsed"
             android:layout_marginEnd="@dimen/home_button_margin_end"
+            app:layout_constraintBottom_toBottomOf="@+id/txvTitle"
             app:layout_constraintEnd_toStartOf="@+id/btnCalendar"
-            app:layout_constraintTop_toTopOf="@+id/txvTitle"
-            app:layout_constraintBottom_toBottomOf="@+id/txvTitle" />
+            app:layout_constraintTop_toTopOf="@+id/txvTitle" />
 
         <Constraint
             android:id="@+id/btnCalendar"
             android:layout_width="@dimen/home_button_width_collapsed"
             android:layout_height="@dimen/home_button_height_collapsed"
-            app:layout_constraintEnd_toStartOf="@+id/btnMoreOptions"
             android:layout_marginEnd="@dimen/home_button_margin_end"
-            app:layout_constraintTop_toTopOf="@+id/txvTitle"
-            app:layout_constraintBottom_toBottomOf="@+id/txvTitle" />
+            app:layout_constraintBottom_toBottomOf="@+id/txvTitle"
+            app:layout_constraintEnd_toStartOf="@+id/btnMoreOptions"
+            app:layout_constraintTop_toTopOf="@+id/txvTitle" />
+
+        <Constraint android:id="@+id/progressbar">
+            <PropertySet
+                app:applyMotionScene="false"
+                app:visibilityMode="ignore" />
+        </Constraint>
 
     </ConstraintSet>
 

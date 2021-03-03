@@ -8,7 +8,7 @@
     <color name="white">#ffffff</color>
     <color name="black">#000000</color>
 
-    <color name="edit_top_section">#343751</color>
+    <color name="backgroundSecondary">#efefef</color>
 
     <color name="textOnLight">#000000</color>
     <color name="textOnLightSecondary">#99000000</color>
@@ -21,4 +21,11 @@
     <color name="hightPriority">#f44336</color>
     <color name="inSchedule">#2196f3</color>
     <color name="today">#ff9800</color>
+
+    <color name="unclassified">#ff666666</color>
+    <color name="groceries">#ff11998e</color>
+    <color name="work">#24FE41</color>
+    <color name="sport">#00B4DB</color>
+    <color name="family">#ED213A</color>
+    <color name="friends">#5C258D</color>
 </resources>

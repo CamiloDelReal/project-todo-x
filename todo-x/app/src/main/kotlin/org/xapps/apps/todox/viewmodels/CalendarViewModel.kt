@@ -1,9 +1,11 @@
 package org.xapps.apps.todox.viewmodels
 
-import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.ViewModel
+import dagger.hilt.android.lifecycle.HiltViewModel
+import javax.inject.Inject
 
 
-class CalendarViewModel @ViewModelInject constructor(): ViewModel() {
+@HiltViewModel
+class CalendarViewModel @Inject constructor(): ViewModel() {
 
 }

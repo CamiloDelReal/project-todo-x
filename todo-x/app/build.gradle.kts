@@ -135,6 +135,9 @@ dependencies {
     implementation(Libraries.Jetpack.Room.CORE_KTX)
     kapt(Libraries.Jetpack.Room.COMPILER)
 
+    // Jetpack Paging
+    implementation(Libraries.Jetpack.Paging.RUNTIME_KTX)
+
     // Dagger
     kapt(Libraries.Dagger.COMPILER)
     implementation(Libraries.Dagger.ANDROID)
@@ -148,9 +151,13 @@ dependencies {
     // Permissions
     implementation(Libraries.Permissions.DEXTER)
 
-    // lll
-    implementation("com.github.duanhong169:drawabletoolbox:1.0.7")
-    implementation("com.mikhaellopez:circularprogressbar:3.0.3")
+    // Support
+    implementation(Libraries.Support.WHATIF)
+
+    // UI
+    implementation(Libraries.UI.DRAWABLE_TOOLBOX)
+    implementation(Libraries.UI.CIRCULAR_PROGRESSBAR)
+    implementation(Libraries.UI.MATERIAL_PROGRESSBAR)
 
     // Logger
     implementation(Libraries.Logger.Timber.CORE)

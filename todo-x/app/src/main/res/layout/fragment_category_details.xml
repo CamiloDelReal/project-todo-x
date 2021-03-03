@@ -1,0 +1,198 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".views.fragments.CategoryDetailsFragment">
+
+    <data>
+
+        <import type="org.xapps.apps.todox.views.utils.ColorUtils" />
+        <import type="androidx.core.content.ContextCompat" />
+        <import type="org.xapps.apps.todox.R" />
+
+        <variable
+            name="viewModel"
+            type="org.xapps.apps.todox.viewmodels.CategoryDetailsViewModel" />
+
+    </data>
+
+    <androidx.constraintlayout.motion.widget.MotionLayout
+        android:id="@+id/rootLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fitsSystemWindows="true"
+        app:categoryBackground="@{viewModel.category}"
+        app:layoutDescription="@xml/scene_category_details">
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/v96"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.96" />
+
+        <View
+            android:id="@+id/toolbar"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/edit_toolbar_expanded"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+
+        <me.zhanghai.android.materialprogressbar.MaterialProgressBar
+            android:id="@+id/progressbar"
+            style="@style/Widget.MaterialProgressBar.ProgressBar.Horizontal"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/horizontal_indeterminated_progressbar"
+            android:indeterminate="true"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="@id/toolbar"
+            app:layout_constraintEnd_toEndOf="@id/toolbar"
+            app:layout_constraintStart_toStartOf="@id/toolbar"
+            app:mpb_progressStyle="horizontal"
+            app:mpb_useIntrinsicPadding="false"
+            tools:visibility="visible" />
+
+        <ImageButton
+            android:id="@+id/btnBack"
+            android:layout_width="?attr/actionBarSize"
+            android:layout_height="?attr/actionBarSize"
+            android:layout_centerInParent="true"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:elevation="8dp"
+            android:src="@drawable/ic_arrow_left"
+            android:tint="@{viewModel.category != null ? (ColorUtils.isDarkColor(viewModel.category.color) ? @color/textOnDark : @color/textOnLight) : @color/textOnLight}"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/txvTitle"
+            style="@style/TextAppearance.MaterialComponents.Headline5"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:gravity="center_vertical"
+            android:text="@{viewModel.category.name}"
+            android:textColor="@{viewModel.category != null ? (ColorUtils.isDarkColor(viewModel.category.color) ? @color/textOnDark : @color/textOnLight) : @color/textOnLight}"
+            android:textSize="@dimen/edit_title_text_size_expanded" />
+
+
+        <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+            android:id="@+id/btnNewTask"
+            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+            android:layout_width="@dimen/home_button_width_expanded"
+            android:layout_height="@dimen/home_button_height_expanded"
+            android:gravity="start|center_vertical"
+            android:text="@string/new_task"
+            android:textAllCaps="false"
+            android:textColor="@{viewModel.category != null ? (ColorUtils.isDarkColor(viewModel.category.color) ? @color/textOnDark : @color/textOnLight) : @color/textOnLight}"
+            android:textSize="@dimen/home_button_text_size"
+            app:icon="@drawable/ic_plus"
+            app:iconGravity="start"
+            app:iconPadding="@dimen/home_button_icon_padding"
+            app:iconSize="@dimen/home_button_icon_size"
+            app:iconTint="@{viewModel.category != null ? (ColorUtils.isDarkColor(viewModel.category.color) ? @color/textOnDark : @color/textOnLight) : @color/textOnLight}"
+            app:rippleColor="@{viewModel.category != null ? (ColorUtils.isDarkColor(viewModel.category.color) ? @color/rippleOnDark : @color/rippleOnLight) : @color/rippleOnLight}"
+            app:strokeColor="@{viewModel.category != null ? (ColorUtils.isDarkColor(viewModel.category.color) ? @color/textOnDarkSecondary : @color/textOnLightSecondary) : @color/textOnLightSecondary}" />
+
+        <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+            android:id="@+id/btnMoreOptions"
+            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+            android:layout_width="@dimen/home_button_width_collapsed"
+            android:layout_height="@dimen/home_button_height_collapsed"
+            android:gravity="start|center_vertical"
+            android:text="@string/more_options"
+            android:textAllCaps="false"
+            android:textColor="@{viewModel.category != null ? (ColorUtils.isDarkColor(viewModel.category.color) ? @color/textOnDark : @color/textOnLight) : @color/textOnLight}"
+            android:textSize="@dimen/home_button_text_size"
+            app:icon="@drawable/ic_dots_vertical"
+            app:iconPadding="@dimen/home_button_icon_padding"
+            app:iconSize="@dimen/home_button_icon_size"
+            app:iconTint="@{viewModel.category != null ? (ColorUtils.isDarkColor(viewModel.category.color) ? @color/textOnDark : @color/textOnLight) : @color/textOnLight}"
+            app:layout_constraintBottom_toBottomOf="@id/btnBack"
+            app:layout_constraintEnd_toStartOf="@id/v96"
+            app:layout_constraintTop_toTopOf="@id/btnBack"
+            app:rippleColor="@{viewModel.category != null ? (ColorUtils.isDarkColor(viewModel.category.color) ? @color/rippleOnDark : @color/rippleOnLight) : @color/rippleOnLight}"
+            app:strokeColor="@{viewModel.category != null ? (ColorUtils.isDarkColor(viewModel.category.color) ? @color/textOnDarkSecondary : @color/textOnLightSecondary) : @color/textOnLightSecondary}" />
+
+        <LinearLayout
+            android:id="@+id/layoutSummary"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <RelativeLayout
+                android:layout_width="@dimen/detail_category_chart_size"
+                android:layout_height="@dimen/detail_category_chart_size">
+
+                <com.mikhaellopez.circularprogressbar.CircularProgressBar
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    app:progressBackgroundColor="@{viewModel.category != null ? (ColorUtils.isDarkColor(viewModel.category.color) ? ContextCompat.getColor(context, R.color.textOnDarkSecondary) : ContextCompat.getColor(context, R.color.textOnLightSecondary)) : ContextCompat.getColor(context, R.color.textOnLightSecondary)}"
+                    app:cpb_background_progressbar_width="@dimen/details_category_progress_background_size"
+                    app:cpb_progress_direction="to_left"
+                    app:progressValue="@{viewModel.category}"
+                    app:progressColor="@{viewModel.category != null ? (ColorUtils.isDarkColor(viewModel.category.color) ? @color/textOnDark : @color/textOnLight) : @color/textOnLight}"
+                    app:cpb_progressbar_width="@dimen/details_category_progress_foreground_size"
+                    app:cpb_round_border="false" />
+
+                <TextView
+                    style="@style/TextAppearance.MaterialComponents.Headline6"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:textColor="@{viewModel.category != null ? (ColorUtils.isDarkColor(viewModel.category.color) ? @color/textOnDark : @color/textOnLight) : @color/textOnLight}"
+                    android:textSize="@dimen/details_category_chart_label_text_size"
+                    app:progressValue="@{viewModel.category}"
+                    tools:text="69%" />
+
+            </RelativeLayout>
+
+            <Space
+                android:layout_width="@dimen/content_space"
+                android:layout_height="wrap_content" />
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="@style/TextAppearance.MaterialComponents.Caption"
+                    android:textColor="@{viewModel.category != null ? (ColorUtils.isDarkColor(viewModel.category.color) ? @color/textOnDark : @color/textOnLight) : @color/textOnLight}"
+                    android:text='@{viewModel.category != null ? String.format(@string/completed_with_amount, viewModel.category.tasksCount - viewModel.category.pendingTasksCount) : "--"}'
+                    tools:text="20 Completed" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="@style/TextAppearance.MaterialComponents.Caption"
+                    android:textColor="@{viewModel.category != null ? (ColorUtils.isDarkColor(viewModel.category.color) ? @color/textOnDark : @color/textOnLight) : @color/textOnLight}"
+                    android:text='@{viewModel.category != null ? String.format(@string/not_yet_with_amount, viewModel.category.pendingTasksCount) : "--"}'
+                    tools:text="4 Not yet" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <androidx.core.widget.NestedScrollView
+            android:id="@+id/content"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:background="@color/backgroundSecondary"
+            android:scrollbars="vertical"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/toolbar">
+
+
+        </androidx.core.widget.NestedScrollView>
+
+
+    </androidx.constraintlayout.motion.widget.MotionLayout>
+
+</layout>

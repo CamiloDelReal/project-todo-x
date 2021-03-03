@@ -1,27 +1,37 @@
 package org.xapps.apps.todox.viewmodels
 
-import androidx.databinding.ObservableArrayList
-import androidx.hilt.lifecycle.ViewModelInject
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import org.xapps.apps.todox.services.models.Category
+import androidx.lifecycle.viewModelScope
+import androidx.paging.PagingData
+import androidx.paging.cachedIn
+import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
+import org.xapps.apps.todox.core.models.Category
+import org.xapps.apps.todox.core.repositories.CategoryRepository
+import javax.inject.Inject
 
 
-class HomeViewModel @ViewModelInject constructor() : ViewModel() {
+@HiltViewModel
+class HomeViewModel @Inject constructor(
+    private val categoryRepository: CategoryRepository
+) : ViewModel() {
 
-    val categories = ObservableArrayList<Category>()
+    private val categoriesPaginatedEmitter: MutableLiveData<PagingData<Category>> = MutableLiveData()
 
+    fun categoriesPaginated(): LiveData<PagingData<Category>> = categoriesPaginatedEmitter
 
     init {
-        categories.addAll(listOf(
-            Category(name = "Groceries", color = "#11998e"),
-            Category(name = "Work", color = "#ED213A"),
-            Category(name = "Freelance", color = "#00B4DB"),
-            Category(name = "Sport", color = "#FF0099"),
-            Category(name = "Travel", color = "#FFE000"),
-            Category(name = "Family", color = "#24FE41"),
-            Category(name = "Friends", color = "#5C258D"),
-            Category(name = "Unclassified", color = "#ffffff")
-        ))
+    }
+
+    fun categories() {
+        viewModelScope.launch {
+            categoryRepository.categoriesPaginated().cachedIn(viewModelScope).collectLatest { data ->
+                categoriesPaginatedEmitter.postValue(data)
+            }
+        }
     }
 
 }

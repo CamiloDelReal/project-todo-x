@@ -2,13 +2,15 @@
 <resources>
     <dimen name="splash_logo_size">100dp</dimen>
 
+    <dimen name="horizontal_indeterminated_progressbar">4dp</dimen>
+
     <dimen name="home_button_width_expanded">140dp</dimen>
     <dimen name="home_button_height_expanded">46dp</dimen>
 
-    <dimen name="home_button_width_collapsed">48dp</dimen>
+    <dimen name="home_button_width_collapsed">42dp</dimen>
     <dimen name="home_button_height_collapsed">46dp</dimen>
 
-    <dimen name="home_button_icon_size">16dp</dimen>
+    <dimen name="home_button_icon_size">18dp</dimen>
     <dimen name="home_button_icon_padding">8dp</dimen>
 
     <dimen name="home_button_text_size">13sp</dimen>
@@ -34,6 +36,51 @@
 
     <dimen name="item_corner_radius">4dp</dimen>
     <dimen name="popup_corner_radius">6dp</dimen>
+
+    <dimen name="content_padding">12dp</dimen>
+
+    <dimen name="edit_toolbar_expanded">120dp</dimen>
+    <dimen name="edit_toolbar_collapsed">60dp</dimen>
+
+    <dimen name="edit_title_margin_start_expended">20dp</dimen>
+    <dimen name="edit_title_margin_bottom_expended">6dp</dimen>
+
+    <dimen name="edit_title_text_size_expanded">16sp</dimen>
+    <dimen name="edit_title_height_expanded">48dp</dimen>
+
+    <dimen name="edit_title_text_size_collapsed">12sp</dimen>
+    <dimen name="edit_title_height_collapsed">40dp</dimen>
+
+    <dimen name="edit_important_icon_size">28dp</dimen>
+
+    <dimen name="edit_content_space">12dp</dimen>
+    <dimen name="content_space">12dp</dimen>
+
+    <dimen name="edit_button_width">180dp</dimen>
+    <dimen name="edit_button_height">46dp</dimen>
+
+    <dimen name="detail_category_toolbar_expanded">180dp</dimen>
+    <dimen name="detail_category_toolbar_collapsed">60dp</dimen>
+
+    <dimen name="detail_category_title_text_size_expanded">16sp</dimen>
+    <dimen name="detail_category_title_height_expanded">48dp</dimen>
+
+    <dimen name="detail_category_title_text_size_collapsed">12sp</dimen>
+    <dimen name="detail_category_title_height_collapsed">40dp</dimen>
+
+    <dimen name="detail_category_title_margin_start_expended">20dp</dimen>
+    <dimen name="detail_category_title_margin_bottom_expended">10dp</dimen>
+
+    <dimen name="detail_category_chart_size">48dp</dimen>
+
+    <dimen name="detail_category_summary_bottom_margin">12dp</dimen>
+    <dimen name="detail_category_summary_end_margin">24dp</dimen>
+    <dimen name="detail_category_summary_start_margin">24dp</dimen>
+
+    <dimen name="details_category_chart_label_text_size">11sp</dimen>
+
+    <dimen name="details_category_progress_background_size">1dp</dimen>
+    <dimen name="details_category_progress_foreground_size">2dp</dimen>
 
     <dimen name="item_category_height">220dp</dimen>
     <dimen name="item_category_padding">6dp</dimen>
@@ -61,7 +108,11 @@
     <dimen name="popup_more_options_button_padding">24dp</dimen>
     <dimen name="popup_more_options_button_padding_with_check">12dp</dimen>
 
+    <dimen name="about_toolbar_height_expanded">240dp</dimen>
+    <dimen name="about_toolbar_height_collapsed">60dp</dimen>
+
     <dimen name="about_padding">12dp</dimen>
+    <dimen name="about_header_content_space">16dp</dimen>
     <dimen name="about_header_content_padding">6dp</dimen>
     <dimen name="about_icon_size">100dp</dimen>
     <dimen name="about_space">12dp</dimen>
@@ -72,5 +123,5 @@
     <dimen name="about_header_space">24dp</dimen>
     <dimen name="about_separator_height">1dp</dimen>
     <dimen name="about_back_button_margin">4dp</dimen>
-    <dimen name="about_back_button_radius">24dp</dimen>
+    <dimen name="about_back_button_radius">28dp</dimen>
 </resources>

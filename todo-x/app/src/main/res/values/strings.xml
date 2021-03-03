@@ -12,6 +12,8 @@
     <string name="tasks">Tasks</string>
     <string name="schedule">Schedule</string>
     <string name="cancel">Cancel</string>
+    <string name="completed_with_amount">%1$d Completed</string>
+    <string name="not_yet_with_amount">%1$d Not yet</string>
     <string name="new_task">New Task</string>
     <string name="calendar">Calendar</string>
     <string name="dash_separator">-</string>
@@ -36,10 +38,6 @@
     <string name="android_jetpack_url">https://developer.android.com/jetpack</string>
     <string name="android_kotlin">Android Kotlin</string>
     <string name="android_kotlin_url">https://developer.android.com/kotlin</string>
-    <string name="sdp_url">https://github.com/intuit/sdp</string>
-    <string name="sdp">SDP</string>
-    <string name="ssp_url">https://github.com/intuit/ssp</string>
-    <string name="ssp">SSP</string>
     <string name="timber">Timber</string>
     <string name="timber_url">https://github.com/JakeWharton/timber</string>
     <string name="create_task">Create Task</string>
@@ -49,4 +47,14 @@
     <string name="end_time">End Time</string>
     <string name="description">Description</string>
     <string name="category">Category</string>
+    <string name="unclassified">Unclassified</string>
+    <string name="groceries">Groceries</string>
+    <string name="work">Work</string>
+    <string name="sport">Sport</string>
+    <string name="family">Family</string>
+    <string name="friends">Friends</string>
+    <string name="error_creating_default_categories">Error creating default categories</string>
+    <string name="empty_field">Empty field</string>
+    <string name="error_inserting_task_in_db">Error inserting task in database</string>
+    <string name="important">Important</string>
 </resources>

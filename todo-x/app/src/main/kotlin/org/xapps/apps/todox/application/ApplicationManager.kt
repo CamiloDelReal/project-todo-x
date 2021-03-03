@@ -6,7 +6,7 @@ import androidx.appcompat.app.AppCompatDelegate
 import androidx.multidex.MultiDex
 import dagger.hilt.android.HiltAndroidApp
 import org.xapps.apps.todox.BuildConfig
-import org.xapps.apps.todox.services.settings.SettingsService
+import org.xapps.apps.todox.core.settings.SettingsService
 import timber.log.Timber
 import javax.inject.Inject
 

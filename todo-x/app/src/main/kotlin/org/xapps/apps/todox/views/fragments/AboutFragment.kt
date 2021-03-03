@@ -23,7 +23,13 @@ class AboutFragment @Inject constructor(): Fragment() {
 
     private lateinit var binding: FragmentAboutBinding
 
-    private lateinit var onBackPressedCallback: OnBackPressedCallback
+    private val onBackPressedCallback: OnBackPressedCallback by lazy {
+        object: OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                findNavController().navigateUp()
+            }
+        }
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -38,12 +44,6 @@ class AboutFragment @Inject constructor(): Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        onBackPressedCallback = object: OnBackPressedCallback(true) {
-            override fun handleOnBackPressed() {
-                findNavController().navigateUp()
-            }
-        }
 
         btnBack.setOnClickListener {
             findNavController().navigateUp()

@@ -1,6 +1,5 @@
 package org.xapps.apps.todox.views.bindings
 
-import android.graphics.Color
 import android.graphics.drawable.Drawable
 import androidx.core.content.ContextCompat
 import androidx.core.graphics.toColorInt
@@ -16,8 +15,6 @@ object MaterialCardViewBindings {
     @BindingAdapter("categoryBackground")
     fun categoryBackground(view: MaterialCardView, color: String) {
         ContextCompat.getColor(view.context, R.color.textOnDarkSecondary)
-        Color()
-        val bgColor = "#99${color.substring(1)}"
         val drawable: Drawable = DrawableBuilder()
             .rectangle()
             .solidColor(color.toColorInt())
