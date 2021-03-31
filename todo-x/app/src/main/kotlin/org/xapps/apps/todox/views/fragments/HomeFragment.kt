@@ -72,8 +72,7 @@ class HomeFragment @Inject constructor() : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        listCategory.layoutManager =
-            GridLayoutManager(requireContext(), 2, RecyclerView.VERTICAL, false)
+        listCategory.layoutManager = GridLayoutManager(requireContext(), 2, RecyclerView.VERTICAL, false)
         categoryAdapter = CategoryAdapter(categoriesItemListener)
         listCategory.adapter = categoryAdapter
 

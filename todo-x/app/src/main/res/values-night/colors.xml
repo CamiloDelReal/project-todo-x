@@ -1,4 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="backgroundSecondary">#101010</color>
+
+    <color name="text">#ffffff</color>
+    <color name="textSecondary">#99ffffff</color>
 </resources>

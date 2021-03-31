@@ -10,4 +10,9 @@ data class TaskWithItems (
 
     @Relation(parentColumn = "id", entityColumn = "task_id")
     val items: List<Item>
-)
+) {
+
+    fun itemsDescriptions(): String =
+        items.joinToString(separator = ", ", transform = { it -> it.description})
+
+}

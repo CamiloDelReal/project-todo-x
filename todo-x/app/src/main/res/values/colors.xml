@@ -10,6 +10,9 @@
 
     <color name="backgroundSecondary">#efefef</color>
 
+    <color name="text">#000000</color>
+    <color name="textSecondary">#99000000</color>
+
     <color name="textOnLight">#000000</color>
     <color name="textOnLightSecondary">#99000000</color>
     <color name="textOnDark">#ffffff</color>

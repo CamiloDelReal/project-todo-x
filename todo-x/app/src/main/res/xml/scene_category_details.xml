@@ -8,7 +8,7 @@
 
         <OnSwipe
             app:dragDirection="dragUp"
-            app:touchAnchorId="@+id/content"
+            app:touchAnchorId="@+id/lstTasks"
             app:touchAnchorSide="top" />
 
     </Transition>
@@ -44,10 +44,20 @@
             app:layout_constraintBottom_toBottomOf="@id/btnBack" />
 
         <Constraint
+            android:id="@+id/filterTabsLayout"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/detail_category_tab_layout_height"
+            app:layout_constraintStart_toStartOf="@id/toolbar"
+            app:layout_constraintEnd_toEndOf="@id/toolbar"
+            app:layout_constraintBottom_toBottomOf="@id/toolbar"
+            android:layout_marginBottom="@dimen/detail_category_tab_layout_margin_bottom" />
+
+
+        <Constraint
             android:id="@+id/layoutSummary"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:layout_constraintBottom_toBottomOf="@id/toolbar"
+            app:layout_constraintBottom_toTopOf="@id/filterTabsLayout"
             app:layout_constraintStart_toStartOf="parent"
             android:layout_marginStart="@dimen/detail_category_summary_start_margin"
             android:layout_marginBottom="@dimen/detail_category_summary_bottom_margin"
@@ -90,6 +100,15 @@
             app:layout_constraintEnd_toStartOf="@id/btnMoreOptions"
             android:layout_marginEnd="@dimen/home_button_margin_end"
             app:layout_constraintBottom_toBottomOf="@id/btnBack" />
+
+        <Constraint
+            android:id="@+id/filterTabsLayout"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/detail_category_tab_layout_height"
+            app:layout_constraintStart_toStartOf="@id/toolbar"
+            app:layout_constraintEnd_toEndOf="@id/toolbar"
+            app:layout_constraintBottom_toBottomOf="@id/toolbar"
+            android:layout_marginBottom="@dimen/detail_category_tab_layout_margin_bottom" />
 
         <Constraint
             android:id="@+id/layoutSummary"

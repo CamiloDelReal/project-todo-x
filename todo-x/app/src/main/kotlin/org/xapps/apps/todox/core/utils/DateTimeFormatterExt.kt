@@ -1,6 +1,5 @@
 package org.xapps.apps.todox.core.utils
 
-import timber.log.Timber
 import java.time.LocalDate
 import java.time.LocalTime
 import java.time.format.DateTimeFormatter

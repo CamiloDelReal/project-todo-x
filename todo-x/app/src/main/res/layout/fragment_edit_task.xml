@@ -43,18 +43,6 @@
             app:mpb_useIntrinsicPadding="false"
             tools:visibility="visible" />
 
-        <ImageButton
-            android:id="@+id/btnBack"
-            android:layout_width="?attr/actionBarSize"
-            android:layout_height="?attr/actionBarSize"
-            android:layout_centerInParent="true"
-            android:background="?attr/selectableItemBackgroundBorderless"
-            android:elevation="8dp"
-            android:src="@drawable/ic_close"
-            android:tint="?attr/colorOnSurface"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
         <TextView
             android:id="@+id/txvTitle"
             style="@style/TextAppearance.MaterialComponents.Headline5"
@@ -281,6 +269,18 @@
             </LinearLayout>
 
         </androidx.core.widget.NestedScrollView>
+
+        <ImageButton
+            android:id="@+id/btnBack"
+            android:layout_width="?attr/actionBarSize"
+            android:layout_height="?attr/actionBarSize"
+            android:layout_centerInParent="true"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:elevation="8dp"
+            android:src="@drawable/ic_close"
+            android:tint="?attr/colorOnSurface"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <RelativeLayout
             android:id="@+id/buttonLayout"

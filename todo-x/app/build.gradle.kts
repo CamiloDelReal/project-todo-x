@@ -99,8 +99,6 @@ dependencies {
 
     // Jetpack MultiDex
     implementation(Libraries.Jetpack.MultiDex.CORE)
-    implementation("org.jetbrains.kotlin:kotlin-stdlib:${rootProject.extra["kotlin_version"]}")
-    implementation("androidx.legacy:legacy-support-v4:1.0.0")
 
     // Jetpack Annotations Support
     kapt(Libraries.Jetpack.AnnotationSupport.ANNOTATION)

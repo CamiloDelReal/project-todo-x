@@ -31,7 +31,7 @@ class HomeMoreOptionsPopup @Inject constructor() : DialogFragment() {
             listener: ((requestKey: String, bundle: Bundle) -> Unit)
         ) {
             val popup = HomeMoreOptionsPopup()
-            popup.show(fragmentManager, HomeMoreOptionsPopup.javaClass.name)
+            popup.show(fragmentManager, HomeMoreOptionsPopup::class.java.name)
             popup.setFragmentResultListener(REQUEST_KEY, listener)
         }
 

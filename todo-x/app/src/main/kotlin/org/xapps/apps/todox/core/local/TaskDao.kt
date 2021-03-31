@@ -1,5 +1,6 @@
 package org.xapps.apps.todox.core.local
 
+import androidx.paging.PagingSource
 import androidx.room.*
 import kotlinx.coroutines.flow.Flow
 import org.xapps.apps.todox.core.models.Task
@@ -65,6 +66,18 @@ interface TaskDao {
     @Transaction
     @Query("SELECT * FROM tasks WHERE id = :id")
     fun taskWithItems(id: Long): List<TaskWithItems>
+
+    @Transaction
+    @Query("SELECT * FROM tasks WHERE category_id = :categoryId AND done = 0")
+    fun tasksScheduledWithItemsPaginatedAsync(categoryId: Long): PagingSource<Int, TaskWithItems>
+
+    @Transaction
+    @Query("SELECT * FROM tasks WHERE category_id = :categoryId AND done = 0 AND important = 1")
+    fun tasksImportantWithItemsPaginatedAsync(categoryId: Long): PagingSource<Int, TaskWithItems>
+
+    @Transaction
+    @Query("SELECT * FROM tasks WHERE category_id = :categoryId AND done = 1")
+    fun tasksCompletedWithItemsPaginatedAsync(categoryId: Long): PagingSource<Int, TaskWithItems>
 
     @Update
     suspend fun updateAsync(task: Task): Int

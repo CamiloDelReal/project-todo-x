@@ -54,6 +54,40 @@
             app:mpb_useIntrinsicPadding="false"
             tools:visibility="visible" />
 
+        <com.google.android.material.tabs.TabLayout
+            android:id="@+id/filterTabsLayout"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/detail_category_tab_layout_height"
+            android:background="@android:color/transparent"
+            app:tabGravity="fill"
+            app:tabMaxWidth="0dp"
+            app:tabMode="fixed"
+            app:tabInlineLabel="true"
+            app:tabTextAppearance="@style/CategoryDetailsTextAppearance"
+            app:tabTextColorByBackground="@{viewModel.category}"
+            app:tabIndicatorColorByBackground="@{viewModel.category}"
+            app:tabIndicator="@drawable/ic_tab_item_on_dark">
+
+            <com.google.android.material.tabs.TabItem
+                android:id="@+id/btnFilterInSchedule"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/scheduled"/>
+
+            <com.google.android.material.tabs.TabItem
+                android:id="@+id/btnFilterImportants"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/important"/>
+
+            <com.google.android.material.tabs.TabItem
+                android:id="@+id/btnFilterCompleted"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/completed"/>
+
+        </com.google.android.material.tabs.TabLayout>
+
         <ImageButton
             android:id="@+id/btnBack"
             android:layout_width="?attr/actionBarSize"
@@ -178,20 +212,19 @@
 
         </LinearLayout>
 
-        <androidx.core.widget.NestedScrollView
-            android:id="@+id/content"
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/lstTasks"
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:background="@color/backgroundSecondary"
             android:scrollbars="vertical"
+            android:paddingTop="@dimen/content_padding_small"
+            tools:itemCount="10"
+            tools:listitem="@layout/item_task_with_items"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/toolbar">
-
-
-        </androidx.core.widget.NestedScrollView>
-
+            app:layout_constraintTop_toBottomOf="@id/toolbar" />
 
     </androidx.constraintlayout.motion.widget.MotionLayout>
 

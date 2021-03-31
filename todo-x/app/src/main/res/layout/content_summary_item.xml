@@ -16,7 +16,7 @@
             app:cardCornerRadius="@dimen/item_corner_radius"
             app:cardElevation="0dp"
             app:cardUseCompatPadding="false"
-            app:contentPadding="@dimen/about_reference_padding">
+            app:contentPadding="@dimen/content_padding_small">
 
             <LinearLayout
                 android:layout_width="match_parent"

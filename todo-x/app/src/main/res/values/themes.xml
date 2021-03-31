@@ -54,4 +54,8 @@
         <item name="colorAccent">@color/hightPriority</item>
     </style>
 
+    <style name="CategoryDetailsTextAppearance" parent="TextAppearance.MaterialComponents.Button">
+        <item name="textAllCaps">false</item>
+    </style>
+
 </resources>
