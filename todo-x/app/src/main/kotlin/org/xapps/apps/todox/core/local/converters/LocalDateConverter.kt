@@ -8,12 +8,17 @@ class LocalDateConverter {
 
     @TypeConverter
     fun fromLocalDate(value: LocalDate?): String? {
-        return value?.toString()
+        return value?.toString() ?: "9999"
     }
 
     @TypeConverter
     fun toLocalDate(value: String?): LocalDate? {
-        return value?.let { LocalDate.parse(it) }
+        return value?.let {
+            if (it.startsWith("9999")) {
+                null
+            } else {
+                LocalDate.parse(it)
+            }
+        }
     }
-
 }

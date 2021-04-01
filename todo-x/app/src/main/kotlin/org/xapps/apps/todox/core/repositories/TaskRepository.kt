@@ -10,6 +10,7 @@ import kotlinx.coroutines.flow.flowOn
 import org.xapps.apps.todox.core.local.TaskDao
 import org.xapps.apps.todox.core.models.Task
 import org.xapps.apps.todox.core.models.TaskWithItems
+import timber.log.Timber
 import javax.inject.Inject
 
 
@@ -18,11 +19,27 @@ class TaskRepository @Inject constructor(
 ) {
 
     fun insert(task: Task): Flow<Task> {
+        Timber.i("Insert task $task")
         return flow {
-            val id = taskDao.insert(task)
+            val id = taskDao.insertAsync(task)
+            Timber.i("Task inserted $task")
             task.id = id
             emit(task)
         }.flowOn(Dispatchers.IO)
+    }
+
+    fun update(task: Task): Flow<Boolean> {
+        Timber.i("Update task $task")
+        return flow {
+            val count = taskDao.updateAsync(task)
+            Timber.i("Task updated $task")
+            emit(count == 1)
+        }.flowOn(Dispatchers.IO)
+    }
+
+    fun taskWithItems(id: Long): Flow<TaskWithItems> {
+        Timber.i("Get task $id with items")
+        return taskDao.taskWithItemsAsync(id).flowOn(Dispatchers.IO)
     }
 
     fun tasksScheduledPaginated(categoryId: Long): Flow<PagingData<TaskWithItems>> {

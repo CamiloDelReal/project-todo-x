@@ -41,7 +41,7 @@ class EditTaskFragment @Inject constructor() : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         bindings = FragmentEditTaskBinding.inflate(layoutInflater)
         bindings.lifecycleOwner = viewLifecycleOwner
         bindings.viewModel = viewModel
@@ -58,10 +58,10 @@ class EditTaskFragment @Inject constructor() : Fragment() {
         bindings.tilDate.setEndIconOnClickListener {
             DatePickerFragment.showPicker(
                 fragmentManager = requireActivity().supportFragmentManager,
-                date = viewModel.task.get()?.date
+                date = viewModel.taskWithItems.get()?.task?.date
             ) { _, data ->
                 val date = data.getSerializable(DatePickerFragment.ATTR_DATE) as LocalDate
-                viewModel.task.get()?.date = date
+                viewModel.taskWithItems.get()?.task?.date = date
                 bindings.tieDate.setText(date.parseToString())
             }
         }
@@ -69,12 +69,12 @@ class EditTaskFragment @Inject constructor() : Fragment() {
         bindings.tilStartDate.setEndIconOnClickListener {
             TimePickerFragment.showPicker(
                 fragmentManager = requireActivity().supportFragmentManager,
-                time = viewModel.task.get()?.startTime,
-                maxTime = viewModel.task.get()?.endTime,
+                time = viewModel.taskWithItems.get()?.task?.startTime,
+                maxTime = viewModel.taskWithItems.get()?.task?.endTime,
                 use24Hours = true   // Hardcode for now
             ) { _, data ->
                 val time = data.getSerializable(TimePickerFragment.ATTR_TIME) as LocalTime
-                viewModel.task.get()?.startTime = time
+                viewModel.taskWithItems.get()?.task?.startTime = time
                 bindings.tieStartDate.setText(time.parseToString(use24Hour = true))
             }
         }
@@ -82,12 +82,12 @@ class EditTaskFragment @Inject constructor() : Fragment() {
         bindings.tilEndDate.setEndIconOnClickListener {
             TimePickerFragment.showPicker(
                 fragmentManager = requireActivity().supportFragmentManager,
-                time = viewModel.task.get()?.endTime,
-                minTime = viewModel.task.get()?.startTime,
+                time = viewModel.taskWithItems.get()?.task?.endTime,
+                minTime = viewModel.taskWithItems.get()?.task?.startTime,
                 use24Hours = true   // Hardcode for now
             ) { _, data ->
                 val time = data.getSerializable(TimePickerFragment.ATTR_TIME) as LocalTime
-                viewModel.task.get()?.endTime = time
+                viewModel.taskWithItems.get()?.task?.endTime = time
                 bindings.tieEndDate.setText(time.parseToString(use24Hour = true))
             }
         }

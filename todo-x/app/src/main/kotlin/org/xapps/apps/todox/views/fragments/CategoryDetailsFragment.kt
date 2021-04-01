@@ -18,9 +18,11 @@ import com.google.android.material.tabs.TabLayout
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
+import org.xapps.apps.todox.core.models.Task
 import org.xapps.apps.todox.core.models.TaskWithItems
 import org.xapps.apps.todox.databinding.FragmentCategoryDetailsBinding
 import org.xapps.apps.todox.viewmodels.CategoryDetailsViewModel
+import org.xapps.apps.todox.views.adapters.DateHeaderDecoration
 import org.xapps.apps.todox.views.adapters.TaskWithItemsAdapter
 import org.xapps.apps.todox.views.utils.ColorUtils
 import org.xapps.apps.todox.views.utils.Message
@@ -46,15 +48,18 @@ class CategoryDetailsFragment @Inject constructor(): Fragment() {
     private lateinit var taskAdapter: TaskWithItemsAdapter
 
     private val tasksItemListener = object: TaskWithItemsAdapter.ItemListener {
-        override fun clicked(task: TaskWithItems) {
-
+        override fun clicked(task: Task) {
+            findNavController().navigate(CategoryDetailsFragmentDirections.actionCategoryDetailsFragmentToTaskDetailsFragment(task.id))
+        }
+        override fun taskUpdated(task: Task) {
+            viewModel.updateTask(task)
         }
     }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         bindings = FragmentCategoryDetailsBinding.inflate(layoutInflater)
         bindings.lifecycleOwner = viewLifecycleOwner
         bindings.viewModel = viewModel
@@ -67,6 +72,8 @@ class CategoryDetailsFragment @Inject constructor(): Fragment() {
         bindings.lstTasks.layoutManager = LinearLayoutManager(requireContext(), RecyclerView.VERTICAL, false)
         taskAdapter = TaskWithItemsAdapter(tasksItemListener)
         bindings.lstTasks.adapter = taskAdapter
+        val dateHeaderDecoration = DateHeaderDecoration(taskAdapter)
+        bindings.lstTasks.addItemDecoration(dateHeaderDecoration)
 
         bindings.btnBack.setOnClickListener {
             findNavController().navigateUp()
@@ -137,6 +144,10 @@ class CategoryDetailsFragment @Inject constructor(): Fragment() {
             }
 
         })
+
+        bindings.btnNewTask.setOnClickListener {
+            findNavController().navigate(CategoryDetailsFragmentDirections.actionCategoryDetailsFragmentToEditTaskFragment(categoryId = viewModel.categoryId))
+        }
     }
 
     override fun onResume() {

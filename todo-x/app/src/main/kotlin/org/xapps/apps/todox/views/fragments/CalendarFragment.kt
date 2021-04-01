@@ -22,7 +22,7 @@ class CalendarFragment @Inject constructor(): Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         bindings = FragmentCalendarBinding.inflate(layoutInflater)
         bindings.lifecycleOwner = viewLifecycleOwner
         return bindings.root

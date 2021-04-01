@@ -12,7 +12,9 @@ import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
+import org.xapps.apps.todox.R
 import org.xapps.apps.todox.core.models.Category
+import org.xapps.apps.todox.core.models.Task
 import org.xapps.apps.todox.core.models.TaskWithItems
 import org.xapps.apps.todox.core.repositories.CategoryRepository
 import org.xapps.apps.todox.core.repositories.TaskRepository
@@ -32,7 +34,8 @@ class CategoryDetailsViewModel @Inject constructor(
     private val messageEmitter: MutableLiveData<Message> = MutableLiveData()
     private val tasksEmitter: MutableLiveData<PagingData<TaskWithItems>> = MutableLiveData()
 
-    private var categoryId: Long = -1
+    var categoryId: Long = -1
+        private set
     val category: ObservableField<Category> = ObservableField()
 
     fun message(): LiveData<Message> = messageEmitter
@@ -68,9 +71,13 @@ class CategoryDetailsViewModel @Inject constructor(
         tasksJob?.cancel()
         tasksJob = viewModelScope.launch {
             filter = FilterType.SCHEDULED
-            taskRepository.tasksScheduledPaginated(categoryId).cachedIn(viewModelScope).collectLatest { data ->
-                tasksEmitter.postValue(data)
-            }
+            taskRepository.tasksScheduledPaginated(categoryId).cachedIn(viewModelScope)
+                .catch { ex ->
+                    messageEmitter.postValue(Message.Error(Exception(ex.localizedMessage)))
+                }
+                .collectLatest { data ->
+                    tasksEmitter.postValue(data)
+                }
         }
     }
 
@@ -78,9 +85,13 @@ class CategoryDetailsViewModel @Inject constructor(
         tasksJob?.cancel()
         tasksJob = viewModelScope.launch {
             filter = FilterType.IMPORTANT
-            taskRepository.tasksImportantPaginated(categoryId).cachedIn(viewModelScope).collectLatest { data ->
-                tasksEmitter.postValue(data)
-            }
+            taskRepository.tasksImportantPaginated(categoryId).cachedIn(viewModelScope)
+                .catch { ex ->
+                    messageEmitter.postValue(Message.Error(Exception(ex.localizedMessage)))
+                }
+                .collectLatest { data ->
+                    tasksEmitter.postValue(data)
+                }
         }
     }
 
@@ -88,9 +99,27 @@ class CategoryDetailsViewModel @Inject constructor(
         tasksJob?.cancel()
         tasksJob = viewModelScope.launch {
             filter = FilterType.COMPLETED
-            taskRepository.tasksCompletedPaginated(categoryId).cachedIn(viewModelScope).collectLatest { data ->
-                tasksEmitter.postValue(data)
-            }
+            taskRepository.tasksCompletedPaginated(categoryId).cachedIn(viewModelScope)
+                .catch { ex ->
+                    messageEmitter.postValue(Message.Error(Exception(ex.localizedMessage)))
+                }
+                .collectLatest { data ->
+                    tasksEmitter.postValue(data)
+                }
+        }
+    }
+
+    fun updateTask(task: Task) {
+        viewModelScope.launch {
+            taskRepository.update(task)
+                .catch { ex ->
+                    messageEmitter.postValue(Message.Error(Exception(ex.localizedMessage)))
+                }
+                .collect { success ->
+                    if(!success) {
+                        messageEmitter.postValue(Message.Error(Exception(context.getString(R.string.error_updating_task_in_db))))
+                    }
+                }
         }
     }
 

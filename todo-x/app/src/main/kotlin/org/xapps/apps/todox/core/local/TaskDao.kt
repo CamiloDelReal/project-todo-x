@@ -65,18 +65,18 @@ interface TaskDao {
 
     @Transaction
     @Query("SELECT * FROM tasks WHERE id = :id")
-    fun taskWithItems(id: Long): List<TaskWithItems>
+    fun taskWithItems(id: Long): Flow<TaskWithItems>
 
     @Transaction
-    @Query("SELECT * FROM tasks WHERE category_id = :categoryId AND done = 0")
+    @Query("SELECT * FROM tasks WHERE category_id = :categoryId AND done = 0 ORDER BY date ASC")
     fun tasksScheduledWithItemsPaginatedAsync(categoryId: Long): PagingSource<Int, TaskWithItems>
 
     @Transaction
-    @Query("SELECT * FROM tasks WHERE category_id = :categoryId AND done = 0 AND important = 1")
+    @Query("SELECT * FROM tasks WHERE category_id = :categoryId AND done = 0 AND important = 1 ORDER BY date ASC")
     fun tasksImportantWithItemsPaginatedAsync(categoryId: Long): PagingSource<Int, TaskWithItems>
 
     @Transaction
-    @Query("SELECT * FROM tasks WHERE category_id = :categoryId AND done = 1")
+    @Query("SELECT * FROM tasks WHERE category_id = :categoryId AND done = 1 ORDER BY date ASC")
     fun tasksCompletedWithItemsPaginatedAsync(categoryId: Long): PagingSource<Int, TaskWithItems>
 
     @Update

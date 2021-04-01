@@ -129,4 +129,11 @@
     <dimen name="about_separator_height">1dp</dimen>
     <dimen name="about_back_button_margin">4dp</dimen>
     <dimen name="about_back_button_radius">28dp</dimen>
+
+    <dimen name="date_header_width">82dp</dimen>
+    <dimen name="date_header_height">58dp</dimen>
+    <dimen name="date_header_space">4dp</dimen>
+    <dimen name="date_header_vertical_padding">8dp</dimen>
+    <dimen name="date_header_horizontal_padding">4dp</dimen>
+
 </resources>

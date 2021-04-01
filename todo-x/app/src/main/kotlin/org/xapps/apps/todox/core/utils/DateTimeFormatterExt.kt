@@ -16,7 +16,7 @@ fun LocalTime.parseToString(format: String? = null, use24Hour: Boolean = true): 
 }
 
 fun LocalDate.parseToString(format: String? = null): String {
-    val pattern = format ?: "dd/MM/yyyy"
+    val pattern = format ?: "MMM dd, yyyy"
     val formatter = DateTimeFormatter.ofPattern(pattern)
     return format(formatter)
 }

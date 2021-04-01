@@ -56,9 +56,11 @@
     <string name="error_creating_default_categories">Error creating default categories</string>
     <string name="empty_field">Empty field</string>
     <string name="error_inserting_task_in_db">Error inserting task in database</string>
+    <string name="error_updating_task_in_db">Error updating task in database</string>
     <string name="important">Important</string>
     <string name="completed">Completed</string>
     <string name="scheduled">Scheduled</string>
     <string name="no_pending_items">No pending items</string>
     <string name="unspecified_time">Unspecified time</string>
+    <string name="no_date">No date</string>
 </resources>

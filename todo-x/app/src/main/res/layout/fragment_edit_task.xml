@@ -85,7 +85,7 @@
                         android:inputType="text"
                         android:lines="1"
                         android:maxLines="1"
-                        android:text="@={viewModel.task.name}" />
+                        android:text="@={viewModel.taskWithItems.task.name}" />
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <Space
@@ -163,7 +163,7 @@
                                 android:id="@+id/swtStored"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:checked="@={viewModel.task.important}"
+                                android:checked="@={viewModel.taskWithItems.task.important}"
                                 android:theme="@style/SwitchImportant"
                                 tools:checked="false" />
 

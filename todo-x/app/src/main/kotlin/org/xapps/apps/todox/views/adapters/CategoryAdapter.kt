@@ -10,7 +10,9 @@ import org.xapps.apps.todox.databinding.ItemCategoryBinding
 import timber.log.Timber
 
 
-class CategoryAdapter(private val itemListener: ItemListener): PagingDataAdapter<Category, CategoryAdapter.ItemViewHolder>(CategoryDiffCallback()) {
+class CategoryAdapter(
+    private val itemListener: ItemListener
+): PagingDataAdapter<Category, CategoryAdapter.ItemViewHolder>(CategoryDiffCallback()) {
 
     override fun onBindViewHolder(holder: ItemViewHolder, position: Int) {
         holder.bind(getItem(position))

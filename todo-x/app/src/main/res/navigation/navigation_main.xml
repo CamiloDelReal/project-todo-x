@@ -56,7 +56,16 @@
         android:id="@+id/editTaskFragment"
         android:name="org.xapps.apps.todox.views.fragments.EditTaskFragment"
         android:label="@string/empty"
-        tools:layout="@layout/fragment_edit_task" />
+        tools:layout="@layout/fragment_edit_task" >
+        <argument
+            android:name="taskId"
+            app:argType="long"
+            android:defaultValue="-1L" />
+        <argument
+            android:name="categoryId"
+            app:argType="long"
+            android:defaultValue="-1L" />
+    </fragment>
     <fragment
         android:id="@+id/calendarFragment"
         android:name="org.xapps.apps.todox.views.fragments.CalendarFragment"
@@ -91,6 +100,11 @@
         android:id="@+id/taskDetailsFragment"
         android:name="org.xapps.apps.todox.views.fragments.TaskDetailsFragment"
         android:label="fragment_task_details"
-        tools:layout="@layout/fragment_task_details" />
+        tools:layout="@layout/fragment_task_details" >
+        <argument
+            android:name="taskId"
+            app:argType="long"
+            android:defaultValue="-1L" />
+    </fragment>
 
 </navigation>
