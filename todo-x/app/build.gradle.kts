@@ -10,7 +10,6 @@ import java.util.*
 plugins {
     id("com.android.application")
     kotlin("android")
-    kotlin("android.extensions")
     kotlin("kapt")
     id("androidx.navigation.safeargs.kotlin")
     id("kotlin-android")

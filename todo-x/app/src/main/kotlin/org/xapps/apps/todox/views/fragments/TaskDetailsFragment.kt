@@ -17,7 +17,7 @@ import javax.inject.Inject
 @AndroidEntryPoint
 class TaskDetailsFragment @Inject constructor(): Fragment() {
 
-    private lateinit var binding: FragmentTaskDetailsBinding
+    private lateinit var bindings: FragmentTaskDetailsBinding
 
     private val viewModel: DetailsViewModel by viewModels()
 
@@ -33,9 +33,9 @@ class TaskDetailsFragment @Inject constructor(): Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        binding = FragmentTaskDetailsBinding.inflate(layoutInflater)
-        binding.lifecycleOwner = viewLifecycleOwner
-        return binding.root
+        bindings = FragmentTaskDetailsBinding.inflate(layoutInflater)
+        bindings.lifecycleOwner = viewLifecycleOwner
+        return bindings.root
     }
 
     override fun onResume() {

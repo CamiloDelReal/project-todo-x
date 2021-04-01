@@ -14,11 +14,8 @@ import androidx.navigation.fragment.findNavController
 import androidx.paging.LoadState
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.google.android.material.tabs.TabItem
 import com.google.android.material.tabs.TabLayout
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.android.synthetic.main.fragment_category_details.*
-import kotlinx.android.synthetic.main.fragment_home.progressbar
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import org.xapps.apps.todox.core.models.TaskWithItems
@@ -34,7 +31,7 @@ import javax.inject.Inject
 @AndroidEntryPoint
 class CategoryDetailsFragment @Inject constructor(): Fragment() {
 
-    private lateinit var binding: FragmentCategoryDetailsBinding
+    private lateinit var bindings: FragmentCategoryDetailsBinding
 
     private val viewModel: CategoryDetailsViewModel by viewModels()
 
@@ -58,42 +55,42 @@ class CategoryDetailsFragment @Inject constructor(): Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        binding = FragmentCategoryDetailsBinding.inflate(layoutInflater)
-        binding.lifecycleOwner = viewLifecycleOwner
-        binding.viewModel = viewModel
-        return binding.root
+        bindings = FragmentCategoryDetailsBinding.inflate(layoutInflater)
+        bindings.lifecycleOwner = viewLifecycleOwner
+        bindings.viewModel = viewModel
+        return bindings.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        lstTasks.layoutManager = LinearLayoutManager(requireContext(), RecyclerView.VERTICAL, false)
+        bindings.lstTasks.layoutManager = LinearLayoutManager(requireContext(), RecyclerView.VERTICAL, false)
         taskAdapter = TaskWithItemsAdapter(tasksItemListener)
-        lstTasks.adapter = taskAdapter
+        bindings.lstTasks.adapter = taskAdapter
 
-        btnBack.setOnClickListener {
+        bindings.btnBack.setOnClickListener {
             findNavController().navigateUp()
         }
 
         viewModel.message().observe(viewLifecycleOwner, Observer {
             when(it) {
                 is Message.Loading -> {
-                    progressbar.isVisible = true
+                    bindings.progressbar.isVisible = true
                 }
                 is Message.Success -> {
-                    progressbar.isVisible = false
+                    bindings.progressbar.isVisible = false
                     Timber.i("Success received  ${viewModel.category.get()}")
                     setStatusBarForegoundColor(!ColorUtils.isDarkColor(viewModel.category.get()!!.color))
                 }
                 is Message.Error -> {
-                    progressbar.isVisible = false
+                    bindings.progressbar.isVisible = false
                 }
             }
         })
 
         lifecycleScope.launch {
             taskAdapter.loadStateFlow.collectLatest { loadStates ->
-                progressbar.isVisible = (loadStates.refresh is LoadState.Loading)
+                bindings.progressbar.isVisible = (loadStates.refresh is LoadState.Loading)
             }
         }
 
@@ -105,27 +102,27 @@ class CategoryDetailsFragment @Inject constructor(): Fragment() {
 
         when(viewModel.filter) {
             CategoryDetailsViewModel.FilterType.SCHEDULED -> {
-                filterTabsLayout.selectTab(filterTabsLayout.getTabAt(0))
+                bindings.filterTabsLayout.selectTab(bindings.filterTabsLayout.getTabAt(0))
                 viewModel.tasksScheduled()
             }
             CategoryDetailsViewModel.FilterType.IMPORTANT -> {
-                filterTabsLayout.selectTab(filterTabsLayout.getTabAt(1))
+                bindings.filterTabsLayout.selectTab(bindings.filterTabsLayout.getTabAt(1))
                 viewModel.tasksImportant()
             }
             CategoryDetailsViewModel.FilterType.COMPLETED -> {
-                filterTabsLayout.selectTab(filterTabsLayout.getTabAt(2))
+                bindings.filterTabsLayout.selectTab(bindings.filterTabsLayout.getTabAt(2))
                 viewModel.tasksCompleted()
             }
         }
 
-        filterTabsLayout.addOnTabSelectedListener(object: TabLayout.OnTabSelectedListener {
+        bindings.filterTabsLayout.addOnTabSelectedListener(object: TabLayout.OnTabSelectedListener {
             override fun onTabReselected(tab: TabLayout.Tab?) {}
 
             override fun onTabUnselected(tab: TabLayout.Tab?) {}
 
             override fun onTabSelected(tab: TabLayout.Tab?) {
-                filterTabsLayout.postDelayed({
-                    when(filterTabsLayout.selectedTabPosition) {
+                bindings.filterTabsLayout.postDelayed({
+                    when(bindings.filterTabsLayout.selectedTabPosition) {
                         0 -> {
                             viewModel.tasksScheduled()
                         }

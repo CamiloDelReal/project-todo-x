@@ -11,7 +11,6 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.android.synthetic.main.fragment_edit_task.*
 import org.xapps.apps.todox.R
 import org.xapps.apps.todox.core.utils.parseToString
 import org.xapps.apps.todox.databinding.FragmentEditTaskBinding
@@ -27,7 +26,7 @@ import javax.inject.Inject
 @AndroidEntryPoint
 class EditTaskFragment @Inject constructor() : Fragment() {
 
-    private lateinit var binding: FragmentEditTaskBinding
+    private lateinit var bindings: FragmentEditTaskBinding
 
     private val viewModel: EditTaskViewModel by viewModels()
 
@@ -43,31 +42,31 @@ class EditTaskFragment @Inject constructor() : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        binding = FragmentEditTaskBinding.inflate(layoutInflater)
-        binding.lifecycleOwner = viewLifecycleOwner
-        binding.viewModel = viewModel
-        return binding.root
+        bindings = FragmentEditTaskBinding.inflate(layoutInflater)
+        bindings.lifecycleOwner = viewLifecycleOwner
+        bindings.viewModel = viewModel
+        return bindings.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        btnBack.setOnClickListener {
+        bindings.btnBack.setOnClickListener {
             findNavController().navigateUp()
         }
 
-        tilDate.setEndIconOnClickListener {
+        bindings.tilDate.setEndIconOnClickListener {
             DatePickerFragment.showPicker(
                 fragmentManager = requireActivity().supportFragmentManager,
                 date = viewModel.task.get()?.date
             ) { _, data ->
                 val date = data.getSerializable(DatePickerFragment.ATTR_DATE) as LocalDate
                 viewModel.task.get()?.date = date
-                tieDate.setText(date.parseToString())
+                bindings.tieDate.setText(date.parseToString())
             }
         }
 
-        tilStartDate.setEndIconOnClickListener {
+        bindings.tilStartDate.setEndIconOnClickListener {
             TimePickerFragment.showPicker(
                 fragmentManager = requireActivity().supportFragmentManager,
                 time = viewModel.task.get()?.startTime,
@@ -76,11 +75,11 @@ class EditTaskFragment @Inject constructor() : Fragment() {
             ) { _, data ->
                 val time = data.getSerializable(TimePickerFragment.ATTR_TIME) as LocalTime
                 viewModel.task.get()?.startTime = time
-                tieStartDate.setText(time.parseToString(use24Hour = true))
+                bindings.tieStartDate.setText(time.parseToString(use24Hour = true))
             }
         }
 
-        tilEndDate.setEndIconOnClickListener {
+        bindings.tilEndDate.setEndIconOnClickListener {
             TimePickerFragment.showPicker(
                 fragmentManager = requireActivity().supportFragmentManager,
                 time = viewModel.task.get()?.endTime,
@@ -89,15 +88,15 @@ class EditTaskFragment @Inject constructor() : Fragment() {
             ) { _, data ->
                 val time = data.getSerializable(TimePickerFragment.ATTR_TIME) as LocalTime
                 viewModel.task.get()?.endTime = time
-                tieEndDate.setText(time.parseToString(use24Hour = true))
+                bindings.tieEndDate.setText(time.parseToString(use24Hour = true))
             }
         }
 
-        btnFinish.setOnClickListener {
-            tilName.isErrorEnabled = false
-            if (tieName.text.isNullOrEmpty() || tieName.text.isNullOrBlank()) {
-                tilName.error = getString(R.string.empty_field)
-                tilName.isErrorEnabled = true
+        bindings.btnFinish.setOnClickListener {
+            bindings.tilName.isErrorEnabled = false
+            if (bindings.tieName.text.isNullOrEmpty() || bindings.tieName.text.isNullOrBlank()) {
+                bindings.tilName.error = getString(R.string.empty_field)
+                bindings.tilName.isErrorEnabled = true
             } else {
                 viewModel.insertTask()
             }
@@ -106,15 +105,15 @@ class EditTaskFragment @Inject constructor() : Fragment() {
         viewModel.message().observe(viewLifecycleOwner, Observer {
             when(it) {
                 is Message.Loading -> {
-                    progressbar.isVisible = true
+                    bindings.progressbar.isVisible = true
                 }
                 is Message.Success -> {
-                    progressbar.isVisible = false
+                    bindings.progressbar.isVisible = false
                     // SOme message
                     findNavController().navigateUp()
                 }
                 is Message.Error -> {
-                    progressbar.isVisible = false
+                    bindings.progressbar.isVisible = false
 
                 }
             }

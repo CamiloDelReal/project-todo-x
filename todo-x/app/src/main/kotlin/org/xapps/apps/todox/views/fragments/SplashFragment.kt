@@ -21,7 +21,7 @@ import javax.inject.Inject
 @AndroidEntryPoint
 class SplashFragment @Inject constructor() : Fragment() {
 
-    private lateinit var binding: FragmentSplashBinding
+    private lateinit var bindings: FragmentSplashBinding
 
     private val viewModel: SplashViewModel by viewModels()
 
@@ -37,9 +37,9 @@ class SplashFragment @Inject constructor() : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        binding = FragmentSplashBinding.inflate(layoutInflater)
-        binding.lifecycleOwner = viewLifecycleOwner
-        return binding.root
+        bindings = FragmentSplashBinding.inflate(layoutInflater)
+        bindings.lifecycleOwner = viewLifecycleOwner
+        return bindings.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

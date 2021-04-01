@@ -11,7 +11,6 @@ import androidx.activity.OnBackPressedCallback
 import androidx.core.view.ViewCompat
 import androidx.navigation.fragment.findNavController
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.android.synthetic.main.fragment_about.*
 import org.xapps.apps.todox.BuildConfig
 import org.xapps.apps.todox.R
 import org.xapps.apps.todox.databinding.FragmentAboutBinding
@@ -21,7 +20,7 @@ import javax.inject.Inject
 @AndroidEntryPoint
 class AboutFragment @Inject constructor(): Fragment() {
 
-    private lateinit var binding: FragmentAboutBinding
+    private lateinit var bindings: FragmentAboutBinding
 
     private val onBackPressedCallback: OnBackPressedCallback by lazy {
         object: OnBackPressedCallback(true) {
@@ -35,25 +34,25 @@ class AboutFragment @Inject constructor(): Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        binding = FragmentAboutBinding.inflate(layoutInflater)
-        binding.lifecycleOwner = viewLifecycleOwner
-        binding.version = BuildConfig.VERSION_NAME
-        ViewCompat.setTranslationZ(binding.root, 2f)
-        return binding.root
+        bindings = FragmentAboutBinding.inflate(layoutInflater)
+        bindings.lifecycleOwner = viewLifecycleOwner
+        bindings.version = BuildConfig.VERSION_NAME
+        ViewCompat.setTranslationZ(bindings.root, 2f)
+        return bindings.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        btnBack.setOnClickListener {
+        bindings.btnBack.setOnClickListener {
             findNavController().navigateUp()
         }
 
-        btnAboutLink.setOnClickListener {
+        bindings.btnAboutLink.setOnClickListener {
             launchUri(getString(R.string.project_github))
         }
 
-        btnLinkGoogleFonts.setOnClickListener {
+        bindings.btnLinkGoogleFonts.setOnClickListener {
             launchUri(getString(R.string.poppins_url))
         }
     }

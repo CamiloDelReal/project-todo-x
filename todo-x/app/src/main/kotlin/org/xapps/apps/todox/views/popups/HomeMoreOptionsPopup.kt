@@ -1,6 +1,5 @@
 package org.xapps.apps.todox.views.popups
 
-import android.graphics.Point
 import android.os.Bundle
 import android.view.*
 import androidx.fragment.app.DialogFragment
@@ -8,7 +7,6 @@ import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.setFragmentResult
 import androidx.fragment.app.setFragmentResultListener
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.android.synthetic.main.content_popup_home_more_options.*
 import org.xapps.apps.todox.R
 import org.xapps.apps.todox.core.settings.SettingsService
 import org.xapps.apps.todox.databinding.ContentPopupHomeMoreOptionsBinding
@@ -59,8 +57,8 @@ class HomeMoreOptionsPopup @Inject constructor() : DialogFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        btnDarkMode.isChecked = settings.isDarkModeOn()
-        btnDarkMode.addOnCheckedChangeListener { button, isChecked ->
+        bindings.btnDarkMode.isChecked = settings.isDarkModeOn()
+        bindings.btnDarkMode.addOnCheckedChangeListener { button, isChecked ->
             settings.setIsDarkModeOn(isChecked)
             val data = Bundle().apply {
                 putInt(MORE_OPTIONS_POPUP_OPTION, MORE_OPTIONS_POPUP_DARK_MODE_UPDATED)
@@ -68,11 +66,11 @@ class HomeMoreOptionsPopup @Inject constructor() : DialogFragment() {
             close(data)
         }
 
-        rootLayout.setOnClickListener {
+        bindings.rootLayout.setOnClickListener {
             close()
         }
 
-        btnAbout.setOnClickListener {
+        bindings.btnAbout.setOnClickListener {
             val data = Bundle().apply {
                 putInt(MORE_OPTIONS_POPUP_OPTION, MORE_OPTIONS_POPUP_OPEN_ABOUT_VIEW)
             }
@@ -87,14 +85,11 @@ class HomeMoreOptionsPopup @Inject constructor() : DialogFragment() {
 
     override fun onResume() {
         val window = dialog!!.window
-        val size = Point()
-        val display = window!!.windowManager.defaultDisplay
-        display.getSize(size)
-        window.setLayout(
+        window?.setLayout(
             WindowManager.LayoutParams.MATCH_PARENT,
             WindowManager.LayoutParams.MATCH_PARENT
         )
-        window.setGravity(Gravity.CENTER)
+        window?.setGravity(Gravity.CENTER)
 
         dialog?.apply {
             setOnKeyListener { _, keyCode, _ ->

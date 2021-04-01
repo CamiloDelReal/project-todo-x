@@ -4,12 +4,9 @@ import android.content.Context
 import android.content.res.ColorStateList
 import android.content.res.TypedArray
 import android.util.AttributeSet
-import android.util.TypedValue
 import android.view.LayoutInflater
 import android.widget.LinearLayout
-import androidx.appcompat.content.res.AppCompatResources
 import androidx.core.widget.ImageViewCompat
-import kotlinx.android.synthetic.main.content_summary_item.view.*
 import org.xapps.apps.todox.R
 import org.xapps.apps.todox.databinding.ContentSummaryItemBinding
 
@@ -20,6 +17,8 @@ class SummaryItem @JvmOverloads constructor(
     defStyle: Int = 0,
     defStyleRes: Int = 0
 ) : LinearLayout(context, attrs, defStyle, defStyleRes) {
+
+    private lateinit var bindings: ContentSummaryItemBinding
 
     init {
         val a: TypedArray = getContext().obtainStyledAttributes(attrs, R.styleable.SummaryItem)
@@ -32,46 +31,39 @@ class SummaryItem @JvmOverloads constructor(
         a.recycle()
 
         val layoutInflater = LayoutInflater.from(context)
-        ContentSummaryItemBinding.inflate(layoutInflater, this, true)
+        bindings = ContentSummaryItemBinding.inflate(layoutInflater, this, true)
 
         if (icon != -1) {
-            imgIcon.setImageResource(icon)
+            bindings.imgIcon.setImageResource(icon)
 
             if(iconTint != -1) {
-                ImageViewCompat.setImageTintList(imgIcon, ColorStateList.valueOf(iconTint))
+                ImageViewCompat.setImageTintList(bindings.imgIcon, ColorStateList.valueOf(iconTint))
             }
         }
 
         if(iconBackground != null) {
-            iconBackgroundLayout.background = iconBackground
+            bindings.iconBackgroundLayout.background = iconBackground
         }
 
-        txvTitle.text = title
-        txvCompleted.text = completed
-        txvPending.text = pending
+        bindings.txvTitle.text = title
+        bindings.txvCompleted.text = completed
+        bindings.txvPending.text = pending
     }
 
     fun setTitle(title: String) {
-        txvTitle.text = title
+        bindings.txvTitle.text = title
     }
 
     fun setCompleted(completed: String) {
-        txvCompleted.text = completed
+        bindings.txvCompleted.text = completed
     }
 
     fun setPending(pending: String) {
-        txvPending.text = pending
+        bindings.txvPending.text = pending
     }
 
     override fun setOnClickListener(newListener: OnClickListener?) {
-//        val fgValue = TypedValue()
-//        getContext().theme.resolveAttribute(
-//            android.R.attr.selectableItemBackground,
-//            fgValue,
-//            true
-//        )
-//        rootLayout.foreground = AppCompatResources.getDrawable(context, fgValue.resourceId)
-        rootLayout.setOnClickListener(newListener)
+        bindings.rootLayout.setOnClickListener(newListener)
     }
 
 }

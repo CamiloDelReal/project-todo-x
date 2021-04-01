@@ -1,6 +1,5 @@
 package org.xapps.apps.todox.views.fragments
 
-import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -17,7 +16,6 @@ import androidx.paging.LoadState
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.android.synthetic.main.fragment_home.*
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import org.xapps.apps.todox.core.models.Category
@@ -33,7 +31,7 @@ import javax.inject.Inject
 @AndroidEntryPoint
 class HomeFragment @Inject constructor() : Fragment() {
 
-    private lateinit var binding: FragmentHomeBinding
+    private lateinit var bindings: FragmentHomeBinding
 
     private val viewModel: HomeViewModel by viewModels()
 
@@ -64,19 +62,19 @@ class HomeFragment @Inject constructor() : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        binding = FragmentHomeBinding.inflate(layoutInflater)
-        binding.lifecycleOwner = viewLifecycleOwner
-        return binding.root
+        bindings = FragmentHomeBinding.inflate(layoutInflater)
+        bindings.lifecycleOwner = viewLifecycleOwner
+        return bindings.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        listCategory.layoutManager = GridLayoutManager(requireContext(), 2, RecyclerView.VERTICAL, false)
+        bindings.listCategory.layoutManager = GridLayoutManager(requireContext(), 2, RecyclerView.VERTICAL, false)
         categoryAdapter = CategoryAdapter(categoriesItemListener)
-        listCategory.adapter = categoryAdapter
+        bindings.listCategory.adapter = categoryAdapter
 
-        btnMoreOptions.setOnClickListener {
+        bindings.btnMoreOptions.setOnClickListener {
             HomeMoreOptionsPopup.showDialog(
                 parentFragmentManager
             ) { _, data ->
@@ -96,23 +94,23 @@ class HomeFragment @Inject constructor() : Fragment() {
             }
         }
 
-        btnCalendar.setOnClickListener {
+        bindings.btnCalendar.setOnClickListener {
             findNavController().navigate(HomeFragmentDirections.actionHomeFragmentToCalendarFragment())
         }
 
-        btnNewTask.setOnClickListener{
+        bindings.btnNewTask.setOnClickListener{
             findNavController().navigate(HomeFragmentDirections.actionHomeFragmentToEditTaskFragment())
         }
 
-        btnHighPriority.setOnClickListener {}
+        bindings.btnHighPriority.setOnClickListener {}
 
-        btnInSchedule.setOnClickListener {}
+        bindings.btnInSchedule.setOnClickListener {}
 
-        btnToday.setOnClickListener {}
+        bindings.btnToday.setOnClickListener {}
 
         lifecycleScope.launch {
             categoryAdapter.loadStateFlow.collectLatest { loadStates ->
-                progressbar.isVisible = (loadStates.refresh is LoadState.Loading)
+                bindings.progressbar.isVisible = (loadStates.refresh is LoadState.Loading)
             }
         }
 

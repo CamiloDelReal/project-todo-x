@@ -15,7 +15,7 @@ import javax.inject.Inject
 @AndroidEntryPoint
 class CalendarFragment @Inject constructor(): Fragment() {
 
-    private lateinit var binding: FragmentCalendarBinding
+    private lateinit var bindings: FragmentCalendarBinding
 
     private val viewModel: CalendarViewModel by viewModels()
 
@@ -23,9 +23,9 @@ class CalendarFragment @Inject constructor(): Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        binding = FragmentCalendarBinding.inflate(layoutInflater)
-        binding.lifecycleOwner = viewLifecycleOwner
-        return binding.root
+        bindings = FragmentCalendarBinding.inflate(layoutInflater)
+        bindings.lifecycleOwner = viewLifecycleOwner
+        return bindings.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
