@@ -21,8 +21,9 @@ class HomeMoreOptionsPopup @Inject constructor() : DialogFragment() {
         const val REQUEST_KEY = "HomeMoreOptionsPopup"
 
         const val MORE_OPTIONS_POPUP_OPTION = "homeOptionSelected"
-        const val MORE_OPTIONS_POPUP_DARK_MODE_UPDATED = 203
-        const val MORE_OPTIONS_POPUP_OPEN_ABOUT_VIEW = 204
+        const val MORE_OPTIONS_POPUP_OPEN_CATEGORIES = 203
+        const val MORE_OPTIONS_POPUP_DARK_MODE_UPDATED = 204
+        const val MORE_OPTIONS_POPUP_OPEN_ABOUT_VIEW = 205
 
         fun showDialog(
             fragmentManager: FragmentManager,
@@ -57,6 +58,17 @@ class HomeMoreOptionsPopup @Inject constructor() : DialogFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        bindings.rootLayout.setOnClickListener {
+            close()
+        }
+
+        bindings.btnCategories.setOnClickListener {
+            val data = Bundle().apply {
+                putInt(MORE_OPTIONS_POPUP_OPTION, MORE_OPTIONS_POPUP_OPEN_CATEGORIES)
+            }
+            close(data)
+        }
+
         bindings.btnDarkMode.isChecked = settings.isDarkModeOn()
         bindings.btnDarkMode.addOnCheckedChangeListener { button, isChecked ->
             settings.setIsDarkModeOn(isChecked)
@@ -64,10 +76,6 @@ class HomeMoreOptionsPopup @Inject constructor() : DialogFragment() {
                 putInt(MORE_OPTIONS_POPUP_OPTION, MORE_OPTIONS_POPUP_DARK_MODE_UPDATED)
             }
             close(data)
-        }
-
-        bindings.rootLayout.setOnClickListener {
-            close()
         }
 
         bindings.btnAbout.setOnClickListener {

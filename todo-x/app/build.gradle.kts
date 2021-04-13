@@ -98,6 +98,8 @@ dependencies {
 
     // Jetpack MultiDex
     implementation(Libraries.Jetpack.MultiDex.CORE)
+    implementation("org.jetbrains.kotlin:kotlin-stdlib:${rootProject.extra["kotlin_version"]}")
+    implementation("androidx.legacy:legacy-support-v4:1.0.0")
 
     // Jetpack Annotations Support
     kapt(Libraries.Jetpack.AnnotationSupport.ANNOTATION)
@@ -155,6 +157,7 @@ dependencies {
     implementation(Libraries.UI.DRAWABLE_TOOLBOX)
     implementation(Libraries.UI.CIRCULAR_PROGRESSBAR)
     implementation(Libraries.UI.MATERIAL_PROGRESSBAR)
+    implementation(Libraries.UI.COLOR_PICKER)
 
     // Logger
     implementation(Libraries.Logger.Timber.CORE)

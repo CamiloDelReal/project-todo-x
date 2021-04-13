@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".views.popups.TasksListMoreOptionsPopup">
+
+    <FrameLayout
+        android:id="@+id/rootLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            tools:background="@android:color/black">
+
+            <com.google.android.material.button.MaterialButtonToggleGroup
+                android:id="@+id/buttonGroup"
+                android:layout_width="@dimen/popup_more_options_width"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/popup_more_options_margin_top"
+                android:layout_marginEnd="@dimen/popup_more_options_margin_end"
+                android:background="@drawable/ic_bg_popup"
+                android:orientation="vertical"
+                android:paddingTop="@dimen/popup_more_options_padding"
+                app:singleSelection="true"
+                android:paddingBottom="@dimen/popup_more_options_padding"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btnImportant"
+                    style="@style/PopupStyle.Button.Radio"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/popup_more_options_button_height"
+                    android:text="@string/important" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btnInSchedule"
+                    style="@style/PopupStyle.Button.Radio"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/popup_more_options_button_height"
+                    android:text="@string/in_schedule" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btnToday"
+                    style="@style/PopupStyle.Button.Radio"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/popup_more_options_button_height"
+                    android:text="@string/today" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btnAll"
+                    style="@style/PopupStyle.Button.Radio"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/popup_more_options_button_height"
+                    android:text="@string/all" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btnCompleted"
+                    style="@style/PopupStyle.Button.Radio"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/popup_more_options_button_height"
+                    android:text="@string/completed" />
+            </com.google.android.material.button.MaterialButtonToggleGroup>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </FrameLayout>
+
+</layout>

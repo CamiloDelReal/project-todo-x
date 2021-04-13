@@ -34,7 +34,7 @@
         <View
             android:id="@+id/toolbar"
             android:layout_width="0dp"
-            android:layout_height="@dimen/edit_toolbar_expanded"
+            android:layout_height="@dimen/detail_category_toolbar_expanded"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -225,6 +225,17 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/toolbar" />
+
+        <org.xapps.apps.todox.views.custom.EmptyView
+            android:id="@+id/noTasksView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/toolbar"
+            app:layout_constraintStart_toStartOf="parent"
+            app:ev_icon="@drawable/ic_information_outline"
+            app:ev_description="@string/no_tasks"/>
 
     </androidx.constraintlayout.motion.widget.MotionLayout>
 

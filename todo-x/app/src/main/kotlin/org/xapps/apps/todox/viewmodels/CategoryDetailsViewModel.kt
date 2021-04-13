@@ -19,6 +19,7 @@ import org.xapps.apps.todox.core.models.TaskWithItems
 import org.xapps.apps.todox.core.repositories.CategoryRepository
 import org.xapps.apps.todox.core.repositories.TaskRepository
 import org.xapps.apps.todox.views.utils.Message
+import timber.log.Timber
 import javax.inject.Inject
 
 
@@ -32,25 +33,30 @@ class CategoryDetailsViewModel @Inject constructor(
 
     private var tasksJob: Job? = null
     private val messageEmitter: MutableLiveData<Message> = MutableLiveData()
-    private val tasksEmitter: MutableLiveData<PagingData<TaskWithItems>> = MutableLiveData()
+    private val tasksPaginatedEmitter: MutableLiveData<PagingData<TaskWithItems>?> = MutableLiveData(null)
 
     var categoryId: Long = -1
         private set
     val category: ObservableField<Category> = ObservableField()
 
+    var filter: FilterType = FilterType.NONE
+        set(value) {
+            field = value
+            when(value) {
+                FilterType.SCHEDULED -> tasksInScheduled()
+                FilterType.IMPORTANT -> tasksImportant()
+                FilterType.COMPLETED -> tasksCompleted()
+                else -> {}
+            }
+        }
+
     fun message(): LiveData<Message> = messageEmitter
-    fun tasks(): LiveData<PagingData<TaskWithItems>> = tasksEmitter
-
-    var filter: FilterType = FilterType.SCHEDULED
-        private set
-
-    enum class FilterType {
-        SCHEDULED, IMPORTANT, COMPLETED
-    }
+    fun tasksPaginated(): LiveData<PagingData<TaskWithItems>?> = tasksPaginatedEmitter
 
     init {
         categoryId = savedStateHandle[Constants.CATEGORY_ID] ?: throw kotlin.IllegalArgumentException("Category Id not provided")
         category(categoryId)
+        filter = FilterType.SCHEDULED
     }
 
     fun category(id: Long) {
@@ -67,44 +73,42 @@ class CategoryDetailsViewModel @Inject constructor(
         }
     }
 
-    fun tasksScheduled() {
+    private fun tasksInScheduled() {
         tasksJob?.cancel()
         tasksJob = viewModelScope.launch {
-            filter = FilterType.SCHEDULED
-            taskRepository.tasksScheduledPaginated(categoryId).cachedIn(viewModelScope)
+            taskRepository.tasksInScheduleWithItemsByCategoryPaginated(categoryId).cachedIn(viewModelScope)
                 .catch { ex ->
                     messageEmitter.postValue(Message.Error(Exception(ex.localizedMessage)))
                 }
                 .collectLatest { data ->
-                    tasksEmitter.postValue(data)
+                    Timber.i("Tasks in schedule received")
+                    tasksPaginatedEmitter.postValue(data)
                 }
         }
     }
 
-    fun tasksImportant() {
+    private fun tasksImportant() {
         tasksJob?.cancel()
         tasksJob = viewModelScope.launch {
-            filter = FilterType.IMPORTANT
-            taskRepository.tasksImportantPaginated(categoryId).cachedIn(viewModelScope)
+            taskRepository.tasksImportantWithItemsByCategoryPaginated(categoryId).cachedIn(viewModelScope)
                 .catch { ex ->
                     messageEmitter.postValue(Message.Error(Exception(ex.localizedMessage)))
                 }
                 .collectLatest { data ->
-                    tasksEmitter.postValue(data)
+                    tasksPaginatedEmitter.postValue(data)
                 }
         }
     }
 
-    fun tasksCompleted() {
+    private fun tasksCompleted() {
         tasksJob?.cancel()
         tasksJob = viewModelScope.launch {
-            filter = FilterType.COMPLETED
-            taskRepository.tasksCompletedPaginated(categoryId).cachedIn(viewModelScope)
+            taskRepository.tasksCompletedWithItemsByCategoryPaginated(categoryId).cachedIn(viewModelScope)
                 .catch { ex ->
                     messageEmitter.postValue(Message.Error(Exception(ex.localizedMessage)))
                 }
                 .collectLatest { data ->
-                    tasksEmitter.postValue(data)
+                    tasksPaginatedEmitter.postValue(data)
                 }
         }
     }

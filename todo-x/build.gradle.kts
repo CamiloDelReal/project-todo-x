@@ -7,6 +7,7 @@ buildscript {
         classpath(Plugins.KOTLIN)
         classpath(Plugins.HILT)
         classpath(Plugins.NAVIGATION_SAFE_ARGS)
+        classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version")
     }
 }
 

@@ -12,12 +12,14 @@ import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import dagger.hilt.android.AndroidEntryPoint
 import org.xapps.apps.todox.R
+import org.xapps.apps.todox.core.settings.SettingsService
 import org.xapps.apps.todox.core.utils.parseToString
 import org.xapps.apps.todox.databinding.FragmentEditTaskBinding
 import org.xapps.apps.todox.viewmodels.EditTaskViewModel
 import org.xapps.apps.todox.views.popups.DatePickerFragment
 import org.xapps.apps.todox.views.popups.TimePickerFragment
 import org.xapps.apps.todox.views.utils.Message
+import timber.log.Timber
 import java.time.LocalDate
 import java.time.LocalTime
 import javax.inject.Inject
@@ -37,6 +39,9 @@ class EditTaskFragment @Inject constructor() : Fragment() {
             }
         }
     }
+
+    @Inject
+    lateinit var settings: SettingsService
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -114,7 +119,8 @@ class EditTaskFragment @Inject constructor() : Fragment() {
                 }
                 is Message.Error -> {
                     bindings.progressbar.isVisible = false
-
+                    Timber.e(it.exception)
+                    //Message here
                 }
             }
         })
@@ -123,5 +129,6 @@ class EditTaskFragment @Inject constructor() : Fragment() {
     override fun onResume() {
         super.onResume()
         requireActivity().onBackPressedDispatcher.addCallback(onBackPressedCallback)
+        setStatusBarForegoundColor(!settings.isDarkModeOn())
     }
 }

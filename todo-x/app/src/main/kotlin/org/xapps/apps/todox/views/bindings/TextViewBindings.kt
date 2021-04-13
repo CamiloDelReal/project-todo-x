@@ -42,4 +42,16 @@ object TextViewBindings {
         view.text = timestamp
     }
 
+    @JvmStatic
+    @BindingAdapter("tasksCount")
+    fun tasksCount(view: TextView, count: Int) {
+        view.text = view.context.resources.getQuantityString(R.plurals.task_count, count, count)
+    }
+
+    @JvmStatic
+    @BindingAdapter("tasksRemaining")
+    fun tasksRemaining(view: TextView, count: Int) {
+        view.text = view.context.resources.getString(R.string.remaining, count)
+    }
+
 }

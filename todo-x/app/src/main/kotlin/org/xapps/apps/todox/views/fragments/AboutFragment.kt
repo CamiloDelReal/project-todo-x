@@ -3,12 +3,12 @@ package org.xapps.apps.todox.views.fragments
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.activity.OnBackPressedCallback
 import androidx.core.view.ViewCompat
+import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import dagger.hilt.android.AndroidEntryPoint
 import org.xapps.apps.todox.BuildConfig
@@ -54,6 +54,26 @@ class AboutFragment @Inject constructor(): Fragment() {
 
         bindings.btnLinkGoogleFonts.setOnClickListener {
             launchUri(getString(R.string.poppins_url))
+        }
+
+        bindings.btnLinkMaterialDesignIcons.setOnClickListener {
+            launchUri(getString(R.string.material_design_icons_url))
+        }
+
+        bindings.btnLinkFlatUIColors.setOnClickListener {
+            launchUri(getString(R.string.flatuicolors_url))
+        }
+
+        bindings.btnLinkAndroidJetpack.setOnClickListener {
+            launchUri(getString(R.string.android_jetpack_url))
+        }
+
+        bindings.btnLinkAndroidKotlin.setOnClickListener {
+            launchUri(getString(R.string.android_kotlin_url))
+        }
+
+        bindings.btnLinkTimber.setOnClickListener {
+            launchUri(getString(R.string.timber_url))
         }
     }
 

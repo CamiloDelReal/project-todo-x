@@ -27,36 +27,29 @@
                 app:layout_constraintTop_toTopOf="parent">
 
                 <com.google.android.material.button.MaterialButton
-                    android:id="@+id/btnDarkMode"
-                    style="@style/Widget.MaterialComponents.Button.TextButton"
+                    android:id="@+id/btnCategories"
+                    style="@style/PopupStyle.Button"
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/popup_more_options_button_height"
-                    android:checkable="true"
-                    android:drawableEnd="?android:attr/listChoiceIndicatorMultiple"
-                    android:gravity="start|center_vertical"
-                    android:insetTop="0dp"
-                    android:insetBottom="0dp"
-                    android:paddingStart="@dimen/popup_more_options_button_padding"
-                    android:paddingEnd="@dimen/popup_more_options_button_padding_with_check"
-                    android:text="@string/dark_mode"
-                    android:textAllCaps="false"
-                    android:textColor="@color/text_button_check_menu"
-                    app:backgroundTint="@color/bg_button_check_menu"
-                    app:cornerRadius="0dp"
-                    app:rippleColor="@color/mtrl_btn_text_btn_ripple_color" />
+                    android:text="@string/categories" />
+
+                <Space
+                    android:layout_width="wrap_content"
+                    android:layout_height="@dimen/content_space" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btnDarkMode"
+                    style="@style/PopupStyle.Button.Check"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/popup_more_options_button_height"
+                    android:text="@string/dark_mode" />
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/btnAbout"
-                    style="@style/Widget.MaterialComponents.Button.TextButton"
+                    style="@style/PopupStyle.Button"
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/popup_more_options_button_height"
-                    android:gravity="start|center_vertical"
-                    android:insetTop="0dp"
-                    android:insetBottom="0dp"
-                    android:paddingHorizontal="@dimen/popup_more_options_button_padding"
-                    android:text="@string/about"
-                    android:textAllCaps="false"
-                    app:cornerRadius="0dp" />
+                    android:text="@string/about" />
             </LinearLayout>
 
         </androidx.constraintlayout.widget.ConstraintLayout>

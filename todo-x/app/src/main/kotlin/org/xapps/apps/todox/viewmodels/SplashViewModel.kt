@@ -36,12 +36,12 @@ class SplashViewModel @Inject constructor(
             messageEmitter.postValue(Message.Loading)
             if(settingsService.isFirstTime()) {
                 val categories = listOf (
-                    Category(name = context.getString(R.string.unclassified), color = "#${Integer.toHexString(context.resources.getColor(R.color.unclassified, null))}"),
-                    Category(name = context.getString(R.string.family), color = "#${Integer.toHexString(context.resources.getColor(R.color.family, null))}"),
-                    Category(name = context.getString(R.string.groceries), color = "#${Integer.toHexString(context.resources.getColor(R.color.groceries, null))}"),
-                    Category(name = context.getString(R.string.friends), color = "#${Integer.toHexString(context.resources.getColor(R.color.friends, null))}"),
-                    Category(name = context.getString(R.string.work), color = "#${Integer.toHexString(context.resources.getColor(R.color.work, null))}"),
-                    Category(name = context.getString(R.string.sport), color = "#${Integer.toHexString(context.resources.getColor(R.color.sport, null))}")
+                    Category(name = context.getString(R.string.unclassified), color = "#${Integer.toHexString(context.resources.getColor(R.color.concrete, null))}"),
+                    Category(name = context.getString(R.string.family), color = "#${Integer.toHexString(context.resources.getColor(R.color.alizarin, null))}"),
+                    Category(name = context.getString(R.string.groceries), color = "#${Integer.toHexString(context.resources.getColor(R.color.turquoise, null))}"),
+                    Category(name = context.getString(R.string.friends), color = "#${Integer.toHexString(context.resources.getColor(R.color.amethyst, null))}"),
+                    Category(name = context.getString(R.string.work), color = "#${Integer.toHexString(context.resources.getColor(R.color.nephritis, null))}"),
+                    Category(name = context.getString(R.string.sport), color = "#${Integer.toHexString(context.resources.getColor(R.color.peterriver, null))}")
                 )
                 categoryRepository.insert(categories)
                     .catch { ex ->

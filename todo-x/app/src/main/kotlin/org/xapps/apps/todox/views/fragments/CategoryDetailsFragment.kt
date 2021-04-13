@@ -22,6 +22,7 @@ import org.xapps.apps.todox.core.models.Task
 import org.xapps.apps.todox.core.models.TaskWithItems
 import org.xapps.apps.todox.databinding.FragmentCategoryDetailsBinding
 import org.xapps.apps.todox.viewmodels.CategoryDetailsViewModel
+import org.xapps.apps.todox.viewmodels.FilterType
 import org.xapps.apps.todox.views.adapters.DateHeaderDecoration
 import org.xapps.apps.todox.views.adapters.TaskWithItemsAdapter
 import org.xapps.apps.todox.views.utils.ColorUtils
@@ -31,14 +32,14 @@ import javax.inject.Inject
 
 
 @AndroidEntryPoint
-class CategoryDetailsFragment @Inject constructor(): Fragment() {
+class CategoryDetailsFragment @Inject constructor() : Fragment() {
 
     private lateinit var bindings: FragmentCategoryDetailsBinding
 
     private val viewModel: CategoryDetailsViewModel by viewModels()
 
     private val onBackPressedCallback: OnBackPressedCallback by lazy {
-        object: OnBackPressedCallback(true) {
+        object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
                 findNavController().navigateUp()
             }
@@ -47,10 +48,15 @@ class CategoryDetailsFragment @Inject constructor(): Fragment() {
 
     private lateinit var taskAdapter: TaskWithItemsAdapter
 
-    private val tasksItemListener = object: TaskWithItemsAdapter.ItemListener {
+    private val tasksItemListener = object : TaskWithItemsAdapter.ItemListener {
         override fun clicked(task: Task) {
-            findNavController().navigate(CategoryDetailsFragmentDirections.actionCategoryDetailsFragmentToTaskDetailsFragment(task.id))
+            findNavController().navigate(
+                CategoryDetailsFragmentDirections.actionCategoryDetailsFragmentToTaskDetailsFragment(
+                    task.id
+                )
+            )
         }
+
         override fun taskUpdated(task: Task) {
             viewModel.updateTask(task)
         }
@@ -69,7 +75,8 @@ class CategoryDetailsFragment @Inject constructor(): Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        bindings.lstTasks.layoutManager = LinearLayoutManager(requireContext(), RecyclerView.VERTICAL, false)
+        bindings.lstTasks.layoutManager =
+            LinearLayoutManager(requireContext(), RecyclerView.VERTICAL, false)
         taskAdapter = TaskWithItemsAdapter(tasksItemListener)
         bindings.lstTasks.adapter = taskAdapter
         val dateHeaderDecoration = DateHeaderDecoration(taskAdapter)
@@ -79,8 +86,60 @@ class CategoryDetailsFragment @Inject constructor(): Fragment() {
             findNavController().navigateUp()
         }
 
+        bindings.btnNewTask.setOnClickListener {
+            findNavController().navigate(
+                    CategoryDetailsFragmentDirections.actionCategoryDetailsFragmentToEditTaskFragment(
+                            categoryId = viewModel.categoryId
+                    )
+            )
+        }
+
+        taskAdapter.registerAdapterDataObserver(object : RecyclerView.AdapterDataObserver() {
+            override fun onChanged() {
+                bindings.noTasksView.isVisible = (taskAdapter.itemCount == 0)
+            }
+
+            override fun onItemRangeRemoved(positionStart: Int, itemCount: Int) {
+                bindings.noTasksView.isVisible = (taskAdapter.itemCount == 0)
+            }
+
+            override fun onItemRangeMoved(fromPosition: Int, toPosition: Int, itemCount: Int) {}
+
+            override fun onItemRangeInserted(positionStart: Int, itemCount: Int) {
+                bindings.noTasksView.isVisible = (taskAdapter.itemCount == 0)
+            }
+
+            override fun onItemRangeChanged(positionStart: Int, itemCount: Int) {}
+
+            override fun onItemRangeChanged(positionStart: Int, itemCount: Int, payload: Any?) {}
+        })
+
+        bindings.filterTabsLayout.addOnTabSelectedListener(object :
+                TabLayout.OnTabSelectedListener {
+            override fun onTabReselected(tab: TabLayout.Tab?) {}
+
+            override fun onTabUnselected(tab: TabLayout.Tab?) {}
+
+            override fun onTabSelected(tab: TabLayout.Tab?) {
+                bindings.filterTabsLayout.postDelayed({
+                    when (bindings.filterTabsLayout.selectedTabPosition) {
+                        0 -> {
+                            viewModel.filter = FilterType.SCHEDULED
+                        }
+                        1 -> {
+                            viewModel.filter = FilterType.IMPORTANT
+                        }
+                        2 -> {
+                            viewModel.filter = FilterType.COMPLETED
+                        }
+                    }
+                }, 100)
+            }
+
+        })
+
         viewModel.message().observe(viewLifecycleOwner, Observer {
-            when(it) {
+            when (it) {
                 is Message.Loading -> {
                     bindings.progressbar.isVisible = true
                 }
@@ -91,6 +150,8 @@ class CategoryDetailsFragment @Inject constructor(): Fragment() {
                 }
                 is Message.Error -> {
                     bindings.progressbar.isVisible = false
+                    Timber.e(it.exception)
+                    // Show some message here
                 }
             }
         })
@@ -101,52 +162,22 @@ class CategoryDetailsFragment @Inject constructor(): Fragment() {
             }
         }
 
-        viewModel.tasks().observe(viewLifecycleOwner, Observer {
+        viewModel.tasksPaginated().observe(viewLifecycleOwner, { data ->
             lifecycleScope.launch {
-                taskAdapter.submitData(it)
+                data?.let { taskAdapter.submitData(it) }
             }
         })
 
-        when(viewModel.filter) {
-            CategoryDetailsViewModel.FilterType.SCHEDULED -> {
+        when (viewModel.filter) {
+            FilterType.SCHEDULED -> {
                 bindings.filterTabsLayout.selectTab(bindings.filterTabsLayout.getTabAt(0))
-                viewModel.tasksScheduled()
             }
-            CategoryDetailsViewModel.FilterType.IMPORTANT -> {
+            FilterType.IMPORTANT -> {
                 bindings.filterTabsLayout.selectTab(bindings.filterTabsLayout.getTabAt(1))
-                viewModel.tasksImportant()
             }
-            CategoryDetailsViewModel.FilterType.COMPLETED -> {
+            FilterType.COMPLETED -> {
                 bindings.filterTabsLayout.selectTab(bindings.filterTabsLayout.getTabAt(2))
-                viewModel.tasksCompleted()
             }
-        }
-
-        bindings.filterTabsLayout.addOnTabSelectedListener(object: TabLayout.OnTabSelectedListener {
-            override fun onTabReselected(tab: TabLayout.Tab?) {}
-
-            override fun onTabUnselected(tab: TabLayout.Tab?) {}
-
-            override fun onTabSelected(tab: TabLayout.Tab?) {
-                bindings.filterTabsLayout.postDelayed({
-                    when(bindings.filterTabsLayout.selectedTabPosition) {
-                        0 -> {
-                            viewModel.tasksScheduled()
-                        }
-                        1 -> {
-                            viewModel.tasksImportant()
-                        }
-                        2 -> {
-                            viewModel.tasksCompleted()
-                        }
-                    }
-                }, 100)
-            }
-
-        })
-
-        bindings.btnNewTask.setOnClickListener {
-            findNavController().navigate(CategoryDetailsFragmentDirections.actionCategoryDetailsFragmentToEditTaskFragment(categoryId = viewModel.categoryId))
         }
     }
 

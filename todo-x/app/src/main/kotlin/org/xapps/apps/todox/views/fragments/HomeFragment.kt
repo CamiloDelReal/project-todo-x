@@ -9,7 +9,6 @@ import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.Observer
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.paging.LoadState
@@ -18,12 +17,15 @@ import androidx.recyclerview.widget.RecyclerView
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
+import org.xapps.apps.todox.R
 import org.xapps.apps.todox.core.models.Category
 import org.xapps.apps.todox.core.settings.SettingsService
 import org.xapps.apps.todox.databinding.FragmentHomeBinding
+import org.xapps.apps.todox.viewmodels.FilterType
 import org.xapps.apps.todox.viewmodels.HomeViewModel
-import org.xapps.apps.todox.views.adapters.CategoryAdapter
+import org.xapps.apps.todox.views.adapters.CategoryHomeAdapter
 import org.xapps.apps.todox.views.popups.HomeMoreOptionsPopup
+import org.xapps.apps.todox.views.utils.Message
 import timber.log.Timber
 import javax.inject.Inject
 
@@ -46,9 +48,9 @@ class HomeFragment @Inject constructor() : Fragment() {
     @Inject
     lateinit var settings: SettingsService
 
-    private lateinit var categoryAdapter: CategoryAdapter
+    private lateinit var categoryAdapter: CategoryHomeAdapter
 
-    private val categoriesItemListener = object : CategoryAdapter.ItemListener {
+    private val categoriesItemListener = object : CategoryHomeAdapter.ItemListener {
         override fun clicked(category: Category) {
             findNavController().navigate(
                 HomeFragmentDirections.actionHomeFragmentToCategoryDetailsFragment(
@@ -70,9 +72,9 @@ class HomeFragment @Inject constructor() : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        bindings.listCategory.layoutManager = GridLayoutManager(requireContext(), 2, RecyclerView.VERTICAL, false)
-        categoryAdapter = CategoryAdapter(categoriesItemListener)
-        bindings.listCategory.adapter = categoryAdapter
+        bindings.lstCategories.layoutManager = GridLayoutManager(requireContext(), 2, RecyclerView.VERTICAL, false)
+        categoryAdapter = CategoryHomeAdapter(categoriesItemListener)
+        bindings.lstCategories.adapter = categoryAdapter
 
         bindings.btnMoreOptions.setOnClickListener {
             HomeMoreOptionsPopup.showDialog(
@@ -84,6 +86,9 @@ class HomeFragment @Inject constructor() : Fragment() {
                     -1
                 }
                 when (option) {
+                    HomeMoreOptionsPopup.MORE_OPTIONS_POPUP_OPEN_CATEGORIES -> {
+                        findNavController().navigate(HomeFragmentDirections.actionHomeFragmentToCategoriesListFragment())
+                    }
                     HomeMoreOptionsPopup.MORE_OPTIONS_POPUP_DARK_MODE_UPDATED -> {
                         AppCompatDelegate.setDefaultNightMode(if (settings.isDarkModeOn()) AppCompatDelegate.MODE_NIGHT_YES else AppCompatDelegate.MODE_NIGHT_NO)
                     }
@@ -102,11 +107,17 @@ class HomeFragment @Inject constructor() : Fragment() {
             findNavController().navigate(HomeFragmentDirections.actionHomeFragmentToEditTaskFragment())
         }
 
-        bindings.btnHighPriority.setOnClickListener {}
+        bindings.btnImportant.setOnClickListener {
+            findNavController().navigate(HomeFragmentDirections.actionHomeFragmentToTasksListFragment(FilterType.IMPORTANT))
+        }
 
-        bindings.btnInSchedule.setOnClickListener {}
+        bindings.btnInSchedule.setOnClickListener {
+            findNavController().navigate(HomeFragmentDirections.actionHomeFragmentToTasksListFragment(FilterType.SCHEDULED))
+        }
 
-        bindings.btnToday.setOnClickListener {}
+        bindings.btnToday.setOnClickListener {
+            findNavController().navigate(HomeFragmentDirections.actionHomeFragmentToTasksListFragment(FilterType.TODAY))
+        }
 
         lifecycleScope.launch {
             categoryAdapter.loadStateFlow.collectLatest { loadStates ->
@@ -114,13 +125,44 @@ class HomeFragment @Inject constructor() : Fragment() {
             }
         }
 
-        viewModel.categoriesPaginated().observe(viewLifecycleOwner, Observer {
+        viewModel.message().observe(viewLifecycleOwner, {
+            when(it) {
+                is Message.Loading -> {
+                    bindings.progressbar.isVisible = true
+                }
+                is Message.Success -> {
+                    bindings.progressbar.isVisible = false
+                    findNavController().navigateUp()
+                }
+                is Message.Error -> {
+                    bindings.progressbar.isVisible = false
+                    Timber.e(it.exception)
+                    //Message here
+                }
+            }
+        })
+
+        viewModel.categoriesPaginated().observe(viewLifecycleOwner, {
             lifecycleScope.launch {
                 categoryAdapter.submitData(it)
             }
         })
 
-        viewModel.categories()
+        viewModel.tasksImportantCount().observe(viewLifecycleOwner, { count ->
+            Timber.i("Tasks important count received: $count")
+            bindings.btnImportant.setDescription(resources.getQuantityString(R.plurals.task_count, count, count))
+        })
+
+        viewModel.tasksInScheduleCount().observe(viewLifecycleOwner, { count ->
+            Timber.i("Tasks in schedule count received: $count")
+            bindings.btnInSchedule.setDescription(resources.getQuantityString(R.plurals.task_count, count, count))
+        })
+
+        viewModel.tasksTodayCount().observe(viewLifecycleOwner, { count ->
+            Timber.i("Tasks for today count received: $count")
+            bindings.btnToday.setDescription(resources.getQuantityString(R.plurals.task_count, count, count))
+        })
+
     }
 
     override fun onResume() {

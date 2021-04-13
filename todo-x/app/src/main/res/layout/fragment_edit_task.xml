@@ -171,7 +171,7 @@
                                 android:layout_width="@dimen/edit_important_icon_size"
                                 android:layout_height="@dimen/edit_important_icon_size"
                                 app:srcCompat="@drawable/ic_star"
-                                app:tint="@color/hightPriority" />
+                                app:tint="@color/important" />
 
                         </LinearLayout>
 

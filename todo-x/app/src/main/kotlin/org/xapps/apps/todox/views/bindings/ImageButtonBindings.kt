@@ -12,7 +12,7 @@ object ImageButtonBindings {
     @BindingAdapter("colorByPriority")
     fun colorByPriority(view: ImageButton, important: Boolean) {
         val colorResource = if (important) {
-            R.color.hightPriority
+            R.color.important
         } else {
             R.color.textSecondary
         }

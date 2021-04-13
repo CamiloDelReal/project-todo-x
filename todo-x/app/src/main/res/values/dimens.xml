@@ -93,6 +93,7 @@
     <dimen name="item_category_chart_size">80dp</dimen>
     <dimen name="item_category_progress_background_size">2dp</dimen>
     <dimen name="item_category_progress_foreground_size">3dp</dimen>
+    <dimen name="item_category_rounded_radius">24dp</dimen>
 
     <dimen name="about_reference_padding">6dp</dimen>
     <dimen name="about_reference_icon_size">40dp</dimen>
@@ -130,10 +131,22 @@
     <dimen name="about_back_button_margin">4dp</dimen>
     <dimen name="about_back_button_radius">28dp</dimen>
 
-    <dimen name="date_header_width">82dp</dimen>
+    <dimen name="date_header_width">72dp</dimen>
+    <dimen name="date_header_with_category_width">74dp</dimen>
     <dimen name="date_header_height">58dp</dimen>
     <dimen name="date_header_space">4dp</dimen>
     <dimen name="date_header_vertical_padding">8dp</dimen>
     <dimen name="date_header_horizontal_padding">4dp</dimen>
+
+    <dimen name="tasks_and_categories_list_toolbar_expanded">120dp</dimen>
+    <dimen name="tasks_and_categories_list_toolbar_collapsed">60dp</dimen>
+    <dimen name="tasks_and_categories_list_title_text_size_expanded">15sp</dimen>
+    <dimen name="tasks_and_categories_list_title_height_expanded">56dp</dimen>
+    <dimen name="tasks_and_categories_list_title_text_size_collapsed">11sp</dimen>
+    <dimen name="tasks_and_categories_list_title_height_collapsed">42dp</dimen>
+    <dimen name="tasks_and_categories_list_title_margin_horizontal_expended">20dp</dimen>
+    <dimen name="tasks_and_categories_list_title_margin_bottom_expended">10dp</dimen>
+
+    <dimen name="empty_icon_size">80dp</dimen>
 
 </resources>

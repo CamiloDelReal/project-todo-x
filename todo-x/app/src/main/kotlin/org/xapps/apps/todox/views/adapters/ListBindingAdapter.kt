@@ -29,12 +29,12 @@ abstract class ListBindingAdapter<TItem>(items: List<TItem>) :
             notifyItemRangeInserted(0, value.size)
         }
 
-    class BindingViewHolder constructor(val binding: ViewDataBinding) :
-        RecyclerView.ViewHolder(binding.root)
+    class BindingViewHolder constructor(val bindings: ViewDataBinding) :
+        RecyclerView.ViewHolder(bindings.root)
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BindingViewHolder {
-        val binding = createBinding(parent)
-        return BindingViewHolder(binding)
+        val bindings = createBinding(parent)
+        return BindingViewHolder(bindings)
     }
 
     override fun getItemCount(): Int {
@@ -54,8 +54,8 @@ abstract class ListBindingAdapter<TItem>(items: List<TItem>) :
 
     override fun onBindViewHolder(holder: BindingViewHolder, position: Int) {
         if (position < itemCount) {
-            bind(holder.binding, getItem(position))
-            holder.binding.executePendingBindings()
+            bind(holder.bindings, getItem(position))
+            holder.bindings.executePendingBindings()
         }
     }
 
@@ -63,7 +63,7 @@ abstract class ListBindingAdapter<TItem>(items: List<TItem>) :
         return items[position]
     }
 
-    protected abstract fun bind(binding: ViewDataBinding, item: TItem)
+    protected abstract fun bind(bindings: ViewDataBinding, item: TItem)
 
     private val onListChangedCallback =
         object : ObservableList.OnListChangedCallback<ObservableList<TItem>>() {

@@ -21,14 +21,36 @@
     <color name="rippleOnLight">#42000000</color>
     <color name="rippleOnDark">#42ffffff</color>
 
-    <color name="hightPriority">#f44336</color>
-    <color name="inSchedule">#2196f3</color>
-    <color name="today">#ff9800</color>
+    <color name="important">#e74c3c</color>         <!-- Pomegranate -->
+    <color name="inSchedule">#3498db</color>        <!-- Peter River -->
+    <color name="today">#e67e22</color>             <!-- Carrot -->
 
     <color name="unclassified">#ff666666</color>
     <color name="groceries">#ff11998e</color>
     <color name="work">#24FE41</color>
     <color name="sport">#00B4DB</color>
-    <color name="family">#ED213A</color>
+    <color name="family">#e74c3c</color>
     <color name="friends">#5C258D</color>
+
+    <color name="turquoise">#1abc9c</color>
+    <color name="emerald">#2ecc71</color>
+    <color name="peterriver">#3498db</color>
+    <color name="amethyst">#9b59b6</color>
+    <color name="wetasphalt">#34495e</color>
+    <color name="greensea">#16a085</color>
+    <color name="nephritis">#27ae60</color>
+    <color name="belizehole">#2980b9</color>
+    <color name="wisteria">#8e44ad</color>
+    <color name="midnightblue">#2c3e50</color>
+    <color name="sunflower">#f1c40f</color>
+    <color name="carrot">#e67e22</color>
+    <color name="alizarin">#e74c3c</color>
+    <color name="clouds">#ecf0f1</color>
+    <color name="concrete">#95a5a6</color>
+    <color name="orange">#f39c12</color>
+    <color name="pumpkin">#d35400</color>
+    <color name="pomegranate">#c0392b</color>
+    <color name="silver">#bdc3c7</color>
+    <color name="asbestos">#7f8c8d</color>
+
 </resources>

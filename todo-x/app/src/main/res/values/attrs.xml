@@ -4,10 +4,14 @@
     <declare-styleable name="SummaryItem">
         <attr name="si_icon" format="reference" />
         <attr name="si_title" format="string" />
-        <attr name="si_completed" format="string" />
-        <attr name="si_pending" format="string" />
+        <attr name="si_description" format="string" />
         <attr name="si_iconTint" format="reference" />
         <attr name="si_iconBackground" format="reference" />
+    </declare-styleable>
+
+    <declare-styleable name="EmptyView">
+        <attr name="ev_icon" format="reference" />
+        <attr name="ev_description" format="string" />
     </declare-styleable>
 
     <declare-styleable name="AboutReference">

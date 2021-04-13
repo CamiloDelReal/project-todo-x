@@ -31,7 +31,6 @@ class EditTaskViewModel @Inject constructor(
 
     private var taskId: Long = Constants.ID_INVALID
     val taskWithItems: ObservableField<TaskWithItems> = ObservableField()
-
     val categories: ObservableField<List<Category>> = ObservableField()
     private var categoryId: Long = Constants.ID_INVALID
     val selectedCategory: ObservableField<List<Category>> = ObservableField()

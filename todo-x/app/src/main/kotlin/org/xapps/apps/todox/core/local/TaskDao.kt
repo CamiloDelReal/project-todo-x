@@ -6,6 +6,7 @@ import kotlinx.coroutines.flow.Flow
 import org.xapps.apps.todox.core.models.Task
 import org.xapps.apps.todox.core.models.TaskAndCategory
 import org.xapps.apps.todox.core.models.TaskWithItems
+import org.xapps.apps.todox.core.models.TaskWithItemsAndCategory
 
 
 @Dao
@@ -67,17 +68,46 @@ interface TaskDao {
     @Query("SELECT * FROM tasks WHERE id = :id")
     fun taskWithItems(id: Long): Flow<TaskWithItems>
 
+    @Query("SELECT COUNT(id) FROM tasks WHERE done = 0")
+    fun tasksInScheduleCountAsync(): Flow<Int>
+
+    @Query("SELECT COUNT(id) FROM tasks WHERE done = 0 AND date = :date")
+    fun tasksForDateCount(date: String): Flow<Int>
+
     @Transaction
     @Query("SELECT * FROM tasks WHERE category_id = :categoryId AND done = 0 ORDER BY date ASC")
-    fun tasksScheduledWithItemsPaginatedAsync(categoryId: Long): PagingSource<Int, TaskWithItems>
+    fun tasksInScheduleWithItemsByCategoryPaginatedAsync(categoryId: Long): PagingSource<Int, TaskWithItems>
+
+    @Query("SELECT COUNT(id) FROM tasks WHERE done = 0 AND important = 1")
+    fun tasksImportantCountAsync(): Flow<Int>
 
     @Transaction
     @Query("SELECT * FROM tasks WHERE category_id = :categoryId AND done = 0 AND important = 1 ORDER BY date ASC")
-    fun tasksImportantWithItemsPaginatedAsync(categoryId: Long): PagingSource<Int, TaskWithItems>
+    fun tasksImportantWithItemsByCategoryPaginatedAsync(categoryId: Long): PagingSource<Int, TaskWithItems>
+
+    @Transaction
+    @Query("SELECT * FROM tasks ORDER BY date ASC")
+    fun tasksWithItemsAndCategoryPaginatedAsync(): PagingSource<Int, TaskWithItemsAndCategory>
+
+    @Transaction
+    @Query("SELECT * FROM tasks WHERE important = 1 ORDER BY date ASC")
+    fun tasksImportantWithItemsAndCategoryPaginatedAsync(): PagingSource<Int, TaskWithItemsAndCategory>
+
+    @Transaction
+    @Query("SELECT * FROM tasks WHERE done = 0 ORDER BY date ASC")
+    fun tasksInScheduleWithItemsAndCategoryPaginatedAsync(): PagingSource<Int, TaskWithItemsAndCategory>
 
     @Transaction
     @Query("SELECT * FROM tasks WHERE category_id = :categoryId AND done = 1 ORDER BY date ASC")
-    fun tasksCompletedWithItemsPaginatedAsync(categoryId: Long): PagingSource<Int, TaskWithItems>
+    fun tasksCompletedWithItemsByCategoryPaginatedAsync(categoryId: Long): PagingSource<Int, TaskWithItems>
+
+    @Transaction
+    @Query("SELECT * FROM tasks WHERE done = 1 ORDER BY date ASC")
+    fun tasksCompletedWithItemsAndCategoryPaginatedAsync(): PagingSource<Int, TaskWithItemsAndCategory>
+
+    @Transaction
+    @Query("SELECT * FROM tasks WHERE date = :date ORDER BY date ASC")
+    fun tasksForDateWithItemsAndCategoryPaginatedAsync(date: String): PagingSource<Int, TaskWithItemsAndCategory>
 
     @Update
     suspend fun updateAsync(task: Task): Int

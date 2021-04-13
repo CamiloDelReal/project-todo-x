@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="data"
+            type="org.xapps.apps.todox.core.models.TaskWithItemsAndCategory" />
+
+    </data>
+
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/rootLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/content_margin_small"
+        app:cardBackgroundColor="@android:color/transparent"
+        app:cardCornerRadius="@dimen/item_corner_radius"
+        app:cardElevation="0dp"
+        app:cardUseCompatPadding="false">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:paddingTop="@dimen/content_padding_small"
+            android:paddingBottom="@dimen/content_padding_small"
+            android:paddingEnd="@dimen/content_padding_small"
+            android:paddingStart="0dp">
+
+            <View
+                android:layout_width="2dp"
+                android:layout_height="match_parent"
+                categoryBackground="@{data.category.color}"
+                tools:background="@color/family" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingStart="@dimen/date_header_with_category_width"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/txvName"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="@{data.task.name}"
+                            android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6"
+                            tools:text="Buy stuffs" />
+
+                        <TextView
+                            android:id="@+id/txvTime"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:textAppearance="@style/TextAppearance.MaterialComponents.Body2"
+                            app:localTimeEndValue="@{data.task.endTime}"
+                            app:localTimeStartValue="@{data.task.startTime}"
+                            tools:text="10:30 AM" />
+
+                    </LinearLayout>
+
+                    <ImageButton
+                        android:id="@+id/btnChangePriority"
+                        android:layout_width="32dp"
+                        android:layout_height="32dp"
+                        android:background="?attr/selectableItemBackgroundBorderless"
+                        app:colorByPriority="@{data.task.important}"
+                        app:iconByPriority="@{data.task.important}" />
+
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/txvItems"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:maxLines="2"
+                    android:text="@{data.items.size() != 0 ? data.itemsDescriptions() : @string/no_pending_items}"
+                    android:textAppearance="@style/TextAppearance.MaterialComponents.Caption"
+                    tools:text="Bread, eggs, milk, sugar, " />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </com.google.android.material.card.MaterialCardView>
+
+</layout>

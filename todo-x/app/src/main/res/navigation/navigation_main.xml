@@ -51,6 +51,20 @@
             app:exitAnim="@anim/translate_alpha_to_nothing"
             app:popEnterAnim="@anim/translate_alpha_from_nothing"
             app:popExitAnim="@anim/translate_to_right" />
+        <action
+            android:id="@+id/action_homeFragment_to_tasksListFragment"
+            app:destination="@id/tasksListFragment"
+            app:enterAnim="@anim/translate_from_right"
+            app:exitAnim="@anim/translate_alpha_to_nothing"
+            app:popEnterAnim="@anim/translate_alpha_from_nothing"
+            app:popExitAnim="@anim/translate_to_right" />
+        <action
+            android:id="@+id/action_homeFragment_to_categoriesListFragment"
+            app:destination="@id/categoriesListFragment"
+            app:enterAnim="@anim/translate_from_right"
+            app:exitAnim="@anim/translate_alpha_to_nothing"
+            app:popEnterAnim="@anim/translate_alpha_from_nothing"
+            app:popExitAnim="@anim/translate_to_right" />
     </fragment>
     <fragment
         android:id="@+id/editTaskFragment"
@@ -105,6 +119,32 @@
             android:name="taskId"
             app:argType="long"
             android:defaultValue="-1L" />
+    </fragment>
+    <fragment
+        android:id="@+id/tasksListFragment"
+        android:name="org.xapps.apps.todox.views.fragments.TasksListFragment"
+        android:label="fragment_tasks_list"
+        tools:layout="@layout/fragment_tasks_list" >
+        <argument
+            android:name="filter"
+            app:argType="org.xapps.apps.todox.viewmodels.FilterType"
+            android:defaultValue="ALL" />
+        <action
+            android:id="@+id/action_tasksListFragment_to_taskDetailsFragment"
+            app:destination="@id/taskDetailsFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/categoriesListFragment"
+        android:name="org.xapps.apps.todox.views.fragments.CategoriesListFragment"
+        android:label="fragment_categories_list"
+        tools:layout="@layout/fragment_categories_list" >
+        <action
+            android:id="@+id/action_categoriesListFragment_to_categoryDetailsFragment"
+            app:destination="@id/categoryDetailsFragment"
+            app:enterAnim="@anim/translate_from_right"
+            app:exitAnim="@anim/translate_alpha_to_nothing"
+            app:popEnterAnim="@anim/translate_alpha_from_nothing"
+            app:popExitAnim="@anim/translate_to_right" />
     </fragment>
 
 </navigation>

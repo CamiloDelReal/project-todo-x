@@ -18,7 +18,7 @@ class SummaryItem @JvmOverloads constructor(
     defStyleRes: Int = 0
 ) : LinearLayout(context, attrs, defStyle, defStyleRes) {
 
-    private lateinit var bindings: ContentSummaryItemBinding
+    private var bindings: ContentSummaryItemBinding
 
     init {
         val a: TypedArray = getContext().obtainStyledAttributes(attrs, R.styleable.SummaryItem)
@@ -26,8 +26,7 @@ class SummaryItem @JvmOverloads constructor(
         val iconTint = a.getColor(R.styleable.SummaryItem_si_iconTint, -1)
         val iconBackground = a.getDrawable(R.styleable.SummaryItem_si_iconBackground)
         val title = a.getString(R.styleable.SummaryItem_si_title)
-        val completed = a.getString(R.styleable.SummaryItem_si_completed)
-        val pending = a.getString(R.styleable.SummaryItem_si_pending)
+        val description = a.getString(R.styleable.SummaryItem_si_description)
         a.recycle()
 
         val layoutInflater = LayoutInflater.from(context)
@@ -46,20 +45,15 @@ class SummaryItem @JvmOverloads constructor(
         }
 
         bindings.txvTitle.text = title
-        bindings.txvCompleted.text = completed
-        bindings.txvPending.text = pending
+        bindings.txvDescription.text = description
     }
 
     fun setTitle(title: String) {
         bindings.txvTitle.text = title
     }
 
-    fun setCompleted(completed: String) {
-        bindings.txvCompleted.text = completed
-    }
-
-    fun setPending(pending: String) {
-        bindings.txvPending.text = pending
+    fun setDescription(description: String) {
+        bindings.txvDescription.text = description
     }
 
     override fun setOnClickListener(newListener: OnClickListener?) {

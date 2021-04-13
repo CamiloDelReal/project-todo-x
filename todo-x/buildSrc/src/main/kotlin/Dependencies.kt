@@ -166,10 +166,12 @@ object Libraries {
         private const val CIRCULAR_PROGRESSBAR_VERSION = "3.0.3"
         private const val DRAWABLE_TOOLBOX_VERSION = "1.0.7"
         private const val MATERIAL_PROGRESSBAR_VERSION = "1.6.1"
+        private const val COLOR_PICKER_VERSION = "2.0"
 
         const val CIRCULAR_PROGRESSBAR = "com.mikhaellopez:circularprogressbar:$CIRCULAR_PROGRESSBAR_VERSION"
         const val DRAWABLE_TOOLBOX = "com.github.duanhong169:drawabletoolbox:$DRAWABLE_TOOLBOX_VERSION"
         const val MATERIAL_PROGRESSBAR = "me.zhanghai.android.materialprogressbar:library:$MATERIAL_PROGRESSBAR_VERSION"
+        const val COLOR_PICKER = "com.github.dhaval2404:colorpicker:$COLOR_PICKER_VERSION"
     }
 
     object Logger {

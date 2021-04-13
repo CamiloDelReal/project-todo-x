@@ -17,7 +17,7 @@ class AboutReference @JvmOverloads constructor(
     defStyleRes: Int = 0
 ) : LinearLayout(context, attrs, defStyle, defStyleRes) {
 
-    private lateinit var bindings: ContentAboutReferenceBinding
+    private var bindings: ContentAboutReferenceBinding
 
     init {
         val a: TypedArray = getContext().obtainStyledAttributes(attrs, R.styleable.AboutReference)

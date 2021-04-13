@@ -6,20 +6,18 @@ import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import org.xapps.apps.todox.core.models.Category
-import org.xapps.apps.todox.databinding.ItemCategoryBinding
-import timber.log.Timber
+import org.xapps.apps.todox.databinding.ItemCategoryListBinding
 
-
-class CategoryAdapter(
-    private val itemListener: ItemListener
-): PagingDataAdapter<Category, CategoryAdapter.ItemViewHolder>(CategoryDiffCallback()) {
+class CategoryListAdapter(
+        private val itemListener: ItemListener
+): PagingDataAdapter<Category, CategoryListAdapter.ItemViewHolder>(CategoryDiffCallback()) {
 
     override fun onBindViewHolder(holder: ItemViewHolder, position: Int) {
         holder.bind(getItem(position))
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CategoryAdapter.ItemViewHolder {
-        val bindings = ItemCategoryBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CategoryListAdapter.ItemViewHolder {
+        val bindings = ItemCategoryListBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return ItemViewHolder(bindings, itemListener)
     }
 
@@ -30,8 +28,8 @@ class CategoryAdapter(
     }
 
     class ItemViewHolder(
-        private val bindings: ItemCategoryBinding,
-        itemListener: ItemListener
+            private val bindings: ItemCategoryListBinding,
+            itemListener: ItemListener
     ): RecyclerView.ViewHolder(bindings.root) {
 
         private var category: Category? = null
@@ -43,7 +41,6 @@ class CategoryAdapter(
         }
 
         fun bind(category: Category?) {
-            Timber.i("About to bind $category")
             this.category = category
             bindings.data = this.category
         }

@@ -9,8 +9,14 @@ import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
 import org.xapps.apps.todox.core.local.TaskDao
 import org.xapps.apps.todox.core.models.Task
+import org.xapps.apps.todox.core.models.TaskAndCategory
 import org.xapps.apps.todox.core.models.TaskWithItems
+import org.xapps.apps.todox.core.models.TaskWithItemsAndCategory
+import org.xapps.apps.todox.core.utils.parseToString
+import org.xapps.apps.todox.viewmodels.Constants
 import timber.log.Timber
+import java.time.LocalDate
+import java.time.format.DateTimeFormatter
 import javax.inject.Inject
 
 
@@ -42,7 +48,7 @@ class TaskRepository @Inject constructor(
         return taskDao.taskWithItemsAsync(id).flowOn(Dispatchers.IO)
     }
 
-    fun tasksScheduledPaginated(categoryId: Long): Flow<PagingData<TaskWithItems>> {
+    fun tasksWithItemsAndCategoryPaginated(): Flow<PagingData<TaskWithItemsAndCategory>> {
         return Pager(
             config = PagingConfig(
                 pageSize = 10,
@@ -50,11 +56,11 @@ class TaskRepository @Inject constructor(
                 maxSize = 50
             )
         ) {
-            taskDao.tasksScheduledWithItemsPaginatedAsync(categoryId)
+            taskDao.tasksWithItemsAndCategoryPaginatedAsync()
         }.flow.flowOn(Dispatchers.IO)
     }
 
-    fun tasksImportantPaginated(categoryId: Long): Flow<PagingData<TaskWithItems>> {
+    fun tasksInScheduleWithItemsByCategoryPaginated(categoryId: Long): Flow<PagingData<TaskWithItems>> {
         return Pager(
             config = PagingConfig(
                 pageSize = 10,
@@ -62,11 +68,47 @@ class TaskRepository @Inject constructor(
                 maxSize = 50
             )
         ) {
-            taskDao.tasksImportantWithItemsPaginatedAsync(categoryId)
+            taskDao.tasksInScheduleWithItemsByCategoryPaginatedAsync(categoryId)
         }.flow.flowOn(Dispatchers.IO)
     }
 
-    fun tasksCompletedPaginated(categoryId: Long): Flow<PagingData<TaskWithItems>> {
+    fun tasksInScheduleWithItemsAndCategoryPaginated(): Flow<PagingData<TaskWithItemsAndCategory>> {
+        return Pager(
+            config = PagingConfig(
+                pageSize = 10,
+                enablePlaceholders = true,
+                maxSize = 50
+            )
+        ) {
+            taskDao.tasksInScheduleWithItemsAndCategoryPaginatedAsync()
+        }.flow.flowOn(Dispatchers.IO)
+    }
+
+    fun tasksImportantWithItemsByCategoryPaginated(categoryId: Long): Flow<PagingData<TaskWithItems>> {
+        return Pager(
+            config = PagingConfig(
+                pageSize = 10,
+                enablePlaceholders = true,
+                maxSize = 50
+            )
+        ) {
+            taskDao.tasksImportantWithItemsByCategoryPaginatedAsync(categoryId)
+        }.flow.flowOn(Dispatchers.IO)
+    }
+
+    fun tasksImportantWithItemsAndCategoryPaginated(): Flow<PagingData<TaskWithItemsAndCategory>> {
+        return Pager(
+            config = PagingConfig(
+                pageSize = 10,
+                enablePlaceholders = true,
+                maxSize = 50
+            )
+        ) {
+            taskDao.tasksImportantWithItemsAndCategoryPaginatedAsync()
+        }.flow.flowOn(Dispatchers.IO)
+    }
+
+    fun tasksCompletedWithItemsByCategoryPaginated(categoryId: Long): Flow<PagingData<TaskWithItems>> {
         return Pager (
             config = PagingConfig(
                 pageSize = 10,
@@ -74,8 +116,44 @@ class TaskRepository @Inject constructor(
                 maxSize = 50
             )
         ) {
-            taskDao.tasksCompletedWithItemsPaginatedAsync(categoryId)
+            taskDao.tasksCompletedWithItemsByCategoryPaginatedAsync(categoryId)
         }.flow.flowOn(Dispatchers.IO)
+    }
+
+    fun tasksCompletedWithItemsAndCategoryPaginated(): Flow<PagingData<TaskWithItemsAndCategory>> {
+        return Pager (
+            config = PagingConfig(
+                pageSize = 10,
+                enablePlaceholders = true,
+                maxSize = 50
+            )
+        ) {
+            taskDao.tasksCompletedWithItemsAndCategoryPaginatedAsync()
+        }.flow.flowOn(Dispatchers.IO)
+    }
+
+    fun tasksTodayWithItemsAndCategoryPaginated(): Flow<PagingData<TaskWithItemsAndCategory>> {
+        return Pager (
+            config = PagingConfig(
+                pageSize = 10,
+                enablePlaceholders = true,
+                maxSize = 50
+            )
+        ) {
+            taskDao.tasksForDateWithItemsAndCategoryPaginatedAsync(LocalDate.now().parseToString(Constants.DATE_PATTERN_DB))
+        }.flow.flowOn(Dispatchers.IO)
+    }
+
+    fun tasksImportantCount(): Flow<Int> {
+        return taskDao.tasksImportantCountAsync().flowOn(Dispatchers.IO)
+    }
+
+    fun tasksInScheduleCount(): Flow<Int> {
+        return taskDao.tasksInScheduleCountAsync().flowOn(Dispatchers.IO)
+    }
+
+    fun tasksTodayCount(): Flow<Int> {
+        return taskDao.tasksForDateCount(LocalDate.now().parseToString(Constants.DATE_PATTERN_DB)).flowOn(Dispatchers.IO)
     }
 
 }

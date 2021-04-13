@@ -19,7 +19,6 @@
     <string name="dash_separator">-</string>
     <string name="today">Today</string>
     <string name="in_schedule">In Schedule</string>
-    <string name="high_priority">High priority</string>
     <string name="my_tasks">My Tasks</string>
     <string name="about">About</string>
     <string name="dark_mode">Dark mode</string>
@@ -63,4 +62,18 @@
     <string name="no_pending_items">No pending items</string>
     <string name="unspecified_time">Unspecified time</string>
     <string name="no_date">No date</string>
+    <string name="edit">Edit</string>
+    <string name="complete_all">Complete all</string>
+    <string name="no_tasks">No tasks yet</string>
+    <string name="all">All</string>
+    <string name="categories">Categories</string>
+    <plurals name="task_count">
+        <item quantity="one">%d task</item>
+        <item quantity="other">%d tasks</item>
+    </plurals>
+    <string name="no_categories">No categories yet</string>
+    <string name="remaining">%d remaining</string>
+    <string name="colors">Colors</string>
+    <string name="flatuicolors_url">https://flatuicolors.com/</string>
+    <string name="flatuicolors">Flat UI Colors 2</string>
 </resources>

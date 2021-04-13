@@ -192,6 +192,34 @@
                     style="@style/TextAppearance.MaterialComponents.Caption"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:text="@string/colors" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:alpha="0.1"
+                    android:background="?attr/colorOnSurface" />
+
+                <Space
+                    android:layout_width="wrap_content"
+                    android:layout_height="@dimen/about_section_header_space" />
+
+                <org.xapps.apps.todox.views.custom.AboutReference
+                    android:id="@+id/btnLinkFlatUIColors"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:ar_icon="@drawable/ic_flatuicolors"
+                    app:ar_link="@string/flatuicolors_url"
+                    app:ar_text="@string/flatuicolors" />
+
+                <Space
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/about_section_space" />
+
+                <TextView
+                    style="@style/TextAppearance.MaterialComponents.Caption"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     android:text="@string/libraries_and_tools" />
 
                 <View

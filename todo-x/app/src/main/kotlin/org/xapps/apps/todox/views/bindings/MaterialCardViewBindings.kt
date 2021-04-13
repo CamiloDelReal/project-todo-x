@@ -1,7 +1,6 @@
 package org.xapps.apps.todox.views.bindings
 
 import android.graphics.drawable.Drawable
-import androidx.core.content.ContextCompat
 import androidx.core.graphics.toColorInt
 import androidx.databinding.BindingAdapter
 import com.google.android.material.card.MaterialCardView
@@ -14,15 +13,15 @@ object MaterialCardViewBindings {
     @JvmStatic
     @BindingAdapter("categoryBackground")
     fun categoryBackground(view: MaterialCardView, color: String) {
-        ContextCompat.getColor(view.context, R.color.textOnDarkSecondary)
+        val radius = view.context.resources.getDimension(R.dimen.item_corner_radius)
         val drawable: Drawable = DrawableBuilder()
             .rectangle()
             .solidColor(color.toColorInt())
             .strokeWidth(2)
             .strokeColor(color.toColorInt())
-            .cornerRadius(24)
+            .cornerRadius(radius.toInt())
             .build()
-        view.radius = 24.0f
+        view.radius = radius
         view.background = drawable
     }
 

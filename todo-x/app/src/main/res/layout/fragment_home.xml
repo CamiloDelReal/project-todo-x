@@ -40,21 +40,21 @@
             app:layout_constraintGuide_percent="0.08" />
 
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/listCategory"
+            android:id="@+id/lstCategories"
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:background="@color/backgroundSecondary"
             android:paddingStart="@dimen/home_recycler_view_padding"
             android:paddingEnd="@dimen/home_recycler_view_padding"
             android:scrollbars="vertical"
-            app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+            tools:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/toolbar"
-            app:spanCount="2"
+            tools:spanCount="2"
             tools:itemCount="7"
-            tools:listitem="@layout/item_category" />
+            tools:listitem="@layout/item_category_home" />
 
         <View
             android:id="@+id/toolbar"
@@ -69,36 +69,30 @@
             android:orientation="vertical">
 
             <org.xapps.apps.todox.views.custom.SummaryItem
-                android:id="@+id/btnHighPriority"
+                android:id="@+id/btnImportant"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:si_completed="12 completed"
                 app:si_icon="@drawable/ic_star"
-                app:si_iconBackground="@drawable/ic_bg_high_priority"
-                app:si_iconTint="@color/hightPriority"
-                app:si_pending="4 not yet"
-                app:si_title="@string/high_priority" />
+                app:si_iconBackground="@drawable/ic_bg_important"
+                app:si_iconTint="@color/important"
+                app:si_title="@string/important" />
 
             <org.xapps.apps.todox.views.custom.SummaryItem
                 android:id="@+id/btnInSchedule"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:si_completed="10 completed"
                 app:si_icon="@drawable/ic_calendar_blank"
                 app:si_iconBackground="@drawable/ic_bg_in_schedule"
                 app:si_iconTint="@color/inSchedule"
-                app:si_pending="5 not yet"
                 app:si_title="@string/in_schedule" />
 
             <org.xapps.apps.todox.views.custom.SummaryItem
                 android:id="@+id/btnToday"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:si_completed="0 completed"
                 app:si_icon="@drawable/ic_clock"
                 app:si_iconBackground="@drawable/ic_bg_today"
                 app:si_iconTint="@color/today"
-                app:si_pending="3 not yet"
                 app:si_title="@string/today" />
 
         </LinearLayout>
