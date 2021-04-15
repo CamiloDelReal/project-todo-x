@@ -28,11 +28,9 @@ interface CategoryDao {
     @Query("SELECT * FROM categories")
     fun categories(): List<Category>
 
-//    @Query("SELECT * FROM categories WHERE id = :id")
     @Query("SELECT categories.id, categories.name, categories.color, COUNT(tasks.id) as tasks_count, COUNT(tasks.id) as pending_tasks_count FROM categories LEFT JOIN tasks on (categories.id = tasks.category_id)  WHERE categories.id = :id GROUP BY categories.id ORDER BY categories.name ASC")
     fun categoryAsync(id: Long): Flow<Category>
 
-//    @Query("SELECT * FROM categories WHERE id = :id")
     @Query("SELECT categories.id, categories.name, categories.color, COUNT(tasks.id) as tasks_count, COUNT(tasks.id) as pending_tasks_count FROM categories LEFT JOIN tasks on (categories.id = tasks.category_id)  WHERE categories.id = :id GROUP BY categories.id ORDER BY categories.name ASC")
     fun category(id: Long): Category
 

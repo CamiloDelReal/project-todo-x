@@ -75,7 +75,7 @@
                     android:id="@+id/tilName"
                     style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent">
+                    android:layout_height="wrap_content">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/tieName"
@@ -298,7 +298,7 @@
                 android:layout_height="@dimen/edit_button_height"
                 android:layout_centerInParent="true"
                 android:gravity="center"
-                android:text="@string/create_task"
+                android:text="@string/create"
                 android:textAllCaps="false"
                 app:cornerRadius="18dp" />
 

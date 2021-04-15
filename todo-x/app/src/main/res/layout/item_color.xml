@@ -9,18 +9,19 @@
             type="String" />
     </data>
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="64dp">
 
         <com.google.android.material.card.MaterialCardView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_margin="6dp"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_centerInParent="true"
             app:cardUseCompatPadding="false"
+            colorBackground="@{color}"
             tools:cardBackgroundColor="@color/family"
             tools:card="#ff0000"/>
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+    </RelativeLayout>
 
 </layout>

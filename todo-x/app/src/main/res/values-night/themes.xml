@@ -22,4 +22,10 @@
         <item name="android:windowLightStatusBar">false</item>
     </style>
 
+    <style name="Theme.BottomSheet" parent="Theme.MaterialComponents.BottomSheetDialog">
+        <item name="android:windowIsFloating">false</item>
+        <item name="android:navigationBarColor">?attr/colorSurface</item>
+        <item name="android:statusBarColor">@android:color/transparent</item>
+    </style>
+
 </resources>
