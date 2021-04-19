@@ -102,13 +102,13 @@ class EditTaskViewModel @Inject constructor(
     fun insertTask() {
         messageEmitter.postValue(Message.Loading)
         viewModelScope.launch {
-            taskWithItems.get()?.task?.categoryId = selectedCategory.get()?.get(0)?.id ?: -1
+            taskWithItems.get()?.task?.categoryId = selectedCategory.get()?.get(0)?.id ?: Constants.ID_INVALID
             taskRepository.insert(taskWithItems.get()?.task!!)
                 .catch { ex ->
                     messageEmitter.postValue(Message.Error(Exception(ex.localizedMessage)))
                 }
                 .collect {
-                    if(it.id != -1L) {
+                    if(it.id != Constants.ID_INVALID) {
                         // Save items
                         messageEmitter.postValue(Message.Success())
                     } else {

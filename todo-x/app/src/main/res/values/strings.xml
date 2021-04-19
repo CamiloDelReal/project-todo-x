@@ -78,4 +78,7 @@
     <string name="flatuicolors">Flat UI Colors 2</string>
     <string name="create_task">Create Task</string>
     <string name="create_category">Create Category</string>
+    <string name="edit_category">Edit Category</string>
+    <string name="color">Color</string>
+    <string name="pick_color">Pick color</string>
 </resources>

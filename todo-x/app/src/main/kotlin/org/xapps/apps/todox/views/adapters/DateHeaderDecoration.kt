@@ -4,6 +4,7 @@ import android.graphics.Canvas
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import org.xapps.apps.todox.viewmodels.Constants
 
 
 class DateHeaderDecoration<T : RecyclerView.ViewHolder> constructor(private val decorationSupport: DecorationSupport<T>): RecyclerView.ItemDecoration() {
@@ -12,7 +13,7 @@ class DateHeaderDecoration<T : RecyclerView.ViewHolder> constructor(private val 
 
     override fun onDrawOver(canvas: Canvas, recyclerView: RecyclerView, state: RecyclerView.State) {
 
-        var lastHeaderId = -1L
+        var lastHeaderId = Constants.ID_INVALID
         val childsCount = recyclerView.childCount
 
         for(childPosition in 0 until childsCount) {

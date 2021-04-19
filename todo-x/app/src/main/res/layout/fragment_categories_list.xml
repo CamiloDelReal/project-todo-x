@@ -79,16 +79,16 @@
             tools:text="Important" />
 
         <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
-            android:id="@+id/btnMoreOptions"
+            android:id="@+id/btnNew"
             style="@style/Widget.MaterialComponents.Button.OutlinedButton"
             android:layout_width="@dimen/home_button_width_collapsed"
             android:layout_height="@dimen/home_button_height_collapsed"
             android:backgroundTint="?attr/colorSurface"
             android:gravity="start|center_vertical"
-            android:text="@string/more_options"
+            android:text="@string/create_category"
             android:textAllCaps="false"
             android:textSize="@dimen/home_button_text_size"
-            app:icon="@drawable/ic_dots_vertical"
+            app:icon="@drawable/ic_plus"
             app:iconPadding="@dimen/home_button_icon_padding"
             app:iconSize="@dimen/home_button_icon_size"
             app:layout_constraintBottom_toBottomOf="@id/btnBack"

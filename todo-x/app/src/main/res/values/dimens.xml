@@ -51,7 +51,7 @@
 
     <dimen name="edit_title_text_size">22sp</dimen>
 
-    <dimen name="edit_title_text_size_expanded">15sp</dimen>
+    <dimen name="edit_title_text_size_expanded">13sp</dimen>
     <dimen name="edit_title_height_expanded">56dp</dimen>
 
     <dimen name="edit_title_text_size_collapsed">11sp</dimen>

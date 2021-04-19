@@ -145,6 +145,22 @@
             app:exitAnim="@anim/translate_alpha_to_nothing"
             app:popEnterAnim="@anim/translate_alpha_from_nothing"
             app:popExitAnim="@anim/translate_to_right" />
+        <action
+            android:id="@+id/action_categoriesListFragment_to_editCategoryFragment"
+            app:destination="@id/editCategoryFragment"
+            app:enterAnim="@anim/translate_from_right"
+            app:exitAnim="@anim/translate_alpha_to_nothing"
+            app:popEnterAnim="@anim/translate_alpha_from_nothing"
+            app:popExitAnim="@anim/translate_to_right" />
+    </fragment>
+    <fragment
+        android:id="@+id/editCategoryFragment"
+        android:name="org.xapps.apps.todox.views.fragments.EditCategoryFragment"
+        android:label="EditCategoryFragment" >
+        <argument
+            android:name="categoryId"
+            app:argType="long"
+            android:defaultValue="-1L" />
     </fragment>
 
 </navigation>

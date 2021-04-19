@@ -1,45 +1,66 @@
 package org.xapps.apps.todox.viewmodels
 
 import android.content.Context
-import androidx.databinding.ObservableArrayList
-import androidx.lifecycle.ViewModel
+import androidx.databinding.ObservableField
+import androidx.lifecycle.*
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
-import org.xapps.apps.todox.R
-import org.xapps.apps.todox.core.models.Color
+import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.launch
+import org.xapps.apps.todox.core.models.Category
+import org.xapps.apps.todox.core.repositories.CategoryRepository
+import org.xapps.apps.todox.views.utils.Message
+import timber.log.Timber
 import javax.inject.Inject
 
 
 @HiltViewModel
 class EditCategoryViewModel @Inject constructor(
-    @ApplicationContext private val context: Context
+    @ApplicationContext private val context: Context,
+    savedStateHandle: SavedStateHandle,
+    private val categoryRepository: CategoryRepository
 ) : ViewModel() {
 
-    val colors: ObservableArrayList<Color> = ObservableArrayList()
+    private val messageEmitter: MutableLiveData<Message> = MutableLiveData()
+    val category: ObservableField<Category> = ObservableField()
+
+    var categoryId: Long = Constants.ID_INVALID
+        private set
+
+    fun message(): LiveData<Message> = messageEmitter
 
     init {
-        colors.addAll(listOf(
-            Color("#${Integer.toHexString(context.resources.getColor(R.color.turquoise, null))}"),
-            Color("#${Integer.toHexString(context.resources.getColor(R.color.emerald, null))}"),
-            Color("#${Integer.toHexString(context.resources.getColor(R.color.peterriver, null))}"),
-            Color("#${Integer.toHexString(context.resources.getColor(R.color.amethyst, null))}"),
-            Color("#${Integer.toHexString(context.resources.getColor(R.color.wetasphalt, null))}"),
-            Color("#${Integer.toHexString(context.resources.getColor(R.color.greensea, null))}"),
-            Color("#${Integer.toHexString(context.resources.getColor(R.color.nephritis, null))}"),
-            Color("#${Integer.toHexString(context.resources.getColor(R.color.belizehole, null))}"),
-            Color("#${Integer.toHexString(context.resources.getColor(R.color.wisteria, null))}"),
-            Color("#${Integer.toHexString(context.resources.getColor(R.color.midnightblue, null))}"),
-            Color("#${Integer.toHexString(context.resources.getColor(R.color.sunflower, null))}"),
-            Color("#${Integer.toHexString(context.resources.getColor(R.color.carrot, null))}"),
-            Color("#${Integer.toHexString(context.resources.getColor(R.color.alizarin, null))}"),
-            Color("#${Integer.toHexString(context.resources.getColor(R.color.clouds, null))}"),
-            Color("#${Integer.toHexString(context.resources.getColor(R.color.concrete, null))}"),
-            Color("#${Integer.toHexString(context.resources.getColor(R.color.orange, null))}"),
-            Color("#${Integer.toHexString(context.resources.getColor(R.color.pumpkin, null))}"),
-            Color("#${Integer.toHexString(context.resources.getColor(R.color.pomegranate, null))}"),
-            Color("#${Integer.toHexString(context.resources.getColor(R.color.silver, null))}"),
-            Color("#${Integer.toHexString(context.resources.getColor(R.color.asbestos, null))}")
-        ))
+        categoryId = savedStateHandle[Constants.CATEGORY_ID] ?: Constants.ID_INVALID
+        Timber.i("Category id received $categoryId")
+        if(categoryId == Constants.ID_INVALID) {
+            category.set(Category(name = "Camlo"))
+        } else {
+            category(categoryId)
+        }
+    }
+
+    fun category(id: Long) {
+        messageEmitter.postValue(Message.Loading)
+        viewModelScope.launch {
+            categoryRepository.category(id)
+                .catch { ex ->
+                    messageEmitter.postValue(Message.Error(Exception(ex.localizedMessage)))
+                }
+                .collect { cat ->
+                    category.set(cat)
+                    messageEmitter.postValue(Message.Success())
+                }
+        }
+    }
+
+    fun saveCategory() {
+        Timber.i("Category saved ${category.get()}")
+    }
+
+    fun setColor(colorHex: String) {
+        category.get()?.color = colorHex
+        category.notifyChange()
     }
 
 }

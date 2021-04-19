@@ -12,10 +12,10 @@ data class Category (
     var id: Long = 0,
 
     @ColumnInfo(name = "name")
-    var name: String,
+    var name: String = "",
 
     @ColumnInfo(name = "color")
-    var color: String
+    var color: String = ""
 ) {
 
     @ColumnInfo(name = "tasks_count")

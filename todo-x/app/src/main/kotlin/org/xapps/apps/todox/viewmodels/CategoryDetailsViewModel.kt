@@ -26,7 +26,7 @@ import javax.inject.Inject
 @HiltViewModel
 class CategoryDetailsViewModel @Inject constructor(
     @ApplicationContext private val context: Context,
-    private val savedStateHandle: SavedStateHandle,
+    savedStateHandle: SavedStateHandle,
     private val categoryRepository: CategoryRepository,
     private val taskRepository: TaskRepository
 ): ViewModel() {
@@ -35,7 +35,7 @@ class CategoryDetailsViewModel @Inject constructor(
     private val messageEmitter: MutableLiveData<Message> = MutableLiveData()
     private val tasksPaginatedEmitter: MutableLiveData<PagingData<TaskWithItems>?> = MutableLiveData(null)
 
-    var categoryId: Long = -1
+    var categoryId: Long = Constants.ID_INVALID
         private set
     val category: ObservableField<Category> = ObservableField()
 

@@ -48,13 +48,7 @@ class CategoriesListFragment @Inject constructor(): Fragment() {
 
     private val categoriesItemListener = object : CategoryListAdapter.ItemListener {
         override fun clicked(category: Category) {
-//            findNavController().navigate(CategoriesListFragmentDirections.actionCategoriesListFragmentToCategoryDetailsFragment(category.id))
-
-            val genresChooser = EditCategoryBottomSheetDialogFragment()
-            genresChooser.show(parentFragmentManager, "ddf")
-            genresChooser.dialog?.setOnDismissListener {
-                Timber.i("Bottom closed")
-            }
+            findNavController().navigate(CategoriesListFragmentDirections.actionCategoriesListFragmentToEditCategoryFragment(category.id))
         }
     }
 
@@ -72,6 +66,10 @@ class CategoriesListFragment @Inject constructor(): Fragment() {
 
         bindings.btnBack.setOnClickListener {
             findNavController().navigateUp()
+        }
+
+        bindings.btnNew.setOnClickListener {
+            findNavController().navigate(CategoriesListFragmentDirections.actionCategoriesListFragmentToEditCategoryFragment())
         }
 
         bindings.lstCategories.layoutManager = LinearLayoutManager(requireContext(), RecyclerView.VERTICAL, false)
