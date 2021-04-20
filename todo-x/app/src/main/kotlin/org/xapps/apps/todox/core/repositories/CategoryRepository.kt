@@ -19,7 +19,7 @@ class CategoryRepository @Inject constructor(
 
     fun insert(categories: List<Category>): Flow<Boolean> {
         return flow {
-            val ids = categoryDao.insert(categories)
+            val ids = categoryDao.insertAsync(categories)
             emit(ids.size == categories.size)
         }.flowOn(Dispatchers.IO)
     }
@@ -32,7 +32,7 @@ class CategoryRepository @Inject constructor(
                 maxSize = 50
             )
         ) {
-            categoryDao.categoriesPaginated()
+            categoryDao.categoriesPaginatedAsync()
         }.flow.flowOn(Dispatchers.IO)
     }
 
@@ -45,6 +45,20 @@ class CategoryRepository @Inject constructor(
     fun category(id: Long): Flow<Category> {
         return categoryDao.categoryAsync(id)
             .flowOn(Dispatchers.IO)
+    }
+
+    fun insertCategory(category: Category): Flow<Boolean> {
+        return flow {
+            val id = categoryDao.insertAsync(category)
+            emit(id != 0)
+        }.flowOn(Dispatchers.IO)
+    }
+
+    fun updateCategory(category: Category): Flow<Boolean> {
+        return flow {
+            val count = categoryDao.updateAsync(category)
+            emit(count == 1)
+        }.flowOn(Dispatchers.IO)
     }
 
 }

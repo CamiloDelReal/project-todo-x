@@ -35,7 +35,7 @@ interface CategoryDao {
     fun category(id: Long): Category
 
     @Query("SELECT categories.id, categories.name, categories.color, COUNT(tasks.id) as tasks_count, COUNT(tasks.id) as pending_tasks_count FROM categories LEFT JOIN tasks on (categories.id = tasks.category_id) GROUP BY categories.id ORDER BY categories.name ASC")
-    fun categoriesPaginated(): PagingSource<Int, Category>
+    fun categoriesPaginatedAsync(): PagingSource<Int, Category>
 
     @Transaction
     @Query("SELECT * FROM categories")

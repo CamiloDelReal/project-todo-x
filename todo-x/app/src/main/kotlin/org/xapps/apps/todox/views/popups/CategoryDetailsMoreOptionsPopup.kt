@@ -21,9 +21,9 @@ class CategoryDetailsMoreOptionsPopup @Inject constructor() : DialogFragment() {
 
         const val REQUEST_KEY = "CategoryDetailsMoreOptionsPopup"
 
-        const val MORE_OPTIONS_POPUP_OPTION = "homeOptionSelected"
-        const val MORE_OPTIONS_POPUP_DARK_MODE_UPDATED = 203
-        const val MORE_OPTIONS_POPUP_OPEN_ABOUT_VIEW = 204
+        const val MORE_OPTIONS_POPUP_OPTION = "CategoryDetailsMoreOptionSelected"
+        const val MORE_OPTIONS_POPUP_EDIT = 503
+        const val MORE_OPTIONS_POPUP_COMPLETE_ALL = 504
 
         fun showDialog(
                 fragmentManager: FragmentManager,
@@ -57,6 +57,20 @@ class CategoryDetailsMoreOptionsPopup @Inject constructor() : DialogFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        bindings.btnEdit.setOnClickListener {
+            val data = Bundle().apply {
+                putInt(MORE_OPTIONS_POPUP_OPTION, MORE_OPTIONS_POPUP_EDIT)
+            }
+            close(data)
+        }
+
+        bindings.btnCompleteAll.setOnClickListener {
+            val data = Bundle().apply {
+                putInt(MORE_OPTIONS_POPUP_OPTION, MORE_OPTIONS_POPUP_COMPLETE_ALL)
+            }
+            close(data)
+        }
 
         bindings.rootLayout.setOnClickListener {
             close()

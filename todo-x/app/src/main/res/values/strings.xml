@@ -57,6 +57,8 @@
     <string name="empty_field">Empty field</string>
     <string name="error_inserting_task_in_db">Error inserting task in database</string>
     <string name="error_updating_task_in_db">Error updating task in database</string>
+    <string name="error_inserting_category_in_db">Error inserting category in database</string>
+    <string name="error_updating_category_in_db">Error updating category in database</string>
     <string name="important">Important</string>
     <string name="completed">Completed</string>
     <string name="scheduled">Scheduled</string>

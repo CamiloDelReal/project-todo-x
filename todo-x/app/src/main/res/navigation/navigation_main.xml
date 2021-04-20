@@ -96,14 +96,29 @@
         tools:layout="@layout/fragment_category_details">
         <action
             android:id="@+id/action_categoryDetailsFragment_to_editTaskFragment"
-            app:destination="@id/editTaskFragment" />
+            app:destination="@id/editTaskFragment"
+            app:enterAnim="@anim/translate_from_right"
+            app:exitAnim="@anim/translate_alpha_to_nothing"
+            app:popEnterAnim="@anim/translate_alpha_from_nothing"
+            app:popExitAnim="@anim/translate_to_right" />
         <argument
             android:name="categoryId"
             android:defaultValue="-1L"
             app:argType="long" />
         <action
             android:id="@+id/action_categoryDetailsFragment_to_taskDetailsFragment"
-            app:destination="@id/taskDetailsFragment" />
+            app:destination="@id/taskDetailsFragment"
+            app:enterAnim="@anim/translate_from_right"
+            app:exitAnim="@anim/translate_alpha_to_nothing"
+            app:popEnterAnim="@anim/translate_alpha_from_nothing"
+            app:popExitAnim="@anim/translate_to_right" />
+        <action
+            android:id="@+id/action_categoryDetailsFragment_to_editCategoryFragment"
+            app:destination="@id/editCategoryFragment"
+            app:enterAnim="@anim/translate_from_right"
+            app:exitAnim="@anim/translate_alpha_to_nothing"
+            app:popEnterAnim="@anim/translate_alpha_from_nothing"
+            app:popExitAnim="@anim/translate_to_right" />
     </fragment>
     <fragment
         android:id="@+id/aboutFragment"

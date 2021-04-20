@@ -81,13 +81,43 @@ class EditCategoryViewModel @Inject constructor(
                 .collect { cat ->
                     category.set(cat)
                     chosenColor.set(cat.color)
-                    messageEmitter.postValue(Message.Success())
+                    messageEmitter.postValue(Message.Success(false))
                 }
         }
     }
 
     fun saveCategory() {
         Timber.i("Category saved ${category.get()}")
+        messageEmitter.postValue(Message.Loading)
+        viewModelScope.launch {
+            if(categoryId == Constants.ID_INVALID) {
+                categoryRepository.insertCategory(category.get()!!)
+                        .catch { ex ->
+                            messageEmitter.postValue(Message.Error(Exception(ex.localizedMessage)))
+                        }
+                        .collect { success ->
+                            val message = if(success) {
+                                Message.Success(true)
+                            } else {
+                                Message.Error(Exception(context.getString(R.string.error_inserting_category_in_db)))
+                            }
+                            messageEmitter.postValue(message)
+                        }
+            } else {
+                categoryRepository.updateCategory(category.get()!!)
+                        .catch { ex ->
+                            messageEmitter.postValue(Message.Error(Exception(ex.localizedMessage)))
+                        }
+                        .collect { success ->
+                            val message = if(success) {
+                                Message.Success(true)
+                            } else {
+                                Message.Error(Exception(context.getString(R.string.error_updating_category_in_db)))
+                            }
+                            messageEmitter.postValue(message)
+                        }
+            }
+        }
     }
 
     fun setColor(colorHex: String) {

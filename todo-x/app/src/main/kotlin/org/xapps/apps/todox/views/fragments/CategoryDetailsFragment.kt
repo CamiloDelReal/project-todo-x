@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.activity.OnBackPressedCallback
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -25,6 +26,8 @@ import org.xapps.apps.todox.viewmodels.CategoryDetailsViewModel
 import org.xapps.apps.todox.viewmodels.FilterType
 import org.xapps.apps.todox.views.adapters.DateHeaderDecoration
 import org.xapps.apps.todox.views.adapters.TaskWithItemsAdapter
+import org.xapps.apps.todox.views.popups.CategoryDetailsMoreOptionsPopup
+import org.xapps.apps.todox.views.popups.HomeMoreOptionsPopup
 import org.xapps.apps.todox.views.utils.ColorUtils
 import org.xapps.apps.todox.views.utils.Message
 import timber.log.Timber
@@ -51,9 +54,9 @@ class CategoryDetailsFragment @Inject constructor() : Fragment() {
     private val tasksItemListener = object : TaskWithItemsAdapter.ItemListener {
         override fun clicked(task: Task) {
             findNavController().navigate(
-                CategoryDetailsFragmentDirections.actionCategoryDetailsFragmentToTaskDetailsFragment(
-                    task.id
-                )
+                    CategoryDetailsFragmentDirections.actionCategoryDetailsFragmentToTaskDetailsFragment(
+                            task.id
+                    )
             )
         }
 
@@ -63,8 +66,8 @@ class CategoryDetailsFragment @Inject constructor() : Fragment() {
     }
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
+            inflater: LayoutInflater, container: ViewGroup?,
+            savedInstanceState: Bundle?
     ): View {
         bindings = FragmentCategoryDetailsBinding.inflate(layoutInflater)
         bindings.lifecycleOwner = viewLifecycleOwner
@@ -76,7 +79,7 @@ class CategoryDetailsFragment @Inject constructor() : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         bindings.lstTasks.layoutManager =
-            LinearLayoutManager(requireContext(), RecyclerView.VERTICAL, false)
+                LinearLayoutManager(requireContext(), RecyclerView.VERTICAL, false)
         taskAdapter = TaskWithItemsAdapter(tasksItemListener)
         bindings.lstTasks.adapter = taskAdapter
         val dateHeaderDecoration = DateHeaderDecoration(taskAdapter)
@@ -92,6 +95,26 @@ class CategoryDetailsFragment @Inject constructor() : Fragment() {
                             categoryId = viewModel.categoryId
                     )
             )
+        }
+
+        bindings.btnMoreOptions.setOnClickListener {
+            CategoryDetailsMoreOptionsPopup.showDialog(
+                    parentFragmentManager
+            ) { _, data ->
+                val option = if (data.containsKey(CategoryDetailsMoreOptionsPopup.MORE_OPTIONS_POPUP_OPTION)) {
+                    data.getInt(CategoryDetailsMoreOptionsPopup.MORE_OPTIONS_POPUP_OPTION)
+                } else {
+                    -1
+                }
+                when (option) {
+                    CategoryDetailsMoreOptionsPopup.MORE_OPTIONS_POPUP_EDIT -> {
+                        findNavController().navigate(CategoryDetailsFragmentDirections.actionCategoryDetailsFragmentToEditCategoryFragment(viewModel.categoryId))
+                    }
+                    CategoryDetailsMoreOptionsPopup.MORE_OPTIONS_POPUP_COMPLETE_ALL -> {
+                        Timber.w("ToDo")
+                    }
+                }
+            }
         }
 
         taskAdapter.registerAdapterDataObserver(object : RecyclerView.AdapterDataObserver() {
