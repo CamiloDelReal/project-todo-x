@@ -1,6 +1,7 @@
 package org.xapps.apps.todox.viewmodels
 
 import android.content.Context
+import androidx.databinding.ObservableArrayList
 import androidx.databinding.ObservableField
 import androidx.lifecycle.*
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -8,7 +9,9 @@ import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
+import org.xapps.apps.todox.R
 import org.xapps.apps.todox.core.models.Category
+import org.xapps.apps.todox.core.models.Color
 import org.xapps.apps.todox.core.repositories.CategoryRepository
 import org.xapps.apps.todox.views.utils.Message
 import timber.log.Timber
@@ -28,16 +31,44 @@ class EditCategoryViewModel @Inject constructor(
     var categoryId: Long = Constants.ID_INVALID
         private set
 
+    val colors: ObservableArrayList<Color> = ObservableArrayList()
+    val chosenColor: ObservableField<String> = ObservableField()
+
     fun message(): LiveData<Message> = messageEmitter
 
     init {
         categoryId = savedStateHandle[Constants.CATEGORY_ID] ?: Constants.ID_INVALID
         Timber.i("Category id received $categoryId")
         if(categoryId == Constants.ID_INVALID) {
-            category.set(Category(name = "Camlo"))
+            val defaultColor = "#${Integer.toHexString(context.resources.getColor(R.color.concrete, null))}"
+            category.set(Category(color = defaultColor))
+            chosenColor.set(defaultColor)
         } else {
             category(categoryId)
         }
+
+        colors.addAll(listOf(
+            Color("#${Integer.toHexString(context.resources.getColor(R.color.turquoise, null))}"),
+            Color("#${Integer.toHexString(context.resources.getColor(R.color.emerald, null))}"),
+            Color("#${Integer.toHexString(context.resources.getColor(R.color.peterriver, null))}"),
+            Color("#${Integer.toHexString(context.resources.getColor(R.color.amethyst, null))}"),
+            Color("#${Integer.toHexString(context.resources.getColor(R.color.wetasphalt, null))}"),
+            Color("#${Integer.toHexString(context.resources.getColor(R.color.greensea, null))}"),
+            Color("#${Integer.toHexString(context.resources.getColor(R.color.nephritis, null))}"),
+            Color("#${Integer.toHexString(context.resources.getColor(R.color.belizehole, null))}"),
+            Color("#${Integer.toHexString(context.resources.getColor(R.color.wisteria, null))}"),
+            Color("#${Integer.toHexString(context.resources.getColor(R.color.midnightblue, null))}"),
+            Color("#${Integer.toHexString(context.resources.getColor(R.color.sunflower, null))}"),
+            Color("#${Integer.toHexString(context.resources.getColor(R.color.carrot, null))}"),
+            Color("#${Integer.toHexString(context.resources.getColor(R.color.alizarin, null))}"),
+            Color("#${Integer.toHexString(context.resources.getColor(R.color.clouds, null))}"),
+            Color("#${Integer.toHexString(context.resources.getColor(R.color.concrete, null))}"),
+            Color("#${Integer.toHexString(context.resources.getColor(R.color.orange, null))}"),
+            Color("#${Integer.toHexString(context.resources.getColor(R.color.pumpkin, null))}"),
+            Color("#${Integer.toHexString(context.resources.getColor(R.color.pomegranate, null))}"),
+            Color("#${Integer.toHexString(context.resources.getColor(R.color.silver, null))}"),
+            Color("#${Integer.toHexString(context.resources.getColor(R.color.asbestos, null))}")
+        ))
     }
 
     fun category(id: Long) {
@@ -49,6 +80,7 @@ class EditCategoryViewModel @Inject constructor(
                 }
                 .collect { cat ->
                     category.set(cat)
+                    chosenColor.set(cat.color)
                     messageEmitter.postValue(Message.Success())
                 }
         }
@@ -61,6 +93,7 @@ class EditCategoryViewModel @Inject constructor(
     fun setColor(colorHex: String) {
         category.get()?.color = colorHex
         category.notifyChange()
+        chosenColor.set(colorHex)
     }
 
 }

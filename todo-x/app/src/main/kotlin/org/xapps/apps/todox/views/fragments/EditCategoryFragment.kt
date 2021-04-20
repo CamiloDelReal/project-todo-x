@@ -6,6 +6,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
+import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.github.dhaval2404.colorpicker.MaterialColorPickerDialog
 import com.github.dhaval2404.colorpicker.model.ColorShape
 import com.github.dhaval2404.colorpicker.model.ColorSwatch
@@ -14,6 +16,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import org.xapps.apps.todox.R
 import org.xapps.apps.todox.databinding.FragmentEditCategoryBinding
 import org.xapps.apps.todox.viewmodels.EditCategoryViewModel
+import org.xapps.apps.todox.views.adapters.ColorAdapter
 import timber.log.Timber
 import javax.inject.Inject
 
@@ -24,6 +27,13 @@ class EditCategoryFragment @Inject constructor(): Fragment() {
     private lateinit var bindings: FragmentEditCategoryBinding
 
     private val viewModel: EditCategoryViewModel by viewModels ()
+
+    private lateinit var colorAdapter: ColorAdapter
+    private val colorItemListener = object: ColorAdapter.ItemListener {
+        override fun clicked(colorHex: String) {
+            viewModel.setColor(colorHex)
+        }
+    }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View {
@@ -36,19 +46,9 @@ class EditCategoryFragment @Inject constructor(): Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        bindings.btnChooseColor.setOnClickListener {
-            MaterialColorPickerDialog
-                .Builder(requireActivity())
-                .setTitle(R.string.pick_color)
-                .setColorShape(ColorShape.CIRCLE)
-                .setColors(resources.getStringArray(R.array.colorPicker))
-                .setDefaultColor(if(viewModel.categoryId == -1L) "#${Integer.toHexString(requireContext().resources.getColor(R.color.concrete, null))}" else viewModel.category.get()?.color!!)
-                .setColorListener { color, colorHex ->
-                    Timber.i("Color chosen $colorHex")
-                    viewModel.setColor(colorHex)
-                }
-                .show()
-        }
+        colorAdapter = ColorAdapter(viewModel.colors, viewModel.chosenColor, colorItemListener)
+        bindings.lstColors.layoutManager = GridLayoutManager(requireContext(), 5, RecyclerView.VERTICAL, false)
+        bindings.lstColors.adapter = colorAdapter
 
         bindings.btnFinish.setOnClickListener {
             viewModel.saveCategory()

@@ -7,6 +7,8 @@
         <variable
             name="color"
             type="String" />
+
+        <import type="org.xapps.apps.todox.views.utils.ColorUtils" />
     </data>
 
     <RelativeLayout
@@ -14,13 +16,26 @@
         android:layout_height="64dp">
 
         <com.google.android.material.card.MaterialCardView
+            android:id="@+id/btnColor"
             android:layout_width="48dp"
             android:layout_height="48dp"
             android:layout_centerInParent="true"
             app:cardUseCompatPadding="false"
+            app:cardCornerRadius="24dp"
             colorBackground="@{color}"
+            android:foreground="?attr/selectableItemBackgroundBorderless"
             tools:cardBackgroundColor="@color/family"
-            tools:card="#ff0000"/>
+            tools:card="#ff0000">
+
+            <ImageView
+                android:id="@+id/imgCheck"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_margin="@dimen/content_margin"
+                android:src="@drawable/ic_check"
+                app:tintForeground="@{color}" />
+
+        </com.google.android.material.card.MaterialCardView>
 
     </RelativeLayout>
 

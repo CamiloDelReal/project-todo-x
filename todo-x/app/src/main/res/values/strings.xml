@@ -40,6 +40,7 @@
     <string name="timber">Timber</string>
     <string name="timber_url">https://github.com/JakeWharton/timber</string>
     <string name="create">Create</string>
+    <string name="save">Save</string>
     <string name="name">Name</string>
     <string name="date">Date</string>
     <string name="start_time">Start Time</string>

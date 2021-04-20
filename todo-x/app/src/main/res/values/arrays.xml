@@ -22,4 +22,27 @@
         <item>#bdc3c7</item>
         <item>#7f8c8d</item>
     </string-array>
+
+    <array name="ppp">
+        <item>@color/turquoise</item>
+        <item>@color/emerald</item>
+        <item>@color/peterriver</item>
+        <item>@color/amethyst</item>
+        <item>@color/wetasphalt</item>
+        <item>@color/greensea</item>
+        <item>@color/nephritis</item>
+        <item>@color/belizehole</item>
+        <item>@color/wisteria</item>
+        <item>@color/midnightblue</item>
+        <item>@color/sunflower</item>
+        <item>@color/carrot</item>
+        <item>@color/alizarin</item>
+        <item>@color/clouds</item>
+        <item>@color/concrete</item>
+        <item>@color/orange</item>
+        <item>@color/pumpkin</item>
+        <item>@color/pomegranate</item>
+        <item>@color/silver</item>
+        <item>@color/asbestos</item>
+    </array>
 </resources>
