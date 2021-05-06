@@ -48,6 +48,11 @@ class TaskRepository @Inject constructor(
         return taskDao.taskWithItemsAsync(id).flowOn(Dispatchers.IO)
     }
 
+    fun taskWithItemsAndCategory(id: Long): Flow<TaskWithItemsAndCategory> {
+        Timber.i("Get task $id with items and category")
+        return taskDao.taskWithItemsAndCategoryAsync(id).flowOn(Dispatchers.IO)
+    }
+
     fun tasksWithItemsAndCategoryPaginated(): Flow<PagingData<TaskWithItemsAndCategory>> {
         return Pager(
             config = PagingConfig(

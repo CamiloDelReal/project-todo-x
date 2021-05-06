@@ -82,9 +82,9 @@ class EditCategoryFragment @Inject constructor(): Fragment() {
                 }
                 is Message.Success -> {
                     bindings.progressbar.isVisible = false
-                    // SOme message
-                    val isSave = it.data as Boolean
-                    if(isSave) {
+                    Timber.i("Category operation success with value $it")
+                    val isSave = it.data as Boolean?
+                    if(isSave == true) {
                         findNavController().navigateUp()
                     }
                 }

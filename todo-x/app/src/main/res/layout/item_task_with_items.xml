@@ -60,8 +60,8 @@
 
                 <ImageButton
                     android:id="@+id/btnChangePriority"
-                    android:layout_width="32dp"
-                    android:layout_height="32dp"
+                    android:layout_width="@dimen/favorite_button_size"
+                    android:layout_height="@dimen/favorite_button_size"
                     android:background="?attr/selectableItemBackgroundBorderless"
                     app:colorByPriority="@{data.task.important}"
                     app:iconByPriority="@{data.task.important}" />

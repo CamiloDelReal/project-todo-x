@@ -81,7 +81,7 @@ class EditCategoryViewModel @Inject constructor(
                 .collect { cat ->
                     category.set(cat)
                     chosenColor.set(cat.color)
-                    messageEmitter.postValue(Message.Success(false))
+                    messageEmitter.value = Message.Success(null)
                 }
         }
     }
@@ -93,12 +93,15 @@ class EditCategoryViewModel @Inject constructor(
             if(categoryId == Constants.ID_INVALID) {
                 categoryRepository.insertCategory(category.get()!!)
                         .catch { ex ->
+                            Timber.e(ex)
                             messageEmitter.postValue(Message.Error(Exception(ex.localizedMessage)))
                         }
                         .collect { success ->
                             val message = if(success) {
+                                Timber.e("Category saved in db")
                                 Message.Success(true)
                             } else {
+                                Timber.e("Error inserting category in db")
                                 Message.Error(Exception(context.getString(R.string.error_inserting_category_in_db)))
                             }
                             messageEmitter.postValue(message)
@@ -106,12 +109,15 @@ class EditCategoryViewModel @Inject constructor(
             } else {
                 categoryRepository.updateCategory(category.get()!!)
                         .catch { ex ->
+                            Timber.e(ex)
                             messageEmitter.postValue(Message.Error(Exception(ex.localizedMessage)))
                         }
                         .collect { success ->
                             val message = if(success) {
+                                Timber.e("Category updated in db")
                                 Message.Success(true)
                             } else {
+                                Timber.e("Error updating category in db")
                                 Message.Error(Exception(context.getString(R.string.error_updating_category_in_db)))
                             }
                             messageEmitter.postValue(message)

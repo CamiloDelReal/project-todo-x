@@ -30,7 +30,7 @@ class DatePickerFragment @Inject constructor() : DialogFragment(),
             listener: ((requestKey: String, bundle: Bundle) -> Unit)
         ) {
             val datePriv = date ?: LocalDate.now()
-            Timber.i("Date now =  $datePriv");
+            Timber.i("Date now =  $datePriv")
             val bundle = Bundle().apply {
                 putSerializable(ATTR_DATE, datePriv)
             }

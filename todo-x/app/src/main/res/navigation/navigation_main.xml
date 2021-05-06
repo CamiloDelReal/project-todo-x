@@ -97,10 +97,10 @@
         <action
             android:id="@+id/action_categoryDetailsFragment_to_editTaskFragment"
             app:destination="@id/editTaskFragment"
-            app:enterAnim="@anim/translate_from_right"
+            app:enterAnim="@anim/translate_from_bottom"
             app:exitAnim="@anim/translate_alpha_to_nothing"
             app:popEnterAnim="@anim/translate_alpha_from_nothing"
-            app:popExitAnim="@anim/translate_to_right" />
+            app:popExitAnim="@anim/translate_to_bottom" />
         <argument
             android:name="categoryId"
             android:defaultValue="-1L"
@@ -163,10 +163,10 @@
         <action
             android:id="@+id/action_categoriesListFragment_to_editCategoryFragment"
             app:destination="@id/editCategoryFragment"
-            app:enterAnim="@anim/translate_from_right"
+            app:enterAnim="@anim/translate_from_bottom"
             app:exitAnim="@anim/translate_alpha_to_nothing"
             app:popEnterAnim="@anim/translate_alpha_from_nothing"
-            app:popExitAnim="@anim/translate_to_right" />
+            app:popExitAnim="@anim/translate_to_bottom" />
     </fragment>
     <fragment
         android:id="@+id/editCategoryFragment"

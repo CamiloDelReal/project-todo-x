@@ -18,6 +18,8 @@
     <dimen name="home_button_margin_end">6dp</dimen>
     <dimen name="home_button_margin_start">6dp</dimen>
 
+    <dimen name="favorite_button_size">32dp</dimen>
+
     <dimen name="home_title_height_expanded">70dp</dimen>
     <dimen name="home_title_text_size_expanded">18sp</dimen>
 
@@ -61,6 +63,8 @@
 
     <dimen name="edit_content_space">12dp</dimen>
     <dimen name="content_space">12dp</dimen>
+    <dimen name="text_space">6dp</dimen>
+    <dimen name="text_space_large">18dp</dimen>
 
     <dimen name="edit_button_width">180dp</dimen>
     <dimen name="edit_button_height">46dp</dimen>
@@ -90,6 +94,20 @@
 
     <dimen name="details_category_progress_background_size">1dp</dimen>
     <dimen name="details_category_progress_foreground_size">2dp</dimen>
+
+    <dimen name="detail_task_toolbar_expanded">140dp</dimen>
+    <dimen name="detail_task_toolbar_collapsed">60dp</dimen>
+
+    <dimen name="detail_task_title_text_size_expanded">13sp</dimen>
+    <dimen name="detail_task_title_height_expanded">85dp</dimen>
+
+    <dimen name="detail_task_title_text_size_collapsed">11sp</dimen>
+    <dimen name="detail_task_title_height_collapsed">42dp</dimen>
+
+    <dimen name="detail_task_title_margin_start_expended">20dp</dimen>
+    <dimen name="detail_task_title_margin_end_expended">12dp</dimen>
+    <dimen name="detail_task_title_margin_end_collapsed">8dp</dimen>
+    <dimen name="detail_task_title_margin_bottom_expended">6dp</dimen>
 
     <dimen name="item_category_height">220dp</dimen>
     <dimen name="item_category_padding">6dp</dimen>

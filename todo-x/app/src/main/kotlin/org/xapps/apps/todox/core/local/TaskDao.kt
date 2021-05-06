@@ -66,7 +66,23 @@ interface TaskDao {
 
     @Transaction
     @Query("SELECT * FROM tasks WHERE id = :id")
-    fun taskWithItems(id: Long): Flow<TaskWithItems>
+    fun taskWithItems(id: Long): TaskWithItems
+
+    @Transaction
+    @Query("SELECT * FROM tasks")
+    fun tasksWithItemsAndCategoryAsync(): Flow<List<TaskWithItemsAndCategory>>
+
+    @Transaction
+    @Query("SELECT * FROM tasks")
+    fun tasksWithItemsAndCategory(): List<TaskWithItemsAndCategory>
+
+    @Transaction
+    @Query("SELECT * FROM tasks WHERE id = :id")
+    fun taskWithItemsAndCategoryAsync(id: Long): Flow<TaskWithItemsAndCategory>
+
+    @Transaction
+    @Query("SELECT * FROM tasks WHERE id = :id")
+    fun taskWithItemsAndCategory(id: Long): TaskWithItemsAndCategory
 
     @Query("SELECT COUNT(id) FROM tasks WHERE done = 0")
     fun tasksInScheduleCountAsync(): Flow<Int>

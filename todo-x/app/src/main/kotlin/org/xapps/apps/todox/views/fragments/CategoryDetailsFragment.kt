@@ -53,6 +53,7 @@ class CategoryDetailsFragment @Inject constructor() : Fragment() {
 
     private val tasksItemListener = object : TaskWithItemsAdapter.ItemListener {
         override fun clicked(task: Task) {
+            Timber.i("Requesting opening details for $task")
             findNavController().navigate(
                     CategoryDetailsFragmentDirections.actionCategoryDetailsFragmentToTaskDetailsFragment(
                             task.id

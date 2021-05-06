@@ -15,6 +15,7 @@
     <string name="completed_with_amount">%1$d Completed</string>
     <string name="not_yet_with_amount">%1$d Not yet</string>
     <string name="new_task">New Task</string>
+    <string name="task_of">task</string>
     <string name="calendar">Calendar</string>
     <string name="dash_separator">-</string>
     <string name="today">Today</string>
@@ -60,6 +61,7 @@
     <string name="error_inserting_category_in_db">Error inserting category in database</string>
     <string name="error_updating_category_in_db">Error updating category in database</string>
     <string name="important">Important</string>
+    <string name="not_important">Not important</string>
     <string name="completed">Completed</string>
     <string name="scheduled">Scheduled</string>
     <string name="no_pending_items">No pending items</string>
@@ -84,4 +86,5 @@
     <string name="edit_category">Edit Category</string>
     <string name="color">Color</string>
     <string name="pick_color">Pick color</string>
+    <string name="marked_as">Marked as</string>
 </resources>

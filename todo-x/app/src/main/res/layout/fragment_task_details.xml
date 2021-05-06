@@ -1,17 +1,204 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     tools:context=".views.fragments.TaskDetailsFragment">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <data>
+
+        <import type="org.xapps.apps.todox.views.utils.ColorUtils" />
+
+        <import type="androidx.core.content.ContextCompat" />
+
+        <import type="org.xapps.apps.todox.R" />
+
+        <variable
+            name="viewModel"
+            type="org.xapps.apps.todox.viewmodels.TaskDetailsViewModel" />
+
+    </data>
+
+    <androidx.constraintlayout.motion.widget.MotionLayout
+        android:id="@+id/rootLayout"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:fitsSystemWindows="true"
+        app:categoryBackground="@{viewModel.taskWithItemsAndCategory.category}"
+        app:layoutDescription="@xml/scene_task_details">
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/v96"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.96" />
+
+        <View
+            android:id="@+id/toolbar"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/detail_category_toolbar_expanded"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+
+        <me.zhanghai.android.materialprogressbar.MaterialProgressBar
+            android:id="@+id/progressbar"
+            style="@style/Widget.MaterialProgressBar.ProgressBar.Horizontal"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/horizontal_indeterminated_progressbar"
+            android:indeterminate="true"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="@id/toolbar"
+            app:layout_constraintEnd_toEndOf="@id/toolbar"
+            app:layout_constraintStart_toStartOf="@id/toolbar"
+            app:mpb_progressStyle="horizontal"
+            app:mpb_useIntrinsicPadding="false"
+            tools:visibility="visible" />
+
+        <ImageButton
+            android:id="@+id/btnBack"
+            android:layout_width="?attr/actionBarSize"
+            android:layout_height="?attr/actionBarSize"
+            android:layout_centerInParent="true"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:elevation="8dp"
+            android:src="@drawable/ic_arrow_left"
+            android:tint="@{viewModel.taskWithItemsAndCategory.category != null ? (ColorUtils.isDarkColor(viewModel.taskWithItemsAndCategory.category.color) ? @color/textOnDark : @color/textOnLight) : @color/textOnLight}"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:text="Task Details Fragment" />
+            android:id="@+id/txvTitleCollapsed"
+            style="@style/TextAppearance.MaterialComponents.Headline5"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:ellipsize="end"
+            android:gravity="center_vertical"
+            android:maxLines="1"
+            android:lines="1"
+            android:text="@{viewModel.taskWithItemsAndCategory.task.name}"
+            android:textColor="@{viewModel.taskWithItemsAndCategory.category != null ? (ColorUtils.isDarkColor(viewModel.taskWithItemsAndCategory.category.color) ? @color/textOnDark : @color/textOnLight) : @color/textOnLight}"
+            android:textSize="@dimen/edit_title_text_size_expanded" />
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+        <TextView
+            android:id="@+id/txvTitleExpanded"
+            style="@style/TextAppearance.MaterialComponents.Headline5"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:gravity="center_vertical"
+            android:maxLines="2"
+            android:lines="2"
+            android:text="@{viewModel.taskWithItemsAndCategory.task.name}"
+            android:textColor="@{viewModel.taskWithItemsAndCategory.category != null ? (ColorUtils.isDarkColor(viewModel.taskWithItemsAndCategory.category.color) ? @color/textOnDark : @color/textOnLight) : @color/textOnLight}"
+            android:textSize="@dimen/edit_title_text_size_expanded" />
+
+        <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+            android:id="@+id/btnMoreOptions"
+            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+            android:layout_width="@dimen/home_button_width_collapsed"
+            android:layout_height="@dimen/home_button_height_collapsed"
+            android:gravity="start|center_vertical"
+            android:text="@string/more_options"
+            android:textAllCaps="false"
+            android:textColor="@{viewModel.taskWithItemsAndCategory.category != null ? (ColorUtils.isDarkColor(viewModel.taskWithItemsAndCategory.category.color) ? @color/textOnDark : @color/textOnLight) : @color/textOnLight}"
+            android:textSize="@dimen/home_button_text_size"
+            app:icon="@drawable/ic_dots_vertical"
+            app:iconPadding="@dimen/home_button_icon_padding"
+            app:iconSize="@dimen/home_button_icon_size"
+            app:iconTint="@{viewModel.taskWithItemsAndCategory.category != null ? (ColorUtils.isDarkColor(viewModel.taskWithItemsAndCategory.category.color) ? @color/textOnDark : @color/textOnLight) : @color/textOnLight}"
+            app:layout_constraintBottom_toBottomOf="@id/btnBack"
+            app:layout_constraintEnd_toStartOf="@id/v96"
+            app:layout_constraintTop_toTopOf="@id/btnBack"
+            app:rippleColor="@{viewModel.taskWithItemsAndCategory.category != null ? (ColorUtils.isDarkColor(viewModel.taskWithItemsAndCategory.category.color) ? @color/rippleOnDark : @color/rippleOnLight) : @color/rippleOnLight}"
+            app:strokeColor="@{viewModel.taskWithItemsAndCategory.category != null ? (ColorUtils.isDarkColor(viewModel.taskWithItemsAndCategory.category.color) ? @color/textOnDarkSecondary : @color/textOnLightSecondary) : @color/textOnLightSecondary}" />
+
+        <androidx.core.widget.NestedScrollView
+            android:id="@+id/scrollDetails"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:background="@color/backgroundSecondary"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/toolbar">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="@dimen/content_padding">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="bottom"
+                        android:text="@{viewModel.taskWithItemsAndCategory.category.name}"
+                        android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6"
+                        tools:text="Family" />
+
+                    <Space
+                        android:layout_width="@dimen/text_space"
+                        android:layout_height="wrap_content" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="bottom"
+                        android:text="@string/task_of"
+                        android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle1" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="bottom"
+                        android:text="@string/marked_as"
+                        android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle1" />
+
+                    <Space
+                        android:layout_width="@dimen/text_space"
+                        android:layout_height="wrap_content" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="bottom"
+                        android:text="@{viewModel.taskWithItemsAndCategory.task.important ? @string/important : @string/not_important}"
+                        android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6"
+                        tools:text="Important" />
+
+                    <Space
+                        android:layout_width="@dimen/text_space"
+                        android:layout_height="wrap_content" />
+
+                    <ImageButton
+                        android:id="@+id/btnChangePriority"
+                        android:layout_width="@dimen/favorite_button_size"
+                        android:layout_height="@dimen/favorite_button_size"
+                        android:layout_gravity="center_vertical"
+                        android:background="?attr/selectableItemBackgroundBorderless"
+                        app:colorByPriority="@{viewModel.taskWithItemsAndCategory.task.important}"
+                        app:iconByPriority="@{viewModel.taskWithItemsAndCategory.task.important}" />
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+        </androidx.core.widget.NestedScrollView>
+
+
+    </androidx.constraintlayout.motion.widget.MotionLayout>
 
 </layout>
