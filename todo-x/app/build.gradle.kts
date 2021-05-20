@@ -121,6 +121,9 @@ dependencies {
     // Jetpack Shared Preferences
     implementation(Libraries.Jetpack.SharedPreferences.CORE_KTX)
 
+    // Jetpack DataStore
+    implementation(Libraries.Jetpack.DataStore.BASE)
+
     // Jetpack Lifecycle
     implementation(Libraries.Jetpack.Lifecycle.RUNTIME_KTX)
     implementation(Libraries.Jetpack.Lifecycle.EXTENSIONS)
@@ -144,8 +147,6 @@ dependencies {
     // Hilt
     implementation(Libraries.Hilt.CORE)
     kapt(Libraries.Hilt.COMPILER)
-    implementation(Libraries.Hilt.VIEWMODEL)
-    kapt(Libraries.Hilt.JETPACK_COMPILER)
 
     // Permissions
     implementation(Libraries.Permissions.DEXTER)

@@ -3,10 +3,10 @@ import org.gradle.kotlin.dsl.maven
 
 
 object Plugins {
-    private const val GRADLE_VERSION = "4.1.2"
-    private const val KOTLIN_VERSION = "1.4.31"
-    private const val HILT_VERSION = "2.33-beta"
-    private const val NAVIGATION_SAFE_ARGS_VERSION = "2.3.3"
+    private const val GRADLE_VERSION = "4.2.0"
+    private const val KOTLIN_VERSION = "1.5.0"
+    private const val HILT_VERSION = "2.35.1"
+    private const val NAVIGATION_SAFE_ARGS_VERSION = "2.3.5"
 
     const val GRADLE = "com.android.tools.build:gradle:$GRADLE_VERSION"
     const val KOTLIN = "org.jetbrains.kotlin:kotlin-gradle-plugin:$KOTLIN_VERSION"
@@ -18,7 +18,7 @@ object Build {
     const val SDK_VERSION = 30
     const val MIN_SDK_VERSION = 26
     const val TARGET_SDK_VERSION = 30
-    const val BUILD_TOOLS_VERSION = "30.0.2"
+    const val BUILD_TOOLS_VERSION = "30.0.3"
     const val APPLICATION_ID = "org.xapps.apps.todox"
     const val APP_NAME = "ToDoX"
     const val MAJOR_VERSION = 0
@@ -30,20 +30,13 @@ object Build {
 object Repositories {
     fun addBuildScriptRepositories(handler: RepositoryHandler) {
         handler.google()
-        handler.jcenter()
         handler.maven(url = "https://plugins.gradle.org/m2")
-        handler.maven(url = "https://maven.fabric.io/public")
-        handler.maven(url = "https://clojars.org/repo/")
-        handler.maven(url = "https://repo1.maven.org/maven2")
-        handler.maven(url = "https://jitpack.io")
     }
 
     fun addProjectRepositories(handler: RepositoryHandler) {
         handler.google()
         handler.jcenter()
         handler.mavenCentral()
-        handler.maven(url = "https://clojars.org/repo/")
-        handler.maven(url = "https://repo1.maven.org/maven2")
         handler.maven(url = "https://jitpack.io")
     }
 }
@@ -83,15 +76,15 @@ object Libraries {
         }
 
         object Extensions {
-            private const val ACTIVITY_KOTLIN_EXT_VERSION = "1.2.0"
-            private const val FRAGMENT_KOTLIN_EXT_VERSION = "1.3.0"
+            private const val ACTIVITY_KOTLIN_EXT_VERSION = "1.2.2"
+            private const val FRAGMENT_KOTLIN_EXT_VERSION = "1.3.3"
 
             const val ACTIVITY_KOTLIN_EXT = "androidx.activity:activity-ktx:$ACTIVITY_KOTLIN_EXT_VERSION"
             const val FRAGMENT_KOTLIN_EXT = "androidx.fragment:fragment-ktx:$FRAGMENT_KOTLIN_EXT_VERSION"
         }
 
         object Navigation {
-            private const val VERSION = "2.3.3"
+            private const val VERSION = "2.3.5"
 
             const val UI_KTX = "androidx.navigation:navigation-ui-ktx:$VERSION"
             const val FRAGMENT_KTX = "androidx.navigation:navigation-fragment-ktx:$VERSION"
@@ -112,9 +105,15 @@ object Libraries {
             const val CORE_KTX = "androidx.preference:preference-ktx:$VERSION"
         }
 
+        object DataStore {
+            private const val VERSION = "1.0.0-beta01"
+
+            const val BASE = "androidx.datastore:datastore-preferences:$VERSION"
+        }
+
         object Lifecycle {
             private const val VERSION_EXTENSIONS = "2.2.0"
-            private const val VERSION = "2.3.0"
+            private const val VERSION = "2.3.1"
 
             const val RUNTIME_KTX = "androidx.lifecycle:lifecycle-runtime-ktx:$VERSION"
             const val EXTENSIONS = "androidx.lifecycle:lifecycle-extensions:$VERSION_EXTENSIONS"
@@ -125,7 +124,7 @@ object Libraries {
         }
 
         object Room {
-            private const val VERSION = "2.3.0-beta02"
+            private const val VERSION = "2.3.0"
 
             const val RUNTIME = "androidx.room:room-runtime:$VERSION"
             const val CORE_KTX = "androidx.room:room-ktx:$VERSION"
@@ -134,20 +133,17 @@ object Libraries {
     }
 
     object Dagger {
-        private const val VERSION = "2.33"
+        private const val VERSION = "2.35.1"
 
         const val COMPILER = "com.google.dagger:dagger-compiler:$VERSION"
         const val ANDROID = "com.google.dagger:dagger-android:$VERSION"
     }
 
     object Hilt {
-        private const val VERSION = "2.33-beta"
-        private const val JETPACK_VERSION = "1.0.0-alpha03"
+        private const val VERSION = "2.35.1"
 
         const val CORE = "com.google.dagger:hilt-android:$VERSION"
         const val COMPILER = "com.google.dagger:hilt-android-compiler:$VERSION"
-        const val VIEWMODEL = "androidx.hilt:hilt-lifecycle-viewmodel:$JETPACK_VERSION"
-        const val JETPACK_COMPILER = "androidx.hilt:hilt-compiler:$JETPACK_VERSION"
     }
 
     object Permissions {
