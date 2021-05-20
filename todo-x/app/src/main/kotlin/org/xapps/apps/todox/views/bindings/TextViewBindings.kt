@@ -7,6 +7,7 @@ import org.xapps.apps.todox.core.models.Category
 import org.xapps.apps.todox.core.utils.parseToString
 import timber.log.Timber
 import java.lang.StringBuilder
+import java.time.LocalDate
 import java.time.LocalTime
 
 
@@ -22,6 +23,21 @@ object TextViewBindings {
                 "${100 - ((category.pendingTasksCount * 100f) / category.tasksCount).toInt()}%"
             }
         }
+    }
+
+    @JvmStatic
+    @BindingAdapter("localDateValue")
+    fun localDateValue(
+        view: TextView,
+        localDateValue: LocalDate?
+    ) {
+        Timber.i("localDateValue $localDateValue")
+        val date = localDateValue?.run {
+            parseToString()
+        } ?: run {
+            view.context.getString(R.string.no_date)
+        }
+        view.text = date
     }
 
     @JvmStatic

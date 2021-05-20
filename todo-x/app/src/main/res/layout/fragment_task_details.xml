@@ -69,27 +69,12 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
-            android:id="@+id/txvTitleCollapsed"
-            style="@style/TextAppearance.MaterialComponents.Headline5"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:ellipsize="end"
-            android:gravity="center_vertical"
-            android:maxLines="1"
-            android:lines="1"
-            android:text="@{viewModel.taskWithItemsAndCategory.task.name}"
-            android:textColor="@{viewModel.taskWithItemsAndCategory.category != null ? (ColorUtils.isDarkColor(viewModel.taskWithItemsAndCategory.category.color) ? @color/textOnDark : @color/textOnLight) : @color/textOnLight}"
-            android:textSize="@dimen/edit_title_text_size_expanded" />
-
-        <TextView
-            android:id="@+id/txvTitleExpanded"
+            android:id="@+id/txvTitle"
             style="@style/TextAppearance.MaterialComponents.Headline5"
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:gravity="center_vertical"
-            android:maxLines="2"
-            android:lines="2"
-            android:text="@{viewModel.taskWithItemsAndCategory.task.name}"
+            android:text="@string/task_details"
             android:textColor="@{viewModel.taskWithItemsAndCategory.category != null ? (ColorUtils.isDarkColor(viewModel.taskWithItemsAndCategory.category.color) ? @color/textOnDark : @color/textOnLight) : @color/textOnLight}"
             android:textSize="@dimen/edit_title_text_size_expanded" />
 
@@ -132,52 +117,65 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:gravity="bottom"
                     android:orientation="horizontal">
 
-                    <TextView
+                    <LinearLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_gravity="bottom"
-                        android:text="@{viewModel.taskWithItemsAndCategory.category.name}"
-                        android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6"
-                        tools:text="Family" />
+                        android:orientation="vertical">
 
-                    <Space
-                        android:layout_width="@dimen/text_space"
-                        android:layout_height="wrap_content" />
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:gravity="bottom">
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="bottom"
-                        android:text="@string/task_of"
-                        android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle1" />
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@{viewModel.taskWithItemsAndCategory.category.name}"
+                                android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle1"
+                                tools:text="Family" />
 
-                </LinearLayout>
+                            <Space
+                                android:layout_width="@dimen/text_space"
+                                android:layout_height="wrap_content" />
 
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal">
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/task_of"
+                                android:textAppearance="@style/TextAppearance.MaterialComponents.Body2" />
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="bottom"
-                        android:text="@string/marked_as"
-                        android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle1" />
+                        </LinearLayout>
 
-                    <Space
-                        android:layout_width="@dimen/text_space"
-                        android:layout_height="wrap_content" />
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:gravity="bottom">
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="bottom"
-                        android:text="@{viewModel.taskWithItemsAndCategory.task.important ? @string/important : @string/not_important}"
-                        android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6"
-                        tools:text="Important" />
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/marked_as"
+                                android:textAppearance="@style/TextAppearance.MaterialComponents.Body2" />
+
+                            <Space
+                                android:layout_width="@dimen/text_space"
+                                android:layout_height="wrap_content" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@{viewModel.taskWithItemsAndCategory.task.important ? @string/important : @string/not_important}"
+                                android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle1"
+                                tools:text="Important" />
+
+                        </LinearLayout>
+
+                    </LinearLayout>
 
                     <Space
                         android:layout_width="@dimen/text_space"
@@ -187,12 +185,92 @@
                         android:id="@+id/btnChangePriority"
                         android:layout_width="@dimen/favorite_button_size"
                         android:layout_height="@dimen/favorite_button_size"
-                        android:layout_gravity="center_vertical"
                         android:background="?attr/selectableItemBackgroundBorderless"
                         app:colorByPriority="@{viewModel.taskWithItemsAndCategory.task.important}"
                         app:iconByPriority="@{viewModel.taskWithItemsAndCategory.task.important}" />
 
                 </LinearLayout>
+
+                <Space
+                    android:layout_height="@dimen/text_space"
+                    android:layout_width="wrap_content" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@{viewModel.taskWithItemsAndCategory.task.name}"
+                    android:textAppearance="@style/TextAppearance.MaterialComponents.Headline5"
+                    tools:text="Granma dancing class after church" />
+
+                <Space
+                    android:layout_height="@dimen/text_space"
+                    android:layout_width="wrap_content" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="bottom">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/date"
+                        android:textAppearance="@style/TextAppearance.MaterialComponents.Body2" />
+
+                    <Space
+                        android:layout_width="@dimen/text_space"
+                        android:layout_height="wrap_content" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        app:localDateValue="@{viewModel.taskWithItemsAndCategory.task.date}"
+                        android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle1"
+                        tools:text="May 23, 2021" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="bottom">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/time"
+                        android:textAppearance="@style/TextAppearance.MaterialComponents.Body2" />
+
+                    <Space
+                        android:layout_width="@dimen/text_space"
+                        android:layout_height="wrap_content" />
+
+                    <TextView
+                        android:id="@+id/txvTime"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle1"
+                        app:localTimeEndValue="@{viewModel.taskWithItemsAndCategory.task.endTime}"
+                        app:localTimeStartValue="@{viewModel.taskWithItemsAndCategory.task.startTime}"
+                        tools:text="10:30 AM" />
+
+                </LinearLayout>
+
+                <Space
+                    android:layout_height="@dimen/text_space"
+                    android:layout_width="wrap_content" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/tasks"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
 
             </LinearLayout>
 

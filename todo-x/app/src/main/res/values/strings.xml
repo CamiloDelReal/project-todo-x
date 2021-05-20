@@ -87,4 +87,6 @@
     <string name="color">Color</string>
     <string name="pick_color">Pick color</string>
     <string name="marked_as">Marked as</string>
+    <string name="task_details">Task details</string>
+    <string name="time">Time</string>
 </resources>

@@ -18,37 +18,21 @@
         <Constraint
             android:id="@+id/toolbar"
             android:layout_width="0dp"
-            android:layout_height="@dimen/detail_task_toolbar_expanded"/>
+            android:layout_height="@dimen/detail_task_toolbar_expanded" />
 
         <Constraint
-            android:id="@+id/txvTitleExpanded"
+            android:id="@+id/txvTitle"
             android:layout_width="0dp"
             android:layout_height="@dimen/detail_task_title_height_expanded"
-            app:layout_constraintEnd_toEndOf="@id/toolbar"
-            app:layout_constraintBottom_toBottomOf="@id/toolbar"
+            android:layout_marginStart="@dimen/detail_task_title_margin_horizontal_expended"
+            android:layout_marginEnd="@dimen/detail_task_title_margin_horizontal_expended"
             android:layout_marginBottom="@dimen/detail_task_title_margin_bottom_expended"
-            android:layout_marginStart="@dimen/detail_task_title_margin_start_expended"
-            android:layout_marginEnd="@dimen/detail_task_title_margin_end_expended"
-            android:alpha="1.0"
+            app:layout_constraintBottom_toBottomOf="@id/toolbar"
+            app:layout_constraintEnd_toEndOf="@id/toolbar"
             app:layout_constraintStart_toStartOf="@id/toolbar">
             <CustomAttribute
                 app:attributeName="textSize"
                 app:customDimension="@dimen/detail_task_title_text_size_expanded" />
-        </Constraint>
-
-        <Constraint
-            android:id="@+id/txvTitleCollapsed"
-            android:layout_width="0dp"
-            android:layout_height="@dimen/detail_task_title_height_collapsed"
-            android:layout_marginEnd="@dimen/detail_task_title_margin_end_collapsed"
-            app:layout_constraintEnd_toStartOf="@id/btnMoreOptions"
-            app:layout_constraintBottom_toBottomOf="@id/btnBack"
-            app:layout_constraintStart_toEndOf="@id/btnBack"
-            android:alpha="0.0"
-            app:layout_constraintTop_toTopOf="@id/btnBack">
-            <CustomAttribute
-                app:attributeName="textSize"
-                app:customDimension="@dimen/detail_task_title_text_size_collapsed" />
         </Constraint>
 
         <Constraint android:id="@+id/progressbar">
@@ -68,31 +52,12 @@
             android:layout_height="@dimen/detail_task_toolbar_collapsed" />
 
         <Constraint
-            android:id="@+id/txvTitleExpanded"
-            android:layout_width="0dp"
-            android:layout_height="@dimen/detail_task_title_height_expanded"
-            app:layout_constraintEnd_toEndOf="@id/toolbar"
-            app:layout_constraintTop_toBottomOf="@id/toolbar"
-            app:layout_constraintBottom_toBottomOf="@id/toolbar"
-            android:layout_marginBottom="@dimen/detail_task_title_margin_bottom_expended"
-            android:layout_marginStart="@dimen/detail_task_title_margin_start_expended"
-            android:layout_marginEnd="@dimen/detail_task_title_margin_end_expended"
-            android:alpha="0.0"
-            app:layout_constraintStart_toStartOf="@id/toolbar">
-            <CustomAttribute
-                app:attributeName="textSize"
-                app:customDimension="@dimen/detail_task_title_text_size_expanded" />
-        </Constraint>
-
-        <Constraint
-            android:id="@+id/txvTitleCollapsed"
+            android:id="@+id/txvTitle"
             android:layout_width="0dp"
             android:layout_height="@dimen/detail_task_title_height_collapsed"
-            android:layout_marginEnd="@dimen/detail_task_title_margin_end_collapsed"
-            app:layout_constraintEnd_toStartOf="@id/btnMoreOptions"
             app:layout_constraintBottom_toBottomOf="@id/btnBack"
+            app:layout_constraintEnd_toStartOf="@id/btnNewTask"
             app:layout_constraintStart_toEndOf="@id/btnBack"
-            android:alpha="1.0"
             app:layout_constraintTop_toTopOf="@id/btnBack">
             <CustomAttribute
                 app:attributeName="textSize"
