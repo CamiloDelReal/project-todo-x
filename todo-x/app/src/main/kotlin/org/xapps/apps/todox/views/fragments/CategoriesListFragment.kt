@@ -17,7 +17,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import org.xapps.apps.todox.core.models.Category
-import org.xapps.apps.todox.core.settings.SettingsService
+import org.xapps.apps.todox.core.repositories.SettingsRepository
 import org.xapps.apps.todox.databinding.FragmentCategoriesListBinding
 import org.xapps.apps.todox.viewmodels.CategoriesListViewModel
 import org.xapps.apps.todox.views.adapters.CategoryListAdapter
@@ -42,7 +42,7 @@ class CategoriesListFragment @Inject constructor(): Fragment() {
     }
 
     @Inject
-    lateinit var settings: SettingsService
+    lateinit var settings: SettingsRepository
 
     private lateinit var categoryAdapter: CategoryListAdapter
 
@@ -133,11 +133,14 @@ class CategoriesListFragment @Inject constructor(): Fragment() {
                 categoryAdapter.submitData(it)
             }
         })
+
+        lifecycleScope.launchWhenResumed {
+            setStatusBarForegoundColor(!settings.isDarkModeOnValue())
+        }
     }
 
     override fun onResume() {
         super.onResume()
         requireActivity().onBackPressedDispatcher.addCallback(onBackPressedCallback)
-        setStatusBarForegoundColor(!settings.isDarkModeOn())
     }
 }

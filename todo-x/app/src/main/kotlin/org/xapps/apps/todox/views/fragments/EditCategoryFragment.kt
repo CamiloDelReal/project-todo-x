@@ -9,16 +9,12 @@ import androidx.activity.OnBackPressedCallback
 import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.github.dhaval2404.colorpicker.MaterialColorPickerDialog
-import com.github.dhaval2404.colorpicker.model.ColorShape
-import com.github.dhaval2404.colorpicker.model.ColorSwatch
-import com.skydoves.whatif.whatIf
 import dagger.hilt.android.AndroidEntryPoint
-import org.xapps.apps.todox.R
-import org.xapps.apps.todox.core.settings.SettingsService
+import org.xapps.apps.todox.core.repositories.SettingsRepository
 import org.xapps.apps.todox.databinding.FragmentEditCategoryBinding
 import org.xapps.apps.todox.viewmodels.EditCategoryViewModel
 import org.xapps.apps.todox.views.adapters.ColorAdapter
@@ -35,7 +31,7 @@ class EditCategoryFragment @Inject constructor(): Fragment() {
     private val viewModel: EditCategoryViewModel by viewModels ()
 
     @Inject
-    lateinit var settings: SettingsService
+    lateinit var settings: SettingsRepository
 
     private val onBackPressedCallback: OnBackPressedCallback by lazy {
         object: OnBackPressedCallback(true) {
@@ -95,11 +91,14 @@ class EditCategoryFragment @Inject constructor(): Fragment() {
                 }
             }
         })
+
+        lifecycleScope.launchWhenResumed {
+            setStatusBarForegoundColor(!settings.isDarkModeOnValue())
+        }
     }
 
     override fun onResume() {
         super.onResume()
         requireActivity().onBackPressedDispatcher.addCallback(onBackPressedCallback)
-        setStatusBarForegoundColor(!settings.isDarkModeOn())
     }
 }

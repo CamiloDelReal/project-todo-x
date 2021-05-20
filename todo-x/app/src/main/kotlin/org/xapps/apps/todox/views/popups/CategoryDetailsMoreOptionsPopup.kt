@@ -8,9 +8,8 @@ import androidx.fragment.app.setFragmentResult
 import androidx.fragment.app.setFragmentResultListener
 import dagger.hilt.android.AndroidEntryPoint
 import org.xapps.apps.todox.R
-import org.xapps.apps.todox.core.settings.SettingsService
+import org.xapps.apps.todox.core.repositories.SettingsRepository
 import org.xapps.apps.todox.databinding.ContentPopupCategoryDetailsMoreOptionsBinding
-import org.xapps.apps.todox.databinding.ContentPopupHomeMoreOptionsBinding
 import javax.inject.Inject
 
 
@@ -39,7 +38,7 @@ class CategoryDetailsMoreOptionsPopup @Inject constructor() : DialogFragment() {
     private lateinit var bindings: ContentPopupCategoryDetailsMoreOptionsBinding
 
     @Inject
-    lateinit var settings: SettingsService
+    lateinit var settings: SettingsRepository
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

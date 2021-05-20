@@ -8,7 +8,7 @@ import androidx.fragment.app.setFragmentResult
 import androidx.fragment.app.setFragmentResultListener
 import dagger.hilt.android.AndroidEntryPoint
 import org.xapps.apps.todox.R
-import org.xapps.apps.todox.core.settings.SettingsService
+import org.xapps.apps.todox.core.repositories.SettingsRepository
 import org.xapps.apps.todox.databinding.ContentPopupTasksListMoreOptionsBinding
 import org.xapps.apps.todox.viewmodels.FilterType
 import javax.inject.Inject
@@ -43,7 +43,7 @@ class TasksListMoreOptionsPopup @Inject constructor(private val starterFilter: F
     private lateinit var bindings: ContentPopupTasksListMoreOptionsBinding
 
     @Inject
-    lateinit var settings: SettingsService
+    lateinit var settings: SettingsRepository
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

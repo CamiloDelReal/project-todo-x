@@ -4,11 +4,13 @@ import androidx.lifecycle.*
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import org.xapps.apps.todox.core.models.Category
 import org.xapps.apps.todox.core.repositories.CategoryRepository
+import org.xapps.apps.todox.core.repositories.SettingsRepository
 import org.xapps.apps.todox.core.repositories.TaskRepository
 import org.xapps.apps.todox.views.utils.Message
 import javax.inject.Inject
@@ -17,7 +19,8 @@ import javax.inject.Inject
 @HiltViewModel
 class HomeViewModel @Inject constructor(
     private val categoryRepository: CategoryRepository,
-    private val tasksRepository: TaskRepository
+    private val tasksRepository: TaskRepository,
+    private val settingsRepository: SettingsRepository
 ) : ViewModel() {
 
     private val messageEmitter: MutableLiveData<Message> = MutableLiveData()
@@ -43,6 +46,10 @@ class HomeViewModel @Inject constructor(
                 messageEmitter.postValue(Message.Error(Exception(ex.localizedMessage)))
             }
             .asLiveData()
+
+    fun isDarkModeOn(): Flow<Boolean> = settingsRepository.isDarkModeOn()
+
+    suspend fun isDarkModeOnValue(): Boolean = settingsRepository.isDarkModeOnValue()
 
     init {
         categories()

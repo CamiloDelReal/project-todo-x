@@ -15,11 +15,15 @@ import androidx.paging.LoadState
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import org.xapps.apps.todox.R
+import org.xapps.apps.todox.core.utils.error
+import org.xapps.apps.todox.core.utils.info
 import org.xapps.apps.todox.core.models.Category
-import org.xapps.apps.todox.core.settings.SettingsService
+import org.xapps.apps.todox.core.repositories.SettingsRepository
 import org.xapps.apps.todox.databinding.FragmentHomeBinding
 import org.xapps.apps.todox.viewmodels.FilterType
 import org.xapps.apps.todox.viewmodels.HomeViewModel
@@ -46,7 +50,7 @@ class HomeFragment @Inject constructor() : Fragment() {
     }
 
     @Inject
-    lateinit var settings: SettingsService
+    lateinit var settings: SettingsRepository
 
     private lateinit var categoryAdapter: CategoryHomeAdapter
 
@@ -87,12 +91,14 @@ class HomeFragment @Inject constructor() : Fragment() {
                 }
                 when (option) {
                     HomeMoreOptionsPopup.MORE_OPTIONS_POPUP_OPEN_CATEGORIES -> {
+                        info<HomeFragment>("Open Categories view request received")
                         findNavController().navigate(HomeFragmentDirections.actionHomeFragmentToCategoriesListFragment())
                     }
                     HomeMoreOptionsPopup.MORE_OPTIONS_POPUP_DARK_MODE_UPDATED -> {
-                        AppCompatDelegate.setDefaultNightMode(if (settings.isDarkModeOn()) AppCompatDelegate.MODE_NIGHT_YES else AppCompatDelegate.MODE_NIGHT_NO)
+                        info<HomeFragment>("Dark mode configuration has changed. Flow collector will handle it")
                     }
                     HomeMoreOptionsPopup.MORE_OPTIONS_POPUP_OPEN_ABOUT_VIEW -> {
+                        info<HomeFragment>("Open About view request received")
                         findNavController().navigate(HomeFragmentDirections.actionHomeFragmentToAboutFragment())
                     }
                 }
@@ -163,12 +169,25 @@ class HomeFragment @Inject constructor() : Fragment() {
             bindings.btnToday.setDescription(resources.getQuantityString(R.plurals.task_count, count, count))
         })
 
+        lifecycleScope.launchWhenResumed {
+            viewModel.isDarkModeOn()
+                .catch { ex->
+                    error<HomeFragment>(ex)
+                }
+                .collect { isDarkModeOn ->
+                    info<HomeFragment>("Using dark mode flow collector")
+                    AppCompatDelegate.setDefaultNightMode(if (isDarkModeOn) AppCompatDelegate.MODE_NIGHT_YES else AppCompatDelegate.MODE_NIGHT_NO)
+                }
+        }
+
+        lifecycleScope.launchWhenResumed {
+            setStatusBarForegoundColor(!viewModel.isDarkModeOnValue())
+        }
     }
 
     override fun onResume() {
         super.onResume()
         requireActivity().onBackPressedDispatcher.addCallback(onBackPressedCallback)
-        setStatusBarForegoundColor(!settings.isDarkModeOn())
     }
 
 }

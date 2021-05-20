@@ -9,10 +9,11 @@ import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import dagger.hilt.android.AndroidEntryPoint
 import org.xapps.apps.todox.R
-import org.xapps.apps.todox.core.settings.SettingsService
+import org.xapps.apps.todox.core.repositories.SettingsRepository
 import org.xapps.apps.todox.core.utils.parseToString
 import org.xapps.apps.todox.databinding.FragmentEditTaskBinding
 import org.xapps.apps.todox.viewmodels.EditTaskViewModel
@@ -41,7 +42,7 @@ class EditTaskFragment @Inject constructor() : Fragment() {
     }
 
     @Inject
-    lateinit var settings: SettingsService
+    lateinit var settings: SettingsRepository
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -124,11 +125,14 @@ class EditTaskFragment @Inject constructor() : Fragment() {
                 }
             }
         })
+
+        lifecycleScope.launchWhenResumed {
+            setStatusBarForegoundColor(!settings.isDarkModeOnValue())
+        }
     }
 
     override fun onResume() {
         super.onResume()
         requireActivity().onBackPressedDispatcher.addCallback(onBackPressedCallback)
-        setStatusBarForegoundColor(!settings.isDarkModeOn())
     }
 }

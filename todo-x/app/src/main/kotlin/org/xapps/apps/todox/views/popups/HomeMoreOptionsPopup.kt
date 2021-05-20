@@ -6,9 +6,12 @@ import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.setFragmentResult
 import androidx.fragment.app.setFragmentResultListener
+import androidx.lifecycle.lifecycleScope
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 import org.xapps.apps.todox.R
-import org.xapps.apps.todox.core.settings.SettingsService
+import org.xapps.apps.todox.core.repositories.SettingsRepository
 import org.xapps.apps.todox.databinding.ContentPopupHomeMoreOptionsBinding
 import javax.inject.Inject
 
@@ -39,7 +42,7 @@ class HomeMoreOptionsPopup @Inject constructor() : DialogFragment() {
     private lateinit var bindings: ContentPopupHomeMoreOptionsBinding
 
     @Inject
-    lateinit var settings: SettingsService
+    lateinit var settings: SettingsRepository
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -62,6 +65,10 @@ class HomeMoreOptionsPopup @Inject constructor() : DialogFragment() {
             close()
         }
 
+        runBlocking {
+            bindings.btnDarkMode.isChecked = settings.isDarkModeOnValue()
+        }
+
         bindings.btnCategories.setOnClickListener {
             val data = Bundle().apply {
                 putInt(MORE_OPTIONS_POPUP_OPTION, MORE_OPTIONS_POPUP_OPEN_CATEGORIES)
@@ -69,13 +76,14 @@ class HomeMoreOptionsPopup @Inject constructor() : DialogFragment() {
             close(data)
         }
 
-        bindings.btnDarkMode.isChecked = settings.isDarkModeOn()
-        bindings.btnDarkMode.addOnCheckedChangeListener { button, isChecked ->
-            settings.setIsDarkModeOn(isChecked)
-            val data = Bundle().apply {
-                putInt(MORE_OPTIONS_POPUP_OPTION, MORE_OPTIONS_POPUP_DARK_MODE_UPDATED)
+        bindings.btnDarkMode.addOnCheckedChangeListener { _, isChecked ->
+            lifecycleScope.launch {
+                settings.setIsDarkModeOn(isChecked)
+                val data = Bundle().apply {
+                    putInt(MORE_OPTIONS_POPUP_OPTION, MORE_OPTIONS_POPUP_DARK_MODE_UPDATED)
+                }
+                close(data)
             }
-            close(data)
         }
 
         bindings.btnAbout.setOnClickListener {

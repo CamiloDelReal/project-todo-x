@@ -13,7 +13,7 @@ import kotlinx.coroutines.launch
 import org.xapps.apps.todox.R
 import org.xapps.apps.todox.core.models.Category
 import org.xapps.apps.todox.core.repositories.CategoryRepository
-import org.xapps.apps.todox.core.settings.SettingsService
+import org.xapps.apps.todox.core.repositories.SettingsRepository
 import org.xapps.apps.todox.views.utils.Message
 import timber.log.Timber
 import java.lang.Exception
@@ -23,7 +23,7 @@ import javax.inject.Inject
 @HiltViewModel
 class SplashViewModel @Inject constructor(
     @ApplicationContext private val context: Context,
-    private val settingsService: SettingsService,
+    private val settingsRepository: SettingsRepository,
     private val categoryRepository: CategoryRepository
 ): ViewModel() {
 
@@ -34,7 +34,7 @@ class SplashViewModel @Inject constructor(
     fun prepareApp() {
         viewModelScope.launch {
             messageEmitter.postValue(Message.Loading)
-            if(settingsService.isFirstTime()) {
+            if(settingsRepository.isFirstTimeValue()) {
                 val categories = listOf (
                     Category(name = context.getString(R.string.unclassified), color = "#${Integer.toHexString(context.resources.getColor(R.color.concrete, null))}"),
                     Category(name = context.getString(R.string.family), color = "#${Integer.toHexString(context.resources.getColor(R.color.alizarin, null))}"),
@@ -51,7 +51,7 @@ class SplashViewModel @Inject constructor(
                         Timber.i("Result $success")
                         messageEmitter.postValue(if(success) Message.Success() else Message.Error(Exception(context.getString(R.string.error_creating_default_categories))))
                     }
-                settingsService.setIsFirstTime(false)
+                settingsRepository.setIsFirstTime(false)
             } else {
                 messageEmitter.postValue(Message.Success())
             }
