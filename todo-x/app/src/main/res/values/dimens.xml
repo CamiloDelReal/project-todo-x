@@ -7,6 +7,12 @@
     <dimen name="home_button_width_expanded">140dp</dimen>
     <dimen name="home_button_height_expanded">46dp</dimen>
 
+    <dimen name="button_width_collapsed">42dp</dimen>
+    <dimen name="button_height_collapsed">46dp</dimen>
+    <dimen name="button_text_size">13sp</dimen>
+    <dimen name="button_icon_size">18dp</dimen>
+    <dimen name="button_icon_padding">8dp</dimen>
+
     <dimen name="home_button_width_collapsed">42dp</dimen>
     <dimen name="home_button_height_collapsed">46dp</dimen>
 
@@ -46,7 +52,7 @@
     <dimen name="content_margin_small">4dp</dimen>
 
     <dimen name="edit_toolbar_expanded">120dp</dimen>
-    <dimen name="edit_toolbar_collapsed">60dp</dimen>
+    <dimen name="edit_toolbar_collapsed">56dp</dimen>
 
     <dimen name="edit_title_margin_start_expended">20dp</dimen>
     <dimen name="edit_title_margin_bottom_expended">6dp</dimen>
@@ -55,6 +61,8 @@
 
     <dimen name="edit_title_text_size_expanded">13sp</dimen>
     <dimen name="edit_title_height_expanded">56dp</dimen>
+
+    <dimen name="title_text_size_collapsed">20sp</dimen>
 
     <dimen name="edit_title_text_size_collapsed">11sp</dimen>
     <dimen name="edit_title_height_collapsed">42dp</dimen>

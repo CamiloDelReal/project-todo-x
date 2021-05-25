@@ -3,25 +3,43 @@ package org.xapps.apps.todox.core.repositories
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
+import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
+import kotlinx.coroutines.withContext
 import org.xapps.apps.todox.core.local.CategoryDao
 import org.xapps.apps.todox.core.models.Category
+import org.xapps.apps.todox.core.repositories.failures.CategoryFailure
+import org.xapps.apps.todox.core.utils.*
+import org.xapps.apps.todox.viewmodels.Constants
 import timber.log.Timber
+import java.time.LocalDate
 import javax.inject.Inject
 
 
 class CategoryRepository @Inject constructor(
+    private val dispatcher: CoroutineDispatcher,
     private val categoryDao: CategoryDao
 ) {
 
-    fun insert(categories: List<Category>): Flow<Boolean> {
-        return flow {
+    suspend fun insert(categories: List<Category>): Either<CategoryFailure, List<Category>> = withContext(dispatcher) {
+        info<CategoryRepository>("Insert $categories")
+        try {
             val ids = categoryDao.insertAsync(categories)
-            emit(ids.size == categories.size)
-        }.flowOn(Dispatchers.IO)
+            if(ids.size == categories.size) {
+                categories.forEachIndexed { index, category -> category.id = ids[index] }
+                info<CategoryRepository>("Categories successfully inserted")
+                categories.toSuccess()
+            } else {
+                CategoryFailure.Database.toError()
+            }
+        } catch (ex: Exception) {
+            error<CategoryRepository>(ex, "Exception captured")
+            CategoryFailure.Exception(ex.localizedMessage).toError()
+        }
     }
 
     fun categoriesPaginated(): Flow<PagingData<Category>> {
@@ -32,33 +50,46 @@ class CategoryRepository @Inject constructor(
                 maxSize = 50
             )
         ) {
-            categoryDao.categoriesPaginatedAsync()
-        }.flow.flowOn(Dispatchers.IO)
+            categoryDao.categoriesWithDateCountPaginatedAsync(LocalDate.now().parseToString(Constants.DATE_PATTERN_DB))
+        }.flow.flowOn(dispatcher)
     }
 
     fun categories(): Flow<List<Category>> {
         Timber.i("About to call categoriesAsync")
         return categoryDao.categoriesAsync()
-            .flowOn(Dispatchers.IO)
+            .flowOn(dispatcher)
     }
 
     fun category(id: Long): Flow<Category> {
         return categoryDao.categoryAsync(id)
-            .flowOn(Dispatchers.IO)
+            .flowOn(dispatcher)
     }
 
-    fun insertCategory(category: Category): Flow<Boolean> {
-        return flow {
+    suspend fun insertCategory(category: Category): Either<CategoryFailure, Category> = withContext(dispatcher) {
+        try {
             val id = categoryDao.insertAsync(category)
-            emit(id != 0)
-        }.flowOn(Dispatchers.IO)
+            if(id != Constants.ID_INVALID) {
+                category.id = id
+                category.toSuccess()
+            } else {
+                CategoryFailure.Database.toError()
+            }
+        } catch (ex: Exception) {
+            CategoryFailure.Exception(ex.localizedMessage).toError()
+        }
     }
 
-    fun updateCategory(category: Category): Flow<Boolean> {
-        return flow {
+    suspend fun updateCategory(category: Category): Either<CategoryFailure, Category> = withContext(dispatcher) {
+        try {
             val count = categoryDao.updateAsync(category)
-            emit(count == 1)
-        }.flowOn(Dispatchers.IO)
+            if(count == 1) {
+                category.toSuccess()
+            } else {
+                CategoryFailure.Database.toError()
+            }
+        } catch (ex: Exception) {
+            CategoryFailure.Exception(ex.localizedMessage).toError()
+        }
     }
 
 }

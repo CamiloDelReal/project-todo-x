@@ -24,4 +24,7 @@ data class Category (
     @ColumnInfo(name = "pending_tasks_count")
     var pendingTasksCount: Int = 0
 
+    @ColumnInfo(name = "today_tasks_count")
+    var todayTasksCount: Int = 0
+
 }

@@ -17,13 +17,18 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.tabs.TabLayout
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import org.xapps.apps.todox.core.models.Task
 import org.xapps.apps.todox.core.models.TaskWithItems
+import org.xapps.apps.todox.core.utils.error
+import org.xapps.apps.todox.core.utils.info
+import org.xapps.apps.todox.core.utils.warning
 import org.xapps.apps.todox.databinding.FragmentCategoryDetailsBinding
 import org.xapps.apps.todox.viewmodels.CategoryDetailsViewModel
 import org.xapps.apps.todox.viewmodels.FilterType
+import org.xapps.apps.todox.views.adapters.CategoryListAdapter
 import org.xapps.apps.todox.views.adapters.DateHeaderDecoration
 import org.xapps.apps.todox.views.adapters.TaskWithItemsAdapter
 import org.xapps.apps.todox.views.popups.CategoryDetailsMoreOptionsPopup
@@ -55,9 +60,7 @@ class CategoryDetailsFragment @Inject constructor() : Fragment() {
         override fun clicked(task: Task) {
             Timber.i("Requesting opening details for $task")
             findNavController().navigate(
-                    CategoryDetailsFragmentDirections.actionCategoryDetailsFragmentToTaskDetailsFragment(
-                            task.id
-                    )
+                    CategoryDetailsFragmentDirections.actionCategoryDetailsFragmentToTaskDetailsFragment(task.id)
             )
         }
 
@@ -146,15 +149,17 @@ class CategoryDetailsFragment @Inject constructor() : Fragment() {
 
             override fun onTabSelected(tab: TabLayout.Tab?) {
                 bindings.filterTabsLayout.postDelayed({
-                    when (bindings.filterTabsLayout.selectedTabPosition) {
-                        0 -> {
-                            viewModel.filter = FilterType.SCHEDULED
-                        }
-                        1 -> {
-                            viewModel.filter = FilterType.IMPORTANT
-                        }
-                        2 -> {
-                            viewModel.filter = FilterType.COMPLETED
+                    lifecycleScope.launch {
+                        when (bindings.filterTabsLayout.selectedTabPosition) {
+                            0 -> {
+                                viewModel.filter = FilterType.SCHEDULED
+                            }
+                            1 -> {
+                                viewModel.filter = FilterType.IMPORTANT
+                            }
+                            2 -> {
+                                viewModel.filter = FilterType.COMPLETED
+                            }
                         }
                     }
                 }, 100)
@@ -162,23 +167,26 @@ class CategoryDetailsFragment @Inject constructor() : Fragment() {
 
         })
 
-        viewModel.message().observe(viewLifecycleOwner, Observer {
-            when (it) {
-                is Message.Loading -> {
-                    bindings.progressbar.isVisible = true
-                }
-                is Message.Success -> {
-                    bindings.progressbar.isVisible = false
-                    Timber.i("Success received  ${viewModel.category.get()}")
-                    setStatusBarForegoundColor(!ColorUtils.isDarkColor(viewModel.category.get()!!.color))
-                }
-                is Message.Error -> {
-                    bindings.progressbar.isVisible = false
-                    Timber.e(it.exception)
-                    // Show some message here
-                }
-            }
-        })
+        lifecycleScope.launchWhenResumed {
+           viewModel.messageFlow
+               .collect {
+                   when (it) {
+                       is Message.Loading -> {
+                           bindings.progressbar.isVisible = true
+                       }
+                       is Message.Success -> {
+                           bindings.progressbar.isVisible = false
+                           Timber.i("Success received  ${viewModel.category.get()}")
+                           setStatusBarForegoundColor(!ColorUtils.isDarkColor(viewModel.category.get()!!.color))
+                       }
+                       is Message.Error -> {
+                           bindings.progressbar.isVisible = false
+                           error<CategoryDetailsFragment>(it.exception, "Exception captured")
+                           // Show some message here
+                       }
+                   }
+               }
+        }
 
         lifecycleScope.launch {
             taskAdapter.loadStateFlow.collectLatest { loadStates ->
@@ -186,11 +194,13 @@ class CategoryDetailsFragment @Inject constructor() : Fragment() {
             }
         }
 
-        viewModel.tasksPaginated().observe(viewLifecycleOwner, { data ->
-            lifecycleScope.launch {
-                data?.let { taskAdapter.submitData(it) }
-            }
-        })
+        lifecycleScope.launchWhenResumed {
+            viewModel.tasksPaginatedFlow
+                .collectLatest { data ->
+                    info<CategoryDetailsFragment>("Task paging data received $data")
+                    data?.let { taskAdapter.submitData(it) }
+                }
+        }
 
         when (viewModel.filter) {
             FilterType.SCHEDULED -> {
@@ -201,6 +211,9 @@ class CategoryDetailsFragment @Inject constructor() : Fragment() {
             }
             FilterType.COMPLETED -> {
                 bindings.filterTabsLayout.selectTab(bindings.filterTabsLayout.getTabAt(2))
+            }
+            else -> {
+                warning<CategoryDetailsFragment>("Task filter ${viewModel.filter} wrong for this view")
             }
         }
     }

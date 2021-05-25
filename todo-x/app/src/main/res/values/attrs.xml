@@ -20,4 +20,8 @@
         <attr name="ar_icon" format="reference" />
     </declare-styleable>
 
+    <declare-styleable name="ItemEditItem">
+        <attr name="iei_text" format="string" />
+    </declare-styleable>
+
 </resources>

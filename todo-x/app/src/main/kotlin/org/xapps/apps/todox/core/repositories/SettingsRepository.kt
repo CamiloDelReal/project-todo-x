@@ -28,7 +28,7 @@ class SettingsRepository @Inject constructor(
     private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = preferenceName)
 
     suspend fun isFirstTimeValue(): Boolean =
-        context.dataStore.data.flowOn(dispatcher).first()[ATTR_IS_FIRST_TIME] ?: false
+        context.dataStore.data.flowOn(dispatcher).first()[ATTR_IS_FIRST_TIME] ?: true
 
     suspend fun setIsFirstTime(isFirstTime: Boolean) =
         context.dataStore.edit { preferences ->

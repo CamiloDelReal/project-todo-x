@@ -29,7 +29,6 @@ class TaskWithItemsAdapter(
     }
 
     interface ItemListener {
-
         fun clicked(task: Task)
         fun taskUpdated(task: Task)
     }

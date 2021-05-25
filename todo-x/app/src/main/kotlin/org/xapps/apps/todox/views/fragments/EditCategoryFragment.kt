@@ -14,6 +14,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.collect
 import org.xapps.apps.todox.core.repositories.SettingsRepository
 import org.xapps.apps.todox.databinding.FragmentEditCategoryBinding
 import org.xapps.apps.todox.viewmodels.EditCategoryViewModel
@@ -71,26 +72,29 @@ class EditCategoryFragment @Inject constructor(): Fragment() {
             viewModel.saveCategory()
         }
 
-        viewModel.message().observe(viewLifecycleOwner, Observer {
-            when(it) {
-                is Message.Loading -> {
-                    bindings.progressbar.isVisible = true
-                }
-                is Message.Success -> {
-                    bindings.progressbar.isVisible = false
-                    Timber.i("Category operation success with value $it")
-                    val isSave = it.data as Boolean?
-                    if(isSave == true) {
-                        findNavController().navigateUp()
+        lifecycleScope.launchWhenResumed {
+            viewModel.messageFlow
+                .collect {
+                    when(it) {
+                        is Message.Loading -> {
+                            bindings.progressbar.isVisible = true
+                        }
+                        is Message.Success -> {
+                            bindings.progressbar.isVisible = false
+                            Timber.i("Category operation success with value $it")
+                            val isSave = it.data as Boolean?
+                            if(isSave == true) {
+                                findNavController().navigateUp()
+                            }
+                        }
+                        is Message.Error -> {
+                            bindings.progressbar.isVisible = false
+                            Timber.e(it.exception)
+                            //Message here
+                        }
                     }
                 }
-                is Message.Error -> {
-                    bindings.progressbar.isVisible = false
-                    Timber.e(it.exception)
-                    //Message here
-                }
-            }
-        })
+        }
 
         lifecycleScope.launchWhenResumed {
             setStatusBarForegoundColor(!settings.isDarkModeOnValue())

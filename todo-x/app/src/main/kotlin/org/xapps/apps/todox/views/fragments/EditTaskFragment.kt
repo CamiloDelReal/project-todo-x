@@ -4,19 +4,26 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.collect
 import org.xapps.apps.todox.R
 import org.xapps.apps.todox.core.repositories.SettingsRepository
 import org.xapps.apps.todox.core.utils.parseToString
 import org.xapps.apps.todox.databinding.FragmentEditTaskBinding
 import org.xapps.apps.todox.viewmodels.EditTaskViewModel
+import org.xapps.apps.todox.views.adapters.ItemAdapter
 import org.xapps.apps.todox.views.popups.DatePickerFragment
 import org.xapps.apps.todox.views.popups.TimePickerFragment
 import org.xapps.apps.todox.views.utils.Message
@@ -41,6 +48,8 @@ class EditTaskFragment @Inject constructor() : Fragment() {
         }
     }
 
+    private lateinit var itemsAdapter: ItemAdapter
+
     @Inject
     lateinit var settings: SettingsRepository
 
@@ -56,6 +65,10 @@ class EditTaskFragment @Inject constructor() : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        itemsAdapter = ItemAdapter(viewModel.items, true)
+        bindings.lstTasks.layoutManager = LinearLayoutManager(requireContext(), RecyclerView.VERTICAL, false)
+        bindings.lstTasks.adapter = itemsAdapter
 
         bindings.btnBack.setOnClickListener {
             findNavController().navigateUp()
@@ -108,23 +121,26 @@ class EditTaskFragment @Inject constructor() : Fragment() {
             }
         }
 
-        viewModel.message().observe(viewLifecycleOwner, Observer {
-            when(it) {
-                is Message.Loading -> {
-                    bindings.progressbar.isVisible = true
+        lifecycleScope.launchWhenResumed {
+            viewModel.messageFlow
+                .collect {
+                    when (it) {
+                        is Message.Loading -> {
+                            bindings.progressbar.isVisible = true
+                        }
+                        is Message.Success -> {
+                            bindings.progressbar.isVisible = false
+                            // SOme message
+                            findNavController().navigateUp()
+                        }
+                        is Message.Error -> {
+                            bindings.progressbar.isVisible = false
+                            Timber.e(it.exception)
+                            //Message here
+                        }
+                    }
                 }
-                is Message.Success -> {
-                    bindings.progressbar.isVisible = false
-                    // SOme message
-                    findNavController().navigateUp()
-                }
-                is Message.Error -> {
-                    bindings.progressbar.isVisible = false
-                    Timber.e(it.exception)
-                    //Message here
-                }
-            }
-        })
+        }
 
         lifecycleScope.launchWhenResumed {
             setStatusBarForegoundColor(!settings.isDarkModeOnValue())

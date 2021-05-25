@@ -1,12 +1,12 @@
 package org.xapps.apps.todox.viewmodels
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import org.xapps.apps.todox.core.models.Category
@@ -17,14 +17,14 @@ import javax.inject.Inject
 
 @HiltViewModel
 class CategoriesListViewModel @Inject constructor(
-        private val categoryRepository: CategoryRepository
+    private val categoryRepository: CategoryRepository
 ): ViewModel(){
 
-    private val messageEmitter: MutableLiveData<Message> = MutableLiveData()
-    private val categoriesPaginatedEmitter: MutableLiveData<PagingData<Category>> = MutableLiveData()
+    private val _messageFlow: MutableSharedFlow<Message> = MutableSharedFlow(replay = 1)
+    private val _categoriesPaginatedFlow: MutableSharedFlow<PagingData<Category>> = MutableSharedFlow(replay = 1)
 
-    fun message(): LiveData<Message> = messageEmitter
-    fun categoriesPaginated(): LiveData<PagingData<Category>> = categoriesPaginatedEmitter
+    val messageFlow: SharedFlow<Message> = _messageFlow
+    val categoriesPaginatedFlow: SharedFlow<PagingData<Category>> = _categoriesPaginatedFlow
 
     init {
         categories()
@@ -33,7 +33,7 @@ class CategoriesListViewModel @Inject constructor(
     fun categories() {
         viewModelScope.launch {
             categoryRepository.categoriesPaginated().cachedIn(viewModelScope).collectLatest { data ->
-                categoriesPaginatedEmitter.postValue(data)
+                _categoriesPaginatedFlow.tryEmit(data)
             }
         }
     }

@@ -15,6 +15,7 @@ import androidx.paging.LoadState
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import org.xapps.apps.todox.core.models.Task
@@ -111,21 +112,23 @@ class TasksListFragment @Inject constructor() : Fragment() {
             override fun onItemRangeChanged(positionStart: Int, itemCount: Int, payload: Any?) {}
         })
 
-        viewModel.message().observe(viewLifecycleOwner, {
-            when (it) {
-                is Message.Loading -> {
-                    bindings.progressbar.isVisible = true
-                }
-                is Message.Success -> {
-                    bindings.progressbar.isVisible = false
-                }
-                is Message.Error -> {
-                    bindings.progressbar.isVisible = false
-                    Timber.e(it.exception)
-                    // Show some message here
+        lifecycleScope.launchWhenResumed {
+            viewModel.messageFlow.collect {
+                when (it) {
+                    is Message.Loading -> {
+                        bindings.progressbar.isVisible = true
+                    }
+                    is Message.Success -> {
+                        bindings.progressbar.isVisible = false
+                    }
+                    is Message.Error -> {
+                        bindings.progressbar.isVisible = false
+                        Timber.e(it.exception)
+                        // Show some message here
+                    }
                 }
             }
-        })
+        }
 
         lifecycleScope.launch {
             taskAdapter.loadStateFlow.collectLatest { loadStates ->

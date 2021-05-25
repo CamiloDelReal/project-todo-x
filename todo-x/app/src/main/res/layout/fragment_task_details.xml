@@ -259,7 +259,7 @@
                 </LinearLayout>
 
                 <Space
-                    android:layout_height="@dimen/text_space"
+                    android:layout_height="@dimen/text_space_large"
                     android:layout_width="wrap_content" />
 
                 <TextView
@@ -269,8 +269,11 @@
                     android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
 
                 <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/lstItems"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="wrap_content"
+                    tools:listitem="@layout/item_item"
+                    tools:itemCount="5"/>
 
             </LinearLayout>
 

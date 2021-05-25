@@ -70,4 +70,10 @@ object TextViewBindings {
         view.text = view.context.resources.getString(R.string.remaining, count)
     }
 
+    @JvmStatic
+    @BindingAdapter("todayTasksCount")
+    fun todayTasksCount(view: TextView, count: Int) {
+        view.text = view.context.resources.getQuantityString(R.plurals.today_task_count, count, count)
+    }
+
 }

@@ -9,10 +9,10 @@ import androidx.room.PrimaryKey
 data class Item (
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "id")
-    val id: Long = 0,
+    var id: Long = 0,
 
     @ColumnInfo(name = "description")
-    var description: String,
+    var description: String = "",
 
     @ColumnInfo(name = "done")
     var done: Boolean = false,

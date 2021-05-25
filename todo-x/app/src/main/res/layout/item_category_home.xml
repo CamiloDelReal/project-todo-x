@@ -76,7 +76,7 @@
                     style="@style/TextAppearance.MaterialComponents.Caption"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:text="2 tasks for today"
+                    app:todayTasksCount="@{data.todayTasksCount}"
                     android:textColor="@{ColorUtils.isDarkColor(data.color) ? @color/textOnDark : @color/textOnLight }"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"

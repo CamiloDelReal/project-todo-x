@@ -16,7 +16,7 @@ import org.xapps.apps.todox.core.models.Task
         Task::class,
         Item::class
     ],
-    version = 1,
+    version = 2,
     exportSchema = false
 )
 @TypeConverters(*[

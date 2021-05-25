@@ -43,7 +43,7 @@ object Repositories {
 
 object Libraries {
     object Kotlin {
-        private const val CORE_VERSION = "1.3.2"
+        private const val CORE_VERSION = "1.5.0-rc02"
         private const val COROUTINES_VERSION = "1.4.2"
 
         const val MODULE = "stdlib-jdk8"

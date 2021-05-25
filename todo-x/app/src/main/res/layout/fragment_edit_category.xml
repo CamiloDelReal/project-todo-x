@@ -12,18 +12,17 @@
 
     </data>
 
-    <androidx.constraintlayout.motion.widget.MotionLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/rootLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="?attr/colorSurface"
-        android:fitsSystemWindows="true"
-        app:layoutDescription="@xml/scene_edit_task">
+        android:fitsSystemWindows="true">
 
         <View
             android:id="@+id/toolbar"
             android:layout_width="0dp"
-            android:layout_height="@dimen/edit_toolbar_expanded"
+            android:layout_height="@dimen/edit_toolbar_collapsed"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -47,11 +46,15 @@
             android:id="@+id/txvTitle"
             style="@style/TextAppearance.MaterialComponents.Headline5"
             android:layout_width="0dp"
-            android:layout_height="0dp"
+            android:layout_height="@dimen/edit_title_height_collapsed"
             android:gravity="center_vertical"
             android:text="@{viewModel.categoryId == -1 ? @string/create_category : @string/edit_category}"
             android:textColor="?attr/colorOnSurface"
-            android:textSize="@dimen/edit_title_text_size_expanded" />
+            android:textSize="@dimen/title_text_size_collapsed"
+            app:layout_constraintBottom_toBottomOf="@id/btnBack"
+            app:layout_constraintEnd_toEndOf="@id/toolbar"
+            app:layout_constraintStart_toEndOf="@id/btnBack"
+            app:layout_constraintTop_toTopOf="@id/btnBack" />
 
         <androidx.core.widget.NestedScrollView
             android:id="@+id/content"
@@ -59,7 +62,7 @@
             android:layout_height="0dp"
             android:background="@color/backgroundSecondary"
             android:scrollbars="vertical"
-            app:layout_constraintBottom_toTopOf="@id/buttonLayout"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/toolbar">
@@ -95,16 +98,12 @@
                     android:id="@+id/lstColors"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/tilName"
-                    app:layout_constraintBottom_toTopOf="@id/buttonLayout"
-                    tools:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
                     android:layout_marginHorizontal="@dimen/content_margin_large"
                     android:layout_marginVertical="@dimen/content_margin_large"
-                    tools:spanCount="5"
+                    tools:itemCount="20"
+                    tools:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
                     tools:listitem="@layout/item_color"
-                    tools:itemCount="20"/>
+                    tools:spanCount="5" />
 
             </LinearLayout>
 
@@ -117,33 +116,30 @@
             android:layout_centerInParent="true"
             android:background="?attr/selectableItemBackgroundBorderless"
             android:elevation="8dp"
+            android:contentDescription="@string/back"
             android:src="@drawable/ic_close"
             android:tint="?attr/colorOnSurface"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <RelativeLayout
-            android:id="@+id/buttonLayout"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:background="?attr/colorSurface"
-            app:layout_constraintBottom_toBottomOf="parent"
+        <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+            android:id="@+id/btnFinish"
+            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+            android:layout_width="@dimen/button_width_collapsed"
+            android:layout_height="@dimen/button_height_collapsed"
+            android:backgroundTint="?attr/colorSurface"
+            android:gravity="start|center_vertical"
+            android:text="@string/create_task"
+            android:textAllCaps="false"
+            android:textSize="@dimen/button_text_size"
+            app:icon="@drawable/ic_check"
+            app:iconPadding="@dimen/button_icon_padding"
+            android:layout_marginEnd="@dimen/content_margin"
+            app:iconSize="@dimen/button_icon_size"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent">
+            app:layout_constraintTop_toTopOf="@id/btnBack"
+            app:layout_constraintBottom_toBottomOf="@id/btnBack"/>
 
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/btnFinish"
-                style="@style/Widget.MaterialComponents.Button.UnelevatedButton"
-                android:layout_width="@dimen/edit_button_width"
-                android:layout_height="@dimen/edit_button_height"
-                android:layout_centerInParent="true"
-                android:gravity="center"
-                android:text="@{viewModel.categoryId == -1 ? @string/create : @string/save}"
-                android:textAllCaps="false"
-                app:cornerRadius="18dp" />
-
-        </RelativeLayout>
-
-    </androidx.constraintlayout.motion.widget.MotionLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 </layout>

@@ -131,43 +131,56 @@ class HomeFragment @Inject constructor() : Fragment() {
             }
         }
 
-        viewModel.message().observe(viewLifecycleOwner, {
-            when(it) {
-                is Message.Loading -> {
-                    bindings.progressbar.isVisible = true
+        lifecycleScope.launchWhenResumed {
+            viewModel.messageFlow
+                .collect {
+                    when (it) {
+                        is Message.Loading -> {
+                            bindings.progressbar.isVisible = true
+                        }
+                        is Message.Success -> {
+                            bindings.progressbar.isVisible = false
+                            findNavController().navigateUp()
+                        }
+                        is Message.Error -> {
+                            bindings.progressbar.isVisible = false
+                            Timber.e(it.exception)
+                            //Message here
+                        }
+                    }
                 }
-                is Message.Success -> {
-                    bindings.progressbar.isVisible = false
-                    findNavController().navigateUp()
+        }
+
+        lifecycleScope.launchWhenResumed {
+            viewModel.categoriesPaginatedFlow
+                .collect {
+                    categoryAdapter.submitData(it)
                 }
-                is Message.Error -> {
-                    bindings.progressbar.isVisible = false
-                    Timber.e(it.exception)
-                    //Message here
+        }
+
+        lifecycleScope.launchWhenResumed {
+            viewModel.tasksImportantCount()
+                .collect { count ->
+                    info<HomeFragment>("Tasks important count received: $count")
+                    bindings.btnImportant.setDescription(resources.getQuantityString(R.plurals.task_count, count, count))
                 }
-            }
-        })
+        }
 
-        viewModel.categoriesPaginated().observe(viewLifecycleOwner, {
-            lifecycleScope.launch {
-                categoryAdapter.submitData(it)
-            }
-        })
+        lifecycleScope.launchWhenResumed {
+            viewModel.tasksInScheduleCount()
+                .collect { count ->
+                    info<HomeFragment>("Tasks in schedule count received: $count")
+                    bindings.btnInSchedule.setDescription(resources.getQuantityString(R.plurals.task_count, count, count))
+                }
+        }
 
-        viewModel.tasksImportantCount().observe(viewLifecycleOwner, { count ->
-            Timber.i("Tasks important count received: $count")
-            bindings.btnImportant.setDescription(resources.getQuantityString(R.plurals.task_count, count, count))
-        })
-
-        viewModel.tasksInScheduleCount().observe(viewLifecycleOwner, { count ->
-            Timber.i("Tasks in schedule count received: $count")
-            bindings.btnInSchedule.setDescription(resources.getQuantityString(R.plurals.task_count, count, count))
-        })
-
-        viewModel.tasksTodayCount().observe(viewLifecycleOwner, { count ->
-            Timber.i("Tasks for today count received: $count")
-            bindings.btnToday.setDescription(resources.getQuantityString(R.plurals.task_count, count, count))
-        })
+        lifecycleScope.launchWhenResumed {
+            viewModel.tasksTodayCount()
+                .collect { count ->
+                    info<HomeFragment>("Tasks for today count received: $count")
+                    bindings.btnToday.setDescription(resources.getQuantityString(R.plurals.task_count, count, count))
+                }
+        }
 
         lifecycleScope.launchWhenResumed {
             viewModel.isDarkModeOn()

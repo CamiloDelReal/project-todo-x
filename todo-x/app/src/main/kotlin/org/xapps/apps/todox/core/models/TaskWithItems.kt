@@ -2,14 +2,15 @@ package org.xapps.apps.todox.core.models
 
 import androidx.room.Embedded
 import androidx.room.Relation
+import java.util.*
 
 
 data class TaskWithItems (
     @Embedded
-    val task: Task,
+    var task: Task,
 
     @Relation(parentColumn = "id", entityColumn = "task_id")
-    val items: List<Item>
+    var items: List<Item>
 ) {
 
     fun itemsDescriptions(): String =

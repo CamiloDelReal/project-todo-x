@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+        <variable
+            name="item"
+            type="org.xapps.apps.todox.core.models.Item" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingVertical="4dp">
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/tilTask"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            app:layout_constraintTop_toTopOf="parent"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:descendantFocusability="afterDescendants"
+            app:hintEnabled="false">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/tieTask"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@={item.description}"
+                android:paddingStart="40dp"
+                android:paddingEnd="72dp"
+                android:inputType="textMultiLine" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.checkbox.MaterialCheckBox
+            android:layout_width="32dp"
+            android:layout_height="?attr/actionBarSize"
+            android:layout_marginStart="8dp"
+            android:checked="@={item.done}"
+            app:layout_constraintTop_toTopOf="@id/tilTask"
+            app:layout_constraintStart_toStartOf="@id/tilTask" />
+
+        <ImageButton
+            android:id="@+id/btnAddBelow"
+            android:layout_width="32dp"
+            android:layout_height="?attr/actionBarSize"
+            android:layout_centerInParent="true"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:src="@drawable/ic_plus_chevron_down"
+            android:layout_marginEnd="8dp"
+            android:tint="?attr/colorOnSurface"
+            app:layout_constraintEnd_toEndOf="@id/tilTask"
+            app:layout_constraintTop_toTopOf="@id/tilTask" />
+
+        <ImageButton
+            android:id="@+id/btnAddAbove"
+            android:layout_width="32dp"
+            android:layout_height="?attr/actionBarSize"
+            android:layout_centerInParent="true"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:src="@drawable/ic_plus_chevron_up"
+            android:tint="?attr/colorOnSurface"
+            app:layout_constraintEnd_toStartOf="@id/btnAddBelow"
+            app:layout_constraintTop_toTopOf="@id/tilTask"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</layout>

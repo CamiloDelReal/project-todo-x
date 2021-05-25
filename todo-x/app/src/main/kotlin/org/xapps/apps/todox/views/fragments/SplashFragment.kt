@@ -10,8 +10,11 @@ import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.collect
+import org.xapps.apps.todox.core.utils.info
 import org.xapps.apps.todox.databinding.FragmentSplashBinding
 import org.xapps.apps.todox.viewmodels.SplashViewModel
 import org.xapps.apps.todox.views.utils.Message
@@ -45,13 +48,17 @@ class SplashFragment @Inject constructor() : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        viewModel.message().observe(viewLifecycleOwner, Observer {
-            if(it is Message.Success) {
-                findNavController().navigate(SplashFragmentDirections.actionSplashFragmentToHomeFragment())
-            } else {
+        lifecycleScope.launchWhenResumed {
+            viewModel.messageFlow
+                .collect {
+                    info<SplashFragment>("Message received $it")
+                    if(it is Message.Success) {
+                        findNavController().navigate(SplashFragmentDirections.actionSplashFragmentToHomeFragment())
+                    } else {
 
-            }
-        })
+                    }
+                }
+        }
 
         Handler(Looper.getMainLooper()).postDelayed({
             context?.let {

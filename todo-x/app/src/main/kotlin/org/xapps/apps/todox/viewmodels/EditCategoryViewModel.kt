@@ -6,6 +6,8 @@ import androidx.databinding.ObservableField
 import androidx.lifecycle.*
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
+import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
@@ -13,6 +15,8 @@ import org.xapps.apps.todox.R
 import org.xapps.apps.todox.core.models.Category
 import org.xapps.apps.todox.core.models.Color
 import org.xapps.apps.todox.core.repositories.CategoryRepository
+import org.xapps.apps.todox.core.repositories.failures.CategoryFailure
+import org.xapps.apps.todox.core.utils.error
 import org.xapps.apps.todox.views.utils.Message
 import timber.log.Timber
 import javax.inject.Inject
@@ -25,7 +29,7 @@ class EditCategoryViewModel @Inject constructor(
     private val categoryRepository: CategoryRepository
 ) : ViewModel() {
 
-    private val messageEmitter: MutableLiveData<Message> = MutableLiveData()
+    private val _messageFlow: MutableSharedFlow<Message> = MutableSharedFlow(replay = 1)
     val category: ObservableField<Category> = ObservableField()
 
     var categoryId: Long = Constants.ID_INVALID
@@ -34,7 +38,7 @@ class EditCategoryViewModel @Inject constructor(
     val colors: ObservableArrayList<Color> = ObservableArrayList()
     val chosenColor: ObservableField<String> = ObservableField()
 
-    fun message(): LiveData<Message> = messageEmitter
+    val messageFlow: SharedFlow<Message> = _messageFlow
 
     init {
         categoryId = savedStateHandle[Constants.CATEGORY_ID] ?: Constants.ID_INVALID
@@ -72,58 +76,41 @@ class EditCategoryViewModel @Inject constructor(
     }
 
     fun category(id: Long) {
-        messageEmitter.postValue(Message.Loading)
+        _messageFlow.tryEmit(Message.Loading)
         viewModelScope.launch {
             categoryRepository.category(id)
                 .catch { ex ->
-                    messageEmitter.postValue(Message.Error(Exception(ex.localizedMessage)))
+                    _messageFlow.tryEmit(Message.Error(Exception(ex.localizedMessage)))
                 }
                 .collect { cat ->
                     category.set(cat)
                     chosenColor.set(cat.color)
-                    messageEmitter.value = Message.Success(null)
+                    _messageFlow.tryEmit(Message.Success(null))
                 }
         }
     }
 
     fun saveCategory() {
         Timber.i("Category saved ${category.get()}")
-        messageEmitter.postValue(Message.Loading)
+        _messageFlow.tryEmit(Message.Loading)
         viewModelScope.launch {
-            if(categoryId == Constants.ID_INVALID) {
+            val result = if(categoryId == Constants.ID_INVALID) {
                 categoryRepository.insertCategory(category.get()!!)
-                        .catch { ex ->
-                            Timber.e(ex)
-                            messageEmitter.postValue(Message.Error(Exception(ex.localizedMessage)))
-                        }
-                        .collect { success ->
-                            val message = if(success) {
-                                Timber.e("Category saved in db")
-                                Message.Success(true)
-                            } else {
-                                Timber.e("Error inserting category in db")
-                                Message.Error(Exception(context.getString(R.string.error_inserting_category_in_db)))
-                            }
-                            messageEmitter.postValue(message)
-                        }
+
             } else {
                 categoryRepository.updateCategory(category.get()!!)
-                        .catch { ex ->
-                            Timber.e(ex)
-                            messageEmitter.postValue(Message.Error(Exception(ex.localizedMessage)))
-                        }
-                        .collect { success ->
-                            val message = if(success) {
-                                Timber.e("Category updated in db")
-                                Message.Success(true)
-                            } else {
-                                Timber.e("Error updating category in db")
-                                Message.Error(Exception(context.getString(R.string.error_updating_category_in_db)))
-                            }
-                            messageEmitter.postValue(message)
-                        }
             }
+            result.either(::handleCategoryFailure, ::handleCategorySuccess)
         }
+    }
+
+    private fun handleCategorySuccess(category: Category) {
+        _messageFlow.tryEmit(Message.Success(true))
+    }
+
+    private fun handleCategoryFailure(failure: CategoryFailure) {
+        error<EditCategoryViewModel>("Error received $failure")
+        _messageFlow.tryEmit(Message.Error(Exception(context.getString(R.string.error_saving_category_in_db))))
     }
 
     fun setColor(colorHex: String) {

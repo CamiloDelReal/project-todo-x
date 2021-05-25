@@ -8,9 +8,14 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
+import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.Dispatchers
 import org.xapps.apps.todox.core.local.CategoryDao
 import org.xapps.apps.todox.core.local.ItemDao
 import org.xapps.apps.todox.core.local.TaskDao
+import org.xapps.apps.todox.core.repositories.CategoryRepository
+import org.xapps.apps.todox.core.repositories.ItemRepository
+import org.xapps.apps.todox.core.repositories.TaskRepository
 import javax.inject.Singleton
 
 
@@ -41,5 +46,20 @@ class LocalModule {
     @Provides
     fun provideItemDao(localDatabaseService: LocalDatabaseService): ItemDao =
         localDatabaseService.itemDao()
+
+    @Singleton
+    @Provides
+    fun provideTaskRepository(taskDao: TaskDao, itemDao: ItemDao): TaskRepository =
+        TaskRepository(Dispatchers.IO, taskDao, itemDao)
+
+    @Singleton
+    @Provides
+    fun provideCategoryRepository(categoryDao: CategoryDao): CategoryRepository =
+        CategoryRepository(Dispatchers.IO, categoryDao)
+
+    @Singleton
+    @Provides
+    fun provideItemRepository(itemDao: ItemDao): ItemRepository =
+        ItemRepository(Dispatchers.IO, itemDao)
 
 }

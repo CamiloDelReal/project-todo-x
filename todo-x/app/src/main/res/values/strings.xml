@@ -76,6 +76,10 @@
         <item quantity="one">%d task</item>
         <item quantity="other">%d tasks</item>
     </plurals>
+    <plurals name="today_task_count">
+        <item quantity="one">%d task for today</item>
+        <item quantity="other">%d tasks for today</item>
+    </plurals>
     <string name="no_categories">No categories yet</string>
     <string name="remaining">%d remaining</string>
     <string name="colors">Colors</string>
@@ -89,4 +93,7 @@
     <string name="marked_as">Marked as</string>
     <string name="task_details">Task details</string>
     <string name="time">Time</string>
+    <string name="back">Back</string>
+    <string name="error_saving_category_in_db">Error saving category in database</string>
+    <string name="error_updating_item_in_db">Error updating item in database</string>
 </resources>

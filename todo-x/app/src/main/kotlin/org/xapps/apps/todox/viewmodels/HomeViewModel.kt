@@ -4,9 +4,7 @@ import androidx.lifecycle.*
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.catch
-import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import org.xapps.apps.todox.core.models.Category
 import org.xapps.apps.todox.core.repositories.CategoryRepository
@@ -23,29 +21,29 @@ class HomeViewModel @Inject constructor(
     private val settingsRepository: SettingsRepository
 ) : ViewModel() {
 
-    private val messageEmitter: MutableLiveData<Message> = MutableLiveData()
-    private val categoriesPaginatedEmitter: MutableLiveData<PagingData<Category>> = MutableLiveData()
+    private val _messageFlow: MutableSharedFlow<Message> = MutableSharedFlow(replay = 1)
+    private val _categoriesPaginatedFlow: MutableSharedFlow<PagingData<Category>> = MutableSharedFlow(replay = 1)
 
-    fun message(): LiveData<Message> = messageEmitter
-    fun categoriesPaginated(): LiveData<PagingData<Category>> = categoriesPaginatedEmitter
+    val messageFlow: SharedFlow<Message> = _messageFlow
+    val categoriesPaginatedFlow: SharedFlow<PagingData<Category>> = _categoriesPaginatedFlow
 
-    fun tasksImportantCount(): LiveData<Int> = tasksRepository.tasksImportantCount()
+    fun tasksImportantCount(): SharedFlow<Int> = tasksRepository.tasksImportantCount()
             .catch { ex ->
-                messageEmitter.postValue(Message.Error(Exception(ex.localizedMessage)))
+                _messageFlow.tryEmit(Message.Error(Exception(ex.localizedMessage)))
             }
-            .asLiveData()
+            .shareIn(viewModelScope, SharingStarted.Lazily, replay = 1)
 
-    fun tasksInScheduleCount(): LiveData<Int> = tasksRepository.tasksInScheduleCount()
+    fun tasksInScheduleCount(): SharedFlow<Int> = tasksRepository.tasksInScheduleCount()
             .catch {  ex ->
-                messageEmitter.postValue(Message.Error(Exception(ex.localizedMessage)))
+                _messageFlow.tryEmit(Message.Error(Exception(ex.localizedMessage)))
             }
-            .asLiveData()
+            .shareIn(viewModelScope, SharingStarted.Lazily, replay = 1)
 
-    fun tasksTodayCount(): LiveData<Int> = tasksRepository.tasksTodayCount()
+    fun tasksTodayCount(): SharedFlow<Int> = tasksRepository.tasksTodayCount()
             .catch { ex ->
-                messageEmitter.postValue(Message.Error(Exception(ex.localizedMessage)))
+                _messageFlow.tryEmit(Message.Error(Exception(ex.localizedMessage)))
             }
-            .asLiveData()
+            .shareIn(viewModelScope, SharingStarted.Lazily, replay = 1)
 
     fun isDarkModeOn(): Flow<Boolean> = settingsRepository.isDarkModeOn()
 
@@ -58,7 +56,7 @@ class HomeViewModel @Inject constructor(
     fun categories() {
         viewModelScope.launch {
             categoryRepository.categoriesPaginated().cachedIn(viewModelScope).collectLatest { data ->
-                categoriesPaginatedEmitter.postValue(data)
+                _categoriesPaginatedFlow.tryEmit(data)
             }
         }
     }

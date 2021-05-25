@@ -14,6 +14,7 @@ import androidx.paging.LoadState
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import org.xapps.apps.todox.core.models.Category
@@ -105,22 +106,25 @@ class CategoriesListFragment @Inject constructor(): Fragment() {
             }
         })
 
-        viewModel.message().observe(viewLifecycleOwner, {
-            when(it) {
-                is Message.Loading -> {
-                    bindings.progressbar.isVisible = true
+        lifecycleScope.launchWhenResumed {
+            viewModel.messageFlow
+                .collect {
+                    when(it) {
+                        is Message.Loading -> {
+                            bindings.progressbar.isVisible = true
+                        }
+                        is Message.Success -> {
+                            bindings.progressbar.isVisible = false
+                            findNavController().navigateUp()
+                        }
+                        is Message.Error -> {
+                            bindings.progressbar.isVisible = false
+                            Timber.e(it.exception)
+                            //Message here
+                        }
+                    }
                 }
-                is Message.Success -> {
-                    bindings.progressbar.isVisible = false
-                    findNavController().navigateUp()
-                }
-                is Message.Error -> {
-                    bindings.progressbar.isVisible = false
-                    Timber.e(it.exception)
-                    //Message here
-                }
-            }
-        })
+        }
 
         lifecycleScope.launch {
             categoryAdapter.loadStateFlow.collectLatest { loadStates ->
@@ -128,11 +132,12 @@ class CategoriesListFragment @Inject constructor(): Fragment() {
             }
         }
 
-        viewModel.categoriesPaginated().observe(viewLifecycleOwner, {
-            lifecycleScope.launch {
-                categoryAdapter.submitData(it)
-            }
-        })
+        lifecycleScope.launchWhenResumed {
+            viewModel.categoriesPaginatedFlow
+                .collect {
+                    categoryAdapter.submitData(it)
+                }
+        }
 
         lifecycleScope.launchWhenResumed {
             setStatusBarForegoundColor(!settings.isDarkModeOnValue())

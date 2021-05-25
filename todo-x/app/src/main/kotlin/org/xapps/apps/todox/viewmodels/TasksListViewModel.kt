@@ -8,14 +8,14 @@ import androidx.paging.cachedIn
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.Job
-import kotlinx.coroutines.flow.catch
-import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import org.xapps.apps.todox.R
 import org.xapps.apps.todox.core.models.Task
+import org.xapps.apps.todox.core.models.TaskWithItems
 import org.xapps.apps.todox.core.models.TaskWithItemsAndCategory
 import org.xapps.apps.todox.core.repositories.TaskRepository
+import org.xapps.apps.todox.core.repositories.failures.TaskFailure
 import org.xapps.apps.todox.views.utils.Message
 import timber.log.Timber
 import javax.inject.Inject
@@ -28,7 +28,7 @@ class TasksListViewModel @Inject constructor(
     private val taskRepository: TaskRepository
 ): ViewModel() {
 
-    private val messageEmitter: MutableLiveData<Message> = MutableLiveData()
+    private val _messageFlow: MutableSharedFlow<Message> = MutableSharedFlow(replay = 1)
     private val tasksEmitter: MutableLiveData<PagingData<TaskWithItemsAndCategory>> = MutableLiveData()
 
     var filter: FilterType = FilterType.ALL
@@ -68,7 +68,7 @@ class TasksListViewModel @Inject constructor(
 
     private var tasksJob: Job? = null
 
-    fun message(): LiveData<Message> = messageEmitter
+    val messageFlow: SharedFlow<Message> = _messageFlow
     fun tasks(): LiveData<PagingData<TaskWithItemsAndCategory>> = tasksEmitter
 
     init {
@@ -81,7 +81,7 @@ class TasksListViewModel @Inject constructor(
         tasksJob = viewModelScope.launch{
             taskRepository.tasksWithItemsAndCategoryPaginated().cachedIn(viewModelScope)
                 .catch { ex ->
-                    messageEmitter.postValue(Message.Error(Exception(ex.localizedMessage)))
+                    _messageFlow.tryEmit(Message.Error(Exception(ex.localizedMessage)))
                 }
                 .collectLatest { data ->
                     tasksEmitter.postValue(data)
@@ -94,7 +94,7 @@ class TasksListViewModel @Inject constructor(
         tasksJob = viewModelScope.launch {
             taskRepository.tasksInScheduleWithItemsAndCategoryPaginated()
                 .catch { ex ->
-                    messageEmitter.postValue(Message.Error(Exception(ex.localizedMessage)))
+                    _messageFlow.tryEmit(Message.Error(Exception(ex.localizedMessage)))
                 }
                 .collectLatest { data ->
                     tasksEmitter.postValue(data)
@@ -107,7 +107,7 @@ class TasksListViewModel @Inject constructor(
         tasksJob = viewModelScope.launch {
             taskRepository.tasksImportantWithItemsAndCategoryPaginated().cachedIn(viewModelScope)
                 .catch { ex ->
-                    messageEmitter.postValue(Message.Error(Exception(ex.localizedMessage)))
+                    _messageFlow.tryEmit(Message.Error(Exception(ex.localizedMessage)))
                 }
                 .collectLatest { data ->
                     tasksEmitter.postValue(data)
@@ -120,7 +120,7 @@ class TasksListViewModel @Inject constructor(
         tasksJob = viewModelScope.launch {
             taskRepository.tasksCompletedWithItemsAndCategoryPaginated().cachedIn(viewModelScope)
                 .catch { ex ->
-                    messageEmitter.postValue(Message.Error(Exception(ex.localizedMessage)))
+                    _messageFlow.tryEmit(Message.Error(Exception(ex.localizedMessage)))
                 }
                 .collectLatest { data ->
                     tasksEmitter.postValue(data)
@@ -133,7 +133,7 @@ class TasksListViewModel @Inject constructor(
         tasksJob = viewModelScope.launch {
             taskRepository.tasksTodayWithItemsAndCategoryPaginated().cachedIn(viewModelScope)
                 .catch { ex ->
-                    messageEmitter.postValue(Message.Error(Exception(ex.localizedMessage)))
+                    _messageFlow.tryEmit(Message.Error(Exception(ex.localizedMessage)))
                 }
                 .collectLatest { data ->
                     tasksEmitter.postValue(data)
@@ -143,16 +143,16 @@ class TasksListViewModel @Inject constructor(
 
     fun updateTask(task: Task) {
         viewModelScope.launch {
-            taskRepository.update(task)
-                    .catch { ex ->
-                        messageEmitter.postValue(Message.Error(Exception(ex.localizedMessage)))
-                    }
-                    .collect { success ->
-                        if(!success) {
-                            messageEmitter.postValue(Message.Error(Exception(context.getString(R.string.error_updating_task_in_db))))
-                        }
-                    }
+            val result = taskRepository.update(task)
+            result.either(::handleTaskFailure, ::handleTaskSuccess)
         }
+    }
+
+    private fun handleTaskSuccess(task: Task) {
+    }
+
+    private fun handleTaskFailure(failure: TaskFailure) {
+        _messageFlow.tryEmit(Message.Error(Exception(context.getString(R.string.error_updating_task_in_db))))
     }
 
 }

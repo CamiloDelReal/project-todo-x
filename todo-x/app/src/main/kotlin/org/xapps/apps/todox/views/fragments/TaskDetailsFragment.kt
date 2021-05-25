@@ -8,9 +8,14 @@ import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import dagger.hilt.android.AndroidEntryPoint
+import org.xapps.apps.todox.core.models.Item
+import org.xapps.apps.todox.core.utils.info
 import org.xapps.apps.todox.databinding.FragmentTaskDetailsBinding
 import org.xapps.apps.todox.viewmodels.TaskDetailsViewModel
+import org.xapps.apps.todox.views.adapters.ItemAdapter
 import org.xapps.apps.todox.views.utils.ColorUtils
 import javax.inject.Inject
 
@@ -30,6 +35,15 @@ class TaskDetailsFragment @Inject constructor(): Fragment() {
         }
     }
 
+    private lateinit var itemAdapter: ItemAdapter
+
+    private val itemListener = object: ItemAdapter.ItemListener {
+        override fun itemUpdated(item: Item) {
+            info<TaskDetailsFragment>("Requesting update $item")
+            viewModel.updateItem(item)
+        }
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -42,6 +56,10 @@ class TaskDetailsFragment @Inject constructor(): Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        itemAdapter = ItemAdapter(viewModel.items, false, itemListener)
+        bindings.lstItems.layoutManager = LinearLayoutManager(requireContext(), RecyclerView.VERTICAL, false)
+        bindings.lstItems.adapter = itemAdapter
 
         bindings.btnBack.setOnClickListener {
             findNavController().navigateUp()
