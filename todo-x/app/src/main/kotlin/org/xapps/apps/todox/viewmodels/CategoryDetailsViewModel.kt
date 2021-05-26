@@ -68,11 +68,11 @@ class CategoryDetailsViewModel @Inject constructor(
         viewModelScope.launch {
             categoryRepository.category(id)
                 .catch { ex ->
-                    _messageFlow.tryEmit(Message.Error(Exception(ex.localizedMessage)))
+                    _messageFlow.emit(Message.Error(Exception(ex.localizedMessage)))
                 }
                 .collect { cat ->
                     category.set(cat)
-                    _messageFlow.tryEmit(Message.Success())
+                    _messageFlow.emit(Message.Success())
                 }
         }
     }

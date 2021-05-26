@@ -91,7 +91,7 @@ class TasksListViewModel @Inject constructor(
                 }
                 .collectLatest { data ->
                     _tasksFlow.emit(data)
-                    _messageFlow.tryEmit(Message.Loaded)
+                    _messageFlow.emit(Message.Loaded)
                 }
         }
     }
@@ -106,7 +106,7 @@ class TasksListViewModel @Inject constructor(
                 }
                 .collectLatest { data ->
                     _tasksFlow.emit(data)
-                    _messageFlow.tryEmit(Message.Loaded)
+                    _messageFlow.emit(Message.Loaded)
                 }
         }
     }
@@ -121,7 +121,7 @@ class TasksListViewModel @Inject constructor(
                 }
                 .collectLatest { data ->
                     _tasksFlow.emit(data)
-                    _messageFlow.tryEmit(Message.Loaded)
+                    _messageFlow.emit(Message.Loaded)
                 }
         }
     }
@@ -136,7 +136,7 @@ class TasksListViewModel @Inject constructor(
                 }
                 .collectLatest { data ->
                     _tasksFlow.emit(data)
-                    _messageFlow.tryEmit(Message.Loaded)
+                    _messageFlow.emit(Message.Loaded)
                 }
         }
     }
@@ -151,7 +151,7 @@ class TasksListViewModel @Inject constructor(
                 }
                 .collectLatest { data ->
                     _tasksFlow.emit(data)
-                    _messageFlow.tryEmit(Message.Loaded)
+                    _messageFlow.emit(Message.Loaded)
                 }
         }
     }

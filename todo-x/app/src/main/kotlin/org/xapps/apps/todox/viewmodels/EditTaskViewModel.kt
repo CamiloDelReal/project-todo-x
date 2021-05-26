@@ -65,7 +65,7 @@ class EditTaskViewModel @Inject constructor(
         viewModelScope.launch {
             categoryRepository.categories()
                 .catch { ex ->
-                    _messageFlow.tryEmit(Message.Error(Exception(ex.localizedMessage)))
+                    _messageFlow.emit(Message.Error(Exception(ex.localizedMessage)))
                 }
                 .collect {
                     categories.set(it)

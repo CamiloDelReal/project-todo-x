@@ -38,7 +38,7 @@ class SplashViewModel @Inject constructor(
 
     fun prepareApp() {
         viewModelScope.launch {
-            _messageFlow.tryEmit(Message.Loading)
+            _messageFlow.emit(Message.Loading)
             if(settingsRepository.isFirstTimeValue()) {
                 info<SplashViewModel>("Inserting default categories")
                 val categories = listOf (
@@ -54,7 +54,7 @@ class SplashViewModel @Inject constructor(
                 result.either(::handleCategoryFailure, ::handleCategorySuccess)
             } else {
                 info<SplashViewModel>("Isn't first time ToDoX is running in this device")
-                _messageFlow.tryEmit((Message.Success()))
+                _messageFlow.emit((Message.Success()))
             }
         }
     }

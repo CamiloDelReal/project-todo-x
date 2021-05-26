@@ -29,19 +29,19 @@ class HomeViewModel @Inject constructor(
 
     fun tasksImportantCount(): SharedFlow<Int> = tasksRepository.tasksImportantCount()
             .catch { ex ->
-                _messageFlow.tryEmit(Message.Error(Exception(ex.localizedMessage)))
+                _messageFlow.emit(Message.Error(Exception(ex.localizedMessage)))
             }
             .shareIn(viewModelScope, SharingStarted.Lazily, replay = 1)
 
     fun tasksInScheduleCount(): SharedFlow<Int> = tasksRepository.tasksInScheduleCount()
             .catch {  ex ->
-                _messageFlow.tryEmit(Message.Error(Exception(ex.localizedMessage)))
+                _messageFlow.emit(Message.Error(Exception(ex.localizedMessage)))
             }
             .shareIn(viewModelScope, SharingStarted.Lazily, replay = 1)
 
     fun tasksTodayCount(): SharedFlow<Int> = tasksRepository.tasksTodayCount()
             .catch { ex ->
-                _messageFlow.tryEmit(Message.Error(Exception(ex.localizedMessage)))
+                _messageFlow.emit(Message.Error(Exception(ex.localizedMessage)))
             }
             .shareIn(viewModelScope, SharingStarted.Lazily, replay = 1)
 
@@ -56,7 +56,7 @@ class HomeViewModel @Inject constructor(
     fun categories() {
         viewModelScope.launch {
             categoryRepository.categoriesPaginated().cachedIn(viewModelScope).collectLatest { data ->
-                _categoriesPaginatedFlow.tryEmit(data)
+                _categoriesPaginatedFlow.emit(data)
             }
         }
     }

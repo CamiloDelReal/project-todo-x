@@ -33,7 +33,7 @@ class CategoriesListViewModel @Inject constructor(
     fun categories() {
         viewModelScope.launch {
             categoryRepository.categoriesPaginated().cachedIn(viewModelScope).collectLatest { data ->
-                _categoriesPaginatedFlow.tryEmit(data)
+                _categoriesPaginatedFlow.emit(data)
             }
         }
     }

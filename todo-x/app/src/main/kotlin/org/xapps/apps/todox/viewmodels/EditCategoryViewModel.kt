@@ -80,12 +80,12 @@ class EditCategoryViewModel @Inject constructor(
         viewModelScope.launch {
             categoryRepository.category(id)
                 .catch { ex ->
-                    _messageFlow.tryEmit(Message.Error(Exception(ex.localizedMessage)))
+                    _messageFlow.emit(Message.Error(Exception(ex.localizedMessage)))
                 }
                 .collect { cat ->
                     category.set(cat)
                     chosenColor.set(cat.color)
-                    _messageFlow.tryEmit(Message.Success(null))
+                    _messageFlow.emit(Message.Success(null))
                 }
         }
     }
