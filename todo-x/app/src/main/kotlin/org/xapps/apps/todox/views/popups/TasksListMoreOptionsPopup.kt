@@ -22,11 +22,11 @@ class TasksListMoreOptionsPopup @Inject constructor(private val starterFilter: F
         const val REQUEST_KEY = "TasksListMoreOptionsPopup"
 
         const val MORE_OPTIONS_FILTER_OPTION = "filterSelected"
-        const val MORE_OPTIONS_FILTER_IMPORTANT = 203
-        const val MORE_OPTIONS_FILTER_IN_SCHEDULE = 204
-        const val MORE_OPTIONS_FILTER_TODAY = 205
-        const val MORE_OPTIONS_FILTER_ALL = 206
-        const val MORE_OPTIONS_FILTER_COMPLETED = 207
+        const val MORE_OPTIONS_FILTER_IMPORTANT = 403
+        const val MORE_OPTIONS_FILTER_IN_SCHEDULE = 404
+        const val MORE_OPTIONS_FILTER_TODAY = 405
+        const val MORE_OPTIONS_FILTER_ALL = 406
+        const val MORE_OPTIONS_FILTER_COMPLETED = 407
 
         fun showDialog(
                 fragmentManager: FragmentManager,

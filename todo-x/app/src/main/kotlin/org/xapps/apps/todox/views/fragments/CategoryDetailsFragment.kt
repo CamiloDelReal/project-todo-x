@@ -188,7 +188,7 @@ class CategoryDetailsFragment @Inject constructor() : Fragment() {
                }
         }
 
-        lifecycleScope.launch {
+        lifecycleScope.launchWhenResumed {
             taskAdapter.loadStateFlow.collectLatest { loadStates ->
                 bindings.progressbar.isVisible = (loadStates.refresh is LoadState.Loading)
             }

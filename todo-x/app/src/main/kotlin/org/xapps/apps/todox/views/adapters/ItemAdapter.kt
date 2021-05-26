@@ -1,10 +1,13 @@
 package org.xapps.apps.todox.views.adapters
 
+import androidx.core.view.isVisible
 import androidx.databinding.ObservableArrayList
 import androidx.databinding.ViewDataBinding
+import androidx.recyclerview.widget.DiffUtil
 import org.xapps.apps.todox.R
 import org.xapps.apps.todox.core.models.Item
 import org.xapps.apps.todox.core.models.Task
+import org.xapps.apps.todox.core.models.TaskWithItems
 import org.xapps.apps.todox.core.utils.debug
 import org.xapps.apps.todox.databinding.ItemItemBinding
 import org.xapps.apps.todox.databinding.ItemItemEditBinding
@@ -43,7 +46,12 @@ class ItemAdapter(
                 debug<ItemAdapter>("ItemItemBinding detected")
                 bindings.item = item
 
-                bindings.chxDone.setOnClickListener {
+                val index = items.indexOf(item)
+//                bindings.coloredRow.isVisible = (index % 2 == 0)
+                val colorResource = bindings.rootLayout.context.resources.getColor(R.color.backgroundSecondary)
+                bindings.rootLayout.setCardBackgroundColor(colorResource)
+
+                bindings.rootLayout.setOnClickListener {
                     debug<ItemAdapter>("Checkbox for done request has been clicked, itemListener = $itemListener")
                     val itemUpdated = item.copy()
                     itemUpdated.done = !itemUpdated.done

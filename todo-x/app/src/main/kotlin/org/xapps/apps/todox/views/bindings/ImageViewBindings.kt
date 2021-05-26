@@ -21,4 +21,16 @@ object ImageViewBindings {
         view.imageTintList = ColorStateList.valueOf(color)
     }
 
+    @JvmStatic
+    @BindingAdapter("doneStatus")
+    fun doneStatus(view: ImageView, done: Boolean) {
+        if(done) {
+            view.setImageResource(R.drawable.ic_checkbox_marked)
+            view.imageTintList = ColorStateList.valueOf(view.resources.getColor(R.color.orange_500, null))
+        } else {
+            view.setImageResource(R.drawable.ic_checkbox_blank_outline)
+            view.imageTintList = ColorStateList.valueOf(view.resources.getColor(R.color.textSecondary, null))
+        }
+    }
+
 }

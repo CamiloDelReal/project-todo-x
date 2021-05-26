@@ -50,7 +50,7 @@ class TasksListFragment @Inject constructor() : Fragment() {
 
     private val tasksItemListener = object: TaskWithItemsAndCategoryAdapter.ItemListener {
         override fun clicked(task: Task) {
-            findNavController().navigate(CategoryDetailsFragmentDirections.actionCategoryDetailsFragmentToTaskDetailsFragment(task.id))
+            findNavController().navigate(TasksListFragmentDirections.actionTasksListFragmentToTaskDetailsFragment(task.id))
         }
         override fun taskUpdated(task: Task) {
             viewModel.updateTask(task)
@@ -136,11 +136,12 @@ class TasksListFragment @Inject constructor() : Fragment() {
             }
         }
 
-        viewModel.tasks().observe(viewLifecycleOwner, {
-            lifecycleScope.launch {
-                taskAdapter.submitData(it)
-            }
-        })
+        lifecycleScope.launchWhenResumed {
+            viewModel.tasksFlow
+                .collectLatest {
+                    taskAdapter.submitData(it)
+                }
+        }
     }
 
     override fun onResume() {

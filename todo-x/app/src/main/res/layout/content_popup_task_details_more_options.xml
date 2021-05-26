@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".views.popups.TaskDetailsMoreOptionsPopup">
+
+    <FrameLayout
+        android:id="@+id/rootLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            tools:background="@android:color/black">
+
+            <LinearLayout
+                android:layout_width="@dimen/popup_more_options_width"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/popup_more_options_margin_top"
+                android:layout_marginEnd="@dimen/popup_more_options_margin_end"
+                android:background="@drawable/ic_bg_popup"
+                android:orientation="vertical"
+                android:paddingTop="@dimen/popup_more_options_padding"
+                android:paddingBottom="@dimen/popup_more_options_padding"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btnEdit"
+                    style="@style/PopupStyle.Button"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/popup_more_options_button_height"
+                    android:text="@string/edit" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btnDelete"
+                    style="@style/PopupStyle.Button"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/popup_more_options_button_height"
+                    android:text="@string/delete" />
+            </LinearLayout>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </FrameLayout>
+
+</layout>

@@ -18,6 +18,7 @@ import org.xapps.apps.todox.core.models.TaskWithItemsAndCategory
 import org.xapps.apps.todox.core.repositories.ItemRepository
 import org.xapps.apps.todox.core.repositories.TaskRepository
 import org.xapps.apps.todox.core.repositories.failures.ItemFailure
+import org.xapps.apps.todox.core.repositories.failures.TaskFailure
 import org.xapps.apps.todox.core.utils.debug
 import org.xapps.apps.todox.core.utils.info
 import org.xapps.apps.todox.views.utils.Message
@@ -76,10 +77,24 @@ class TaskDetailsViewModel @Inject constructor(
         }
     }
 
+    fun updateTask() {
+        viewModelScope.launch {
+            val taskUpdated = taskWithItemsAndCategory.get()!!.task.copy()
+            taskUpdated.important = !taskUpdated.important
+            val result = taskRepository.update(taskUpdated)
+            result.either(::handleTaskFailure, ::handleTaskSuccess)
+        }
+    }
+
     private fun handleItemFailure(failure: ItemFailure) {
         _messageFlow.tryEmit(Message.Error(Exception(context.getString(R.string.error_updating_item_in_db))))
     }
 
     private fun handleItemSuccess(item: Item) {}
 
+    private fun handleTaskFailure(failure: TaskFailure) {
+        _messageFlow.tryEmit(Message.Error(Exception(context.getString(R.string.error_updating_task_in_db))))
+    }
+
+    private fun handleTaskSuccess(task: Task) {}
 }
