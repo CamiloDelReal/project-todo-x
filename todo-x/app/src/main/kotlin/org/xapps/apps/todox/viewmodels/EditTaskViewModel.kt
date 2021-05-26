@@ -81,7 +81,7 @@ class EditTaskViewModel @Inject constructor(
         viewModelScope.launch {
             taskRepository.taskWithItems(id)
                 .catch { ex ->
-                    _messageFlow.tryEmit(Message.Error(Exception(ex.localizedMessage)))
+                    _messageFlow.emit(Message.Error(Exception(ex.localizedMessage)))
                 }
                 .collect {
                     Timber.i("Task with items received $it")
@@ -90,7 +90,6 @@ class EditTaskViewModel @Inject constructor(
                     items.addAll(it.items)
                     categoryId = it.task.categoryId
                     category(categoryId)
-                    _messageFlow.tryEmit(Message.Success())
                 }
         }
     }
@@ -100,11 +99,11 @@ class EditTaskViewModel @Inject constructor(
         viewModelScope.launch {
             categoryRepository.category(id)
                 .catch { ex ->
-                    _messageFlow.tryEmit(Message.Error(Exception(ex.localizedMessage)))
+                    _messageFlow.emit(Message.Error(Exception(ex.localizedMessage)))
                 }
                 .collect { cat ->
                     selectedCategory.set(listOf(cat))
-                    _messageFlow.tryEmit(Message.Success())
+                    _messageFlow.emit(Message.Loaded)
                 }
         }
     }

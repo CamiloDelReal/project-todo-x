@@ -118,6 +118,9 @@ class TasksListFragment @Inject constructor() : Fragment() {
                     is Message.Loading -> {
                         bindings.progressbar.isVisible = true
                     }
+                    is Message.Loaded -> {
+                        bindings.progressbar.isVisible = false
+                    }
                     is Message.Success -> {
                         bindings.progressbar.isVisible = false
                     }

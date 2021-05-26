@@ -2,20 +2,25 @@ package org.xapps.apps.todox.viewmodels
 
 import android.content.Context
 import androidx.databinding.ObservableField
-import androidx.lifecycle.*
+import androidx.lifecycle.SavedStateHandle
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.Job
-import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.SharedFlow
+import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import org.xapps.apps.todox.R
 import org.xapps.apps.todox.core.models.Task
-import org.xapps.apps.todox.core.models.TaskWithItems
 import org.xapps.apps.todox.core.models.TaskWithItemsAndCategory
 import org.xapps.apps.todox.core.repositories.TaskRepository
 import org.xapps.apps.todox.core.repositories.failures.TaskFailure
+import org.xapps.apps.todox.core.utils.info
 import org.xapps.apps.todox.views.utils.Message
 import timber.log.Timber
 import javax.inject.Inject
@@ -73,10 +78,11 @@ class TasksListViewModel @Inject constructor(
 
     init {
         filter = savedStateHandle["filter"] ?: FilterType.ALL
-        Timber.i("Filter received: $filter")
+        info<TasksListViewModel>("Filter received: $filter")
     }
 
     private fun tasksAll() {
+        _messageFlow.tryEmit(Message.Loading)
         tasksJob?.cancel()
         tasksJob = viewModelScope.launch{
             taskRepository.tasksWithItemsAndCategoryPaginated().cachedIn(viewModelScope)
@@ -85,11 +91,13 @@ class TasksListViewModel @Inject constructor(
                 }
                 .collectLatest { data ->
                     _tasksFlow.emit(data)
+                    _messageFlow.tryEmit(Message.Loaded)
                 }
         }
     }
 
     private fun tasksInSchedule() {
+        _messageFlow.tryEmit(Message.Loading)
         tasksJob?.cancel()
         tasksJob = viewModelScope.launch {
             taskRepository.tasksInScheduleWithItemsAndCategoryPaginated().cachedIn(viewModelScope)
@@ -98,11 +106,13 @@ class TasksListViewModel @Inject constructor(
                 }
                 .collectLatest { data ->
                     _tasksFlow.emit(data)
+                    _messageFlow.tryEmit(Message.Loaded)
                 }
         }
     }
 
     private fun tasksImportant() {
+        _messageFlow.tryEmit(Message.Loading)
         tasksJob?.cancel()
         tasksJob = viewModelScope.launch {
             taskRepository.tasksImportantWithItemsAndCategoryPaginated().cachedIn(viewModelScope)
@@ -111,11 +121,13 @@ class TasksListViewModel @Inject constructor(
                 }
                 .collectLatest { data ->
                     _tasksFlow.emit(data)
+                    _messageFlow.tryEmit(Message.Loaded)
                 }
         }
     }
 
     private fun tasksCompleted() {
+        _messageFlow.tryEmit(Message.Loading)
         tasksJob?.cancel()
         tasksJob = viewModelScope.launch {
             taskRepository.tasksCompletedWithItemsAndCategoryPaginated().cachedIn(viewModelScope)
@@ -124,11 +136,13 @@ class TasksListViewModel @Inject constructor(
                 }
                 .collectLatest { data ->
                     _tasksFlow.emit(data)
+                    _messageFlow.tryEmit(Message.Loaded)
                 }
         }
     }
 
     private fun tasksToday() {
+        _messageFlow.tryEmit(Message.Loading)
         tasksJob?.cancel()
         tasksJob = viewModelScope.launch {
             taskRepository.tasksTodayWithItemsAndCategoryPaginated().cachedIn(viewModelScope)
@@ -137,11 +151,13 @@ class TasksListViewModel @Inject constructor(
                 }
                 .collectLatest { data ->
                     _tasksFlow.emit(data)
+                    _messageFlow.tryEmit(Message.Loaded)
                 }
         }
     }
 
     fun updateTask(task: Task) {
+        _messageFlow.tryEmit(Message.Loading)
         viewModelScope.launch {
             val result = taskRepository.update(task)
             result.either(::handleTaskFailure, ::handleTaskSuccess)
@@ -149,6 +165,7 @@ class TasksListViewModel @Inject constructor(
     }
 
     private fun handleTaskSuccess(task: Task) {
+        _messageFlow.tryEmit(Message.Loaded)
     }
 
     private fun handleTaskFailure(failure: TaskFailure) {

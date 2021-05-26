@@ -128,6 +128,12 @@ class EditTaskFragment @Inject constructor() : Fragment() {
                         is Message.Loading -> {
                             bindings.progressbar.isVisible = true
                         }
+                        is Message.Loaded -> {
+                            bindings.progressbar.isVisible = false
+                            viewModel.taskWithItems.get()?.task?.date?.let { bindings.tieDate.setText(it.parseToString()) }
+                            viewModel.taskWithItems.get()?.task?.startTime?.let { bindings.tieStartDate.setText(it.parseToString(use24Hour = true)) }
+                            viewModel.taskWithItems.get()?.task?.endTime?.let { bindings.tieEndDate.setText(it.parseToString(use24Hour = true)) }
+                        }
                         is Message.Success -> {
                             bindings.progressbar.isVisible = false
                             // SOme message
