@@ -136,13 +136,13 @@ class EditTaskFragment @Inject constructor() : Fragment() {
                         }
                         is Message.Success -> {
                             bindings.progressbar.isVisible = false
-                            // SOme message
+                            // TODO Success message here
                             findNavController().navigateUp()
                         }
                         is Message.Error -> {
                             bindings.progressbar.isVisible = false
                             Timber.e(it.exception)
-                            //Message here
+                            // TODO Error Message here
                         }
                     }
                 }

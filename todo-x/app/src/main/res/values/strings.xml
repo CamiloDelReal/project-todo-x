@@ -97,4 +97,9 @@
     <string name="error_saving_category_in_db">Error saving category in database</string>
     <string name="error_updating_item_in_db">Error updating item in database</string>
     <string name="delete">Delete</string>
+    <string name="complete">Complete</string>
+    <string name="no">No</string>
+    <string name="yes">Yes</string>
+    <string name="alert">Alert</string>
+    <string name="confirm_delete">You are about to delete this task, are you sure to continue?</string>
 </resources>

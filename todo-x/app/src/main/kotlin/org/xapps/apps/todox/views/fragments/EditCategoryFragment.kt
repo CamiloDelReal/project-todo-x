@@ -79,18 +79,17 @@ class EditCategoryFragment @Inject constructor(): Fragment() {
                         is Message.Loading -> {
                             bindings.progressbar.isVisible = true
                         }
+                        is Message.Loaded -> {
+                            bindings.progressbar.isVisible = false
+                        }
                         is Message.Success -> {
                             bindings.progressbar.isVisible = false
-                            Timber.i("Category operation success with value $it")
-                            val isSave = it.data as Boolean?
-                            if(isSave == true) {
-                                findNavController().navigateUp()
-                            }
+                            findNavController().navigateUp()
                         }
                         is Message.Error -> {
                             bindings.progressbar.isVisible = false
                             Timber.e(it.exception)
-                            //Message here
+                            // TODO Message here
                         }
                     }
                 }

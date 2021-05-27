@@ -72,7 +72,7 @@ class CategoryDetailsViewModel @Inject constructor(
                 }
                 .collect { cat ->
                     category.set(cat)
-                    _messageFlow.emit(Message.Success())
+                    _messageFlow.emit(Message.Loaded)
                 }
         }
     }
@@ -126,13 +126,16 @@ class CategoryDetailsViewModel @Inject constructor(
     }
 
     fun updateTask(task: Task) {
+        _messageFlow.tryEmit(Message.Loading)
         viewModelScope.launch {
             val result = taskRepository.update(task)
             result.either(::handleTaskFailure, ::handleTaskSuccess)
         }
     }
 
-    private fun handleTaskSuccess(task: Task) {}
+    private fun handleTaskSuccess(task: Task) {
+        _messageFlow.tryEmit(Message.Success())
+    }
 
     private fun handleTaskFailure(failure: TaskFailure) {
         _messageFlow.tryEmit(Message.Error(Exception(context.getString(R.string.error_updating_task_in_db))))

@@ -9,34 +9,34 @@ import androidx.fragment.app.setFragmentResultListener
 import dagger.hilt.android.AndroidEntryPoint
 import org.xapps.apps.todox.R
 import org.xapps.apps.todox.core.repositories.SettingsRepository
-import org.xapps.apps.todox.databinding.ContentPopupTaskDetailsMoreOptionsBinding
+import org.xapps.apps.todox.databinding.ContentPopupConfirmBinding
 import javax.inject.Inject
 
 
 @AndroidEntryPoint
-class TaskDetailsMoreOptionsPopup @Inject constructor() : DialogFragment() {
+class ConfirmPopup @Inject constructor(private val message: String) : DialogFragment() {
 
     companion object {
 
-        const val REQUEST_KEY = "TaskDetailsMoreOptionsPopup"
+        const val REQUEST_KEY = "ConfirmPopup"
 
-        const val MORE_OPTIONS_POPUP_OPTION = "TaskDetailsMoreOptionsPopup"
-        const val MORE_OPTIONS_POPUP_COMPLETE = 302
-        const val MORE_OPTIONS_POPUP_EDIT = 303
-        const val MORE_OPTIONS_POPUP_DELETE = 304
+        const val POPUP_OPTION = "ConfirmPopup"
+        const val POPUP_YES = 802
+        const val POPUP_NO = 803
 
         fun showDialog(
             fragmentManager: FragmentManager,
+            message: String,
             listener: ((requestKey: String, bundle: Bundle) -> Unit)
         ) {
-            val popup = TaskDetailsMoreOptionsPopup()
-            popup.show(fragmentManager, TaskDetailsMoreOptionsPopup::class.java.name)
+            val popup = ConfirmPopup(message)
+            popup.show(fragmentManager, ConfirmPopup::class.java.name)
             popup.setFragmentResultListener(REQUEST_KEY, listener)
         }
 
     }
 
-    private lateinit var bindings: ContentPopupTaskDetailsMoreOptionsBinding
+    private lateinit var bindings: ContentPopupConfirmBinding
 
     @Inject
     lateinit var settings: SettingsRepository
@@ -49,32 +49,27 @@ class TaskDetailsMoreOptionsPopup @Inject constructor() : DialogFragment() {
         setStyle(style, theme)
     }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         val layoutInflater = LayoutInflater.from(context)
-        bindings = ContentPopupTaskDetailsMoreOptionsBinding.inflate(layoutInflater, container, false)
+        bindings = ContentPopupConfirmBinding.inflate(layoutInflater, container, false)
         return bindings.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        bindings.btnComplete.setOnClickListener {
+        bindings.txvMessage.text = message
+
+        bindings.btnYes.setOnClickListener {
             val data = Bundle().apply {
-                putInt(MORE_OPTIONS_POPUP_OPTION, MORE_OPTIONS_POPUP_COMPLETE)
+                putInt(POPUP_OPTION, POPUP_YES)
             }
             close(data)
         }
 
-        bindings.btnEdit.setOnClickListener {
+        bindings.btnNo.setOnClickListener {
             val data = Bundle().apply {
-                putInt(MORE_OPTIONS_POPUP_OPTION, MORE_OPTIONS_POPUP_EDIT)
-            }
-            close(data)
-        }
-
-        bindings.btnDelete.setOnClickListener {
-            val data = Bundle().apply {
-                putInt(MORE_OPTIONS_POPUP_OPTION, MORE_OPTIONS_POPUP_DELETE)
+                putInt(POPUP_OPTION, POPUP_NO)
             }
             close(data)
         }

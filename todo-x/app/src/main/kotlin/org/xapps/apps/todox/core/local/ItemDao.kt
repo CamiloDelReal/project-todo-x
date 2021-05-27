@@ -56,4 +56,12 @@ interface ItemDao {
     @Delete
     fun delete(items: List<Item>): Int
 
+    @Transaction
+    @Query("DELETE FROM items WHERE task_id = :taskId")
+    suspend fun deleteByTaskAsync(taskId: Long): Int
+
+    @Transaction
+    @Query("DELETE FROM items WHERE task_id = :taskId")
+    fun deleteByTask(taskId: Long): Int
+
 }

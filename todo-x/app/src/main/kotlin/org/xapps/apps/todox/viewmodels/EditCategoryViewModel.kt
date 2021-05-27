@@ -85,7 +85,7 @@ class EditCategoryViewModel @Inject constructor(
                 .collect { cat ->
                     category.set(cat)
                     chosenColor.set(cat.color)
-                    _messageFlow.emit(Message.Success(null))
+                    _messageFlow.emit(Message.Loaded)
                 }
         }
     }
@@ -105,7 +105,7 @@ class EditCategoryViewModel @Inject constructor(
     }
 
     private fun handleCategorySuccess(category: Category) {
-        _messageFlow.tryEmit(Message.Success(true))
+        _messageFlow.tryEmit(Message.Success())
     }
 
     private fun handleCategoryFailure(failure: CategoryFailure) {

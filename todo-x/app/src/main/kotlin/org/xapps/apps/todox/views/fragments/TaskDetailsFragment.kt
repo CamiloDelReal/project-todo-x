@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collect
+import org.xapps.apps.todox.R
 import org.xapps.apps.todox.core.models.Item
 import org.xapps.apps.todox.core.utils.error
 import org.xapps.apps.todox.core.utils.info
@@ -21,6 +22,7 @@ import org.xapps.apps.todox.databinding.FragmentTaskDetailsBinding
 import org.xapps.apps.todox.viewmodels.TaskDetailsViewModel
 import org.xapps.apps.todox.views.adapters.ItemAdapter
 import org.xapps.apps.todox.views.popups.CategoryDetailsMoreOptionsPopup
+import org.xapps.apps.todox.views.popups.ConfirmPopup
 import org.xapps.apps.todox.views.popups.TaskDetailsMoreOptionsPopup
 import org.xapps.apps.todox.views.utils.ColorUtils
 import org.xapps.apps.todox.views.utils.Message
@@ -88,11 +90,31 @@ class TaskDetailsFragment @Inject constructor(): Fragment() {
                     -1
                 }
                 when (option) {
+                    TaskDetailsMoreOptionsPopup.MORE_OPTIONS_POPUP_COMPLETE -> {
+                        viewModel.completeTask()
+                    }
                     TaskDetailsMoreOptionsPopup.MORE_OPTIONS_POPUP_EDIT -> {
                         findNavController().navigate(TaskDetailsFragmentDirections.actionTaskDetailsFragmentToEditTaskFragment(viewModel.taskId))
                     }
                     TaskDetailsMoreOptionsPopup.MORE_OPTIONS_POPUP_DELETE -> {
-                        // TODO delete task
+                        ConfirmPopup.showDialog(
+                            parentFragmentManager,
+                            getString(R.string.confirm_delete)
+                        ) { _, data ->
+                            val option = if (data.containsKey(ConfirmPopup.POPUP_OPTION)) {
+                                data.getInt(ConfirmPopup.POPUP_OPTION)
+                            } else {
+                                -1
+                            }
+                            when(option) {
+                                ConfirmPopup.POPUP_YES -> {
+                                    viewModel.deleteTask()
+                                }
+                                ConfirmPopup.POPUP_NO -> {
+                                    info<TaskDetailsFragment>("User has cancelled the delete operation")
+                                }
+                            }
+                        }
                     }
                 }
             }
@@ -105,8 +127,15 @@ class TaskDetailsFragment @Inject constructor(): Fragment() {
                         is Message.Loading -> {
                             bindings.progressbar.isVisible = true
                         }
+                        is Message.Loaded -> {
+                            bindings.progressbar.isVisible = false
+                        }
                         is Message.Success -> {
                             bindings.progressbar.isVisible = false
+                            if(it.data as Boolean? == true) {
+                                // TODO Message here
+                                findNavController().navigateUp()
+                            }
                         }
                         is Message.Error -> {
                             bindings.progressbar.isVisible = false

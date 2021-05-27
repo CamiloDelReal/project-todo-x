@@ -174,15 +174,17 @@ class CategoryDetailsFragment @Inject constructor() : Fragment() {
                        is Message.Loading -> {
                            bindings.progressbar.isVisible = true
                        }
+                       is Message.Loaded -> {
+                           bindings.progressbar.isVisible = false
+                           setStatusBarForegoundColor(!ColorUtils.isDarkColor(viewModel.category.get()!!.color))
+                       }
                        is Message.Success -> {
                            bindings.progressbar.isVisible = false
-                           Timber.i("Success received  ${viewModel.category.get()}")
-                           setStatusBarForegoundColor(!ColorUtils.isDarkColor(viewModel.category.get()!!.color))
                        }
                        is Message.Error -> {
                            bindings.progressbar.isVisible = false
                            error<CategoryDetailsFragment>(it.exception, "Exception captured")
-                           // Show some message here
+                           // TODO Show some message here
                        }
                    }
                }

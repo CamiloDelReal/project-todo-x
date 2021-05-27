@@ -64,6 +64,22 @@ class TaskRepository @Inject constructor(
         }
     }
 
+    suspend fun delete(task: Task): Either<TaskFailure, Task> = withContext(dispatcher) {
+        info<TaskRepository>("Delete $task")
+        try {
+            itemDao.deleteByTaskAsync(task.id)
+            val count = taskDao.delete(task)
+            if(count == 1) {
+                task.toSuccess()
+            } else {
+                TaskFailure.Database.toError()
+            }
+        } catch (ex: Exception) {
+            error<TaskRepository>(ex, "Exception captured")
+            TaskFailure.Exception(ex.localizedMessage).toError()
+        }
+    }
+
     fun taskWithItems(id: Long): Flow<TaskWithItems> {
         Timber.i("Get task $id with items")
         return taskDao.taskWithItemsAsync(id).flowOn(dispatcher)

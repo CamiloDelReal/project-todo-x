@@ -27,6 +27,13 @@
                 app:layout_constraintTop_toTopOf="parent">
 
                 <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btnComplete"
+                    style="@style/PopupStyle.Button"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/popup_more_options_button_height"
+                    android:text="@string/complete" />
+
+                <com.google.android.material.button.MaterialButton
                     android:id="@+id/btnEdit"
                     style="@style/PopupStyle.Button"
                     android:layout_width="match_parent"

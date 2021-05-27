@@ -134,6 +134,8 @@
     <dimen name="item_summary_icon_background_size">26dp</dimen>
     <dimen name="item_summary_content_space">16dp</dimen>
 
+    <dimen name="popup_message_options_width">280dp</dimen>
+
     <dimen name="popup_more_options_width">230dp</dimen>
     <dimen name="popup_more_options_padding">6dp</dimen>
     <dimen name="popup_more_options_margin_top">16dp</dimen>
