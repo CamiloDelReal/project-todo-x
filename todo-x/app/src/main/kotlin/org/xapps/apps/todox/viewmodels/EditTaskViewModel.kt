@@ -108,12 +108,13 @@ class EditTaskViewModel @Inject constructor(
         }
     }
 
-    fun insertTask() {
+    fun saveTask() {
         _messageFlow.tryEmit(Message.Loading)
         viewModelScope.launch {
             taskWithItems.get()?.task?.categoryId = selectedCategory.get()?.get(0)?.id ?: Constants.ID_INVALID
             if(taskId == Constants.ID_INVALID) {
-                taskWithItems.get()!!.items = items
+                val fixedItems = items.filter { it.description.isNotEmpty() && it.description.isNotBlank() }
+                taskWithItems.get()!!.items = fixedItems
                 val result = taskRepository.insertTaskWithItems(taskWithItems.get()!!)
                 result.either(::handleTaskFailure, ::handleTaskSuccess)
             } else {

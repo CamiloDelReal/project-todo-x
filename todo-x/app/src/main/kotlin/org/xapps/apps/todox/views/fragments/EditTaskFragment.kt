@@ -117,7 +117,7 @@ class EditTaskFragment @Inject constructor() : Fragment() {
                 bindings.tilName.error = getString(R.string.empty_field)
                 bindings.tilName.isErrorEnabled = true
             } else {
-                viewModel.insertTask()
+                viewModel.saveTask()
             }
         }
 
