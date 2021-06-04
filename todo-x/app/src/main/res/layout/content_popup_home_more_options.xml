@@ -28,7 +28,7 @@
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/btnCategories"
-                    style="@style/PopupStyle.Button"
+                    style="@style/Popup.Button"
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/popup_more_options_button_height"
                     android:text="@string/categories" />
@@ -39,14 +39,14 @@
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/btnDarkMode"
-                    style="@style/PopupStyle.Button.Check"
+                    style="@style/Popup.Button.Check"
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/popup_more_options_button_height"
                     android:text="@string/dark_mode" />
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/btnAbout"
-                    style="@style/PopupStyle.Button"
+                    style="@style/Popup.Button"
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/popup_more_options_button_height"
                     android:text="@string/about" />

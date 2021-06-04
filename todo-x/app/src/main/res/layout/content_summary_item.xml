@@ -37,7 +37,7 @@
                         android:layout_width="@dimen/item_summary_icon_size"
                         android:layout_height="@dimen/item_summary_icon_size"
                         android:layout_centerInParent="true"
-                        tools:tint="@color/hightPriority"
+                        tools:tint="@color/important"
                         tools:src="@drawable/ic_star" />
 
                 </RelativeLayout>

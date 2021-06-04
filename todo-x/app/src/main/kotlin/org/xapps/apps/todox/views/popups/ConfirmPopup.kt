@@ -45,7 +45,7 @@ class ConfirmPopup @Inject constructor(private val message: String) : DialogFrag
         super.onCreate(savedInstanceState)
 
         val style = STYLE_NO_FRAME
-        val theme = R.style.PopupStyle
+        val theme = R.style.Popup_Dialog
         setStyle(style, theme)
     }
 

@@ -26,19 +26,46 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent">
 
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/tasks"
+                    style="@style/Popup.Section" />
+
                 <com.google.android.material.button.MaterialButton
-                    android:id="@+id/btnEdit"
-                    style="@style/PopupStyle.Button"
+                    android:id="@+id/btnCompleteAll"
+                    style="@style/Popup.Button"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/popup_more_options_button_height"
+                    android:text="@string/complete_all" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btnDeleteAll"
+                    style="@style/Popup.Button"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/popup_more_options_button_height"
+                    android:text="@string/delete_all" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/category"
+                    style="@style/Popup.Section" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btnEditCategory"
+                    style="@style/Popup.Button"
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/popup_more_options_button_height"
                     android:text="@string/edit" />
 
                 <com.google.android.material.button.MaterialButton
-                    android:id="@+id/btnCompleteAll"
-                    style="@style/PopupStyle.Button"
+                    android:id="@+id/btnDeleteCategory"
+                    style="@style/Popup.Button"
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/popup_more_options_button_height"
-                    android:text="@string/complete_all" />
+                    android:text="@string/delete" />
+
             </LinearLayout>
 
         </androidx.constraintlayout.widget.ConstraintLayout>

@@ -21,8 +21,10 @@ class CategoryDetailsMoreOptionsPopup @Inject constructor() : DialogFragment() {
         const val REQUEST_KEY = "CategoryDetailsMoreOptionsPopup"
 
         const val MORE_OPTIONS_POPUP_OPTION = "CategoryDetailsMoreOptionSelected"
-        const val MORE_OPTIONS_POPUP_EDIT = 503
-        const val MORE_OPTIONS_POPUP_COMPLETE_ALL = 504
+        const val MORE_OPTIONS_POPUP_COMPLETE_ALL = 503
+        const val MORE_OPTIONS_POPUP_DELETE_ALL = 504
+        const val MORE_OPTIONS_POPUP_EDIT = 505
+        const val MORE_OPTIONS_POPUP_DELETE = 505
 
         fun showDialog(
                 fragmentManager: FragmentManager,
@@ -44,7 +46,7 @@ class CategoryDetailsMoreOptionsPopup @Inject constructor() : DialogFragment() {
         super.onCreate(savedInstanceState)
 
         val style = STYLE_NO_FRAME
-        val theme = R.style.PopupStyle
+        val theme = R.style.Popup_Menu
         setStyle(style, theme)
     }
 
@@ -57,16 +59,30 @@ class CategoryDetailsMoreOptionsPopup @Inject constructor() : DialogFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        bindings.btnEdit.setOnClickListener {
+        bindings.btnCompleteAll.setOnClickListener {
+            val data = Bundle().apply {
+                putInt(MORE_OPTIONS_POPUP_OPTION, MORE_OPTIONS_POPUP_COMPLETE_ALL)
+            }
+            close(data)
+        }
+
+        bindings.btnDeleteAll.setOnClickListener {
+            val data = Bundle().apply {
+                putInt(MORE_OPTIONS_POPUP_OPTION, MORE_OPTIONS_POPUP_DELETE_ALL)
+            }
+            close(data)
+        }
+
+        bindings.btnEditCategory.setOnClickListener {
             val data = Bundle().apply {
                 putInt(MORE_OPTIONS_POPUP_OPTION, MORE_OPTIONS_POPUP_EDIT)
             }
             close(data)
         }
 
-        bindings.btnCompleteAll.setOnClickListener {
+        bindings.btnDeleteCategory.setOnClickListener {
             val data = Bundle().apply {
-                putInt(MORE_OPTIONS_POPUP_OPTION, MORE_OPTIONS_POPUP_COMPLETE_ALL)
+                putInt(MORE_OPTIONS_POPUP_OPTION, MORE_OPTIONS_POPUP_DELETE)
             }
             close(data)
         }
