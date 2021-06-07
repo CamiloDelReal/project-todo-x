@@ -55,7 +55,7 @@
             app:layout_constraintStart_toEndOf="@id/btnBack"
             app:layout_constraintTop_toTopOf="@id/btnBack"
             android:gravity="center_vertical"
-            android:text="@string/create_task"
+            android:text="@{viewModel.hasTaskToEdit ? @string/edit_task : @string/create_task}"
             android:textColor="?attr/colorOnSurface"
             android:textSize="@dimen/title_text_size_collapsed" />
 
