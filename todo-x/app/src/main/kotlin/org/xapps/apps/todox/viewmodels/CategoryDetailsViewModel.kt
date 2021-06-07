@@ -137,15 +137,23 @@ class CategoryDetailsViewModel @Inject constructor(
     }
 
     private fun handleTaskSuccess(task: Task) {
-        _messageFlow.tryEmit(Message.Success())
+        _messageFlow.tryEmit(Message.Success(Operation.TASK_EDIT_DELETE))
     }
 
     private fun handleTaskSuccess(success: Boolean) {
-        _messageFlow.tryEmit(Message.Success())
+        _messageFlow.tryEmit(Message.Success(Operation.TASK_EDIT_DELETE))
     }
 
     private fun handleTaskFailure(failure: TaskFailure) {
         _messageFlow.tryEmit(Message.Error(Exception(context.getString(R.string.error_updating_task_in_db))))
+    }
+
+    private fun handleCategorySuccess(success: Boolean) {
+        _messageFlow.tryEmit(Message.Success(Operation.CATEGORY_DELETE))
+    }
+
+    private fun handleCategoryFailure(failure: CategoryFailure) {
+        _messageFlow.tryEmit(Message.Error(Exception(context.getString(R.string.error_updating_category_in_db))))
     }
 
     fun deleteAllTasks() {
@@ -176,8 +184,14 @@ class CategoryDetailsViewModel @Inject constructor(
             categoryJob = null
             tasksJob?.cancel()
             tasksJob = null
-//            val result = categoryRepository.dele
+            val result = categoryRepository.delete(categoryId, deleteTasks = deleteTasks)
+            result.either(::handleCategoryFailure, ::handleCategorySuccess)
         }
+    }
+
+    enum class Operation {
+        CATEGORY_DELETE,
+        TASK_EDIT_DELETE
     }
 
 }

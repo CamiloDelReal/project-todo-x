@@ -97,7 +97,7 @@ class TaskDetailsViewModel @Inject constructor(
     }
 
     private fun handleItemSuccess(item: Item) {
-        _messageFlow.tryEmit(Message.Success())
+        _messageFlow.tryEmit(Message.Success(Operation.ITEM_EDIT))
     }
 
     private fun handleTaskFailure(failure: TaskFailure) {
@@ -105,11 +105,11 @@ class TaskDetailsViewModel @Inject constructor(
     }
 
     private fun handleTaskSuccess(task: Task) {
-        _messageFlow.tryEmit(Message.Success())
+        _messageFlow.tryEmit(Message.Success(Operation.TASK_EDIT))
     }
 
     private fun handleTaskDeleteSuccess(task: Task) {
-        _messageFlow.tryEmit(Message.Success(true))
+        _messageFlow.tryEmit(Message.Success(Operation.TASK_DELETE))
     }
 
     fun completeTask() {
@@ -129,5 +129,11 @@ class TaskDetailsViewModel @Inject constructor(
             val result = taskRepository.delete(taskWithItemsAndCategory.get()!!.task)
             result.either(::handleTaskFailure, ::handleTaskDeleteSuccess)
         }
+    }
+
+    enum class Operation {
+        ITEM_EDIT,
+        TASK_EDIT,
+        TASK_DELETE
     }
 }

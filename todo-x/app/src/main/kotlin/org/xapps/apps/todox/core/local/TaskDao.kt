@@ -135,6 +135,9 @@ interface TaskDao {
     @Query("DELETE FROM tasks WHERE category_id = :categoryId")
     suspend fun deleteByCategoryAsync(categoryId: Long): Int
 
+    @Query("UPDATE tasks SET category_id = :newCategoryId WHERE category_id = :currentCategoryId")
+    suspend fun changeCategoryAsync(currentCategoryId: Long, newCategoryId: Long): Int
+
     @Update
     suspend fun updateAsync(task: Task): Int
 

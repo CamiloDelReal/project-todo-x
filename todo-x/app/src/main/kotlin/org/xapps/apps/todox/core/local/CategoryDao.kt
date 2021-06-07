@@ -68,6 +68,9 @@ interface CategoryDao {
     @Update
     fun update(categories: List<Category>): Int
 
+    @Query("DELETE FROM categories WHERE id = :id")
+    suspend fun deleteAsync(id: Long): Int
+
     @Delete
     suspend fun deleteAsync(category: Category): Int
 

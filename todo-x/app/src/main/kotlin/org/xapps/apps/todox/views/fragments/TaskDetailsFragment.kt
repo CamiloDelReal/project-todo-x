@@ -130,7 +130,8 @@ class TaskDetailsFragment @Inject constructor(): Fragment() {
                         }
                         is Message.Success -> {
                             bindings.progressbar.isVisible = false
-                            if(it.data as Boolean? == true) {
+                            val op = it.data as TaskDetailsViewModel.Operation
+                            if(op == TaskDetailsViewModel.Operation.TASK_DELETE) {
                                 // TODO Message here
                                 findNavController().navigateUp()
                             }

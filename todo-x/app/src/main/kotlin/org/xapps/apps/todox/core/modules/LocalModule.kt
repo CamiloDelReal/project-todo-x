@@ -54,8 +54,8 @@ class LocalModule {
 
     @Singleton
     @Provides
-    fun provideCategoryRepository(categoryDao: CategoryDao): CategoryRepository =
-        CategoryRepository(Dispatchers.IO, categoryDao)
+    fun provideCategoryRepository(categoryDao: CategoryDao, taskRepository: TaskRepository): CategoryRepository =
+        CategoryRepository(Dispatchers.IO, categoryDao, taskRepository)
 
     @Singleton
     @Provides

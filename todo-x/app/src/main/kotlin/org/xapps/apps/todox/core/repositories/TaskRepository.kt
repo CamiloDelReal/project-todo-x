@@ -291,4 +291,20 @@ class TaskRepository @Inject constructor(
             .flowOn(dispatcher)
     }
 
+    suspend fun moveToUnclassified(categoryId: Long): Either<TaskFailure, Boolean> = withContext(dispatcher) {
+        info<TaskRepository>("Move tasks of category $categoryId to unclassified")
+        try {
+            val ids = taskDao.tasksIdByCategoryAsync(categoryId)
+            val success = taskDao.changeCategoryAsync(categoryId, Constants.UNCLASSIFED_CATEGORY_ID)
+            if(success == ids.size) {
+                true.toSuccess()
+            } else {
+                TaskFailure.Database.toError()
+            }
+        } catch (ex: Exception) {
+            error<TaskRepository>(ex, "Exception captured")
+            TaskFailure.Exception(ex.localizedMessage).toError()
+        }
+    }
+
 }

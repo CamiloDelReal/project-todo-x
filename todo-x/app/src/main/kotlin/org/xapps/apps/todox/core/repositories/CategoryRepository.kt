@@ -24,7 +24,8 @@ import javax.inject.Inject
 
 class CategoryRepository @Inject constructor(
     private val dispatcher: CoroutineDispatcher,
-    private val categoryDao: CategoryDao
+    private val categoryDao: CategoryDao,
+    private val taskRepository: TaskRepository
 ) {
 
     suspend fun insert(categories: List<Category>): Either<CategoryFailure, List<Category>> = withContext(dispatcher) {
@@ -94,20 +95,23 @@ class CategoryRepository @Inject constructor(
         }
     }
 
-//    suspend fun delete(task: Task): Either<TaskFailure, Task> = withContext(dispatcher) {
-//        info<TaskRepository>("Delete $task")
-//        try {
-//            itemDao.deleteByTaskAsync(task.id)
-//            val count = taskDao.delete(task)
-//            if(count == 1) {
-//                task.toSuccess()
-//            } else {
-//                TaskFailure.Database.toError()
-//            }
-//        } catch (ex: Exception) {
-//            error<TaskRepository>(ex, "Exception captured")
-//            TaskFailure.Exception(ex.localizedMessage).toError()
-//        }
-//    }
+    suspend fun delete(categoryId: Long, deleteTasks: Boolean): Either<CategoryFailure, Boolean> = withContext(dispatcher) {
+        try {
+            val taskOperationSuccess = if(deleteTasks) {
+                taskRepository.deleteTasksInCategory(categoryId)
+            } else {
+                taskRepository.moveToUnclassified(categoryId)
+            }
+            if(taskOperationSuccess.isSuccess) {
+                val count = categoryDao.deleteAsync(categoryId)
+                (count == 1).toSuccess()
+            } else {
+                CategoryFailure.Database.toError()
+            }
+        } catch (ex: Exception) {
+            error<CategoryRepository>(ex, "Exception captured")
+            CategoryFailure.Database.toError()
+        }
+    }
 
 }

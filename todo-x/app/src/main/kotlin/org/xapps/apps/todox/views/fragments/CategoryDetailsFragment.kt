@@ -190,6 +190,11 @@ class CategoryDetailsFragment @Inject constructor() : Fragment() {
                        }
                        is Message.Success -> {
                            bindings.progressbar.isVisible = false
+                           val op = it.data as CategoryDetailsViewModel.Operation
+                           if(op == CategoryDetailsViewModel.Operation.CATEGORY_DELETE) {
+                               // TODO Message here
+                                findNavController().navigateUp()
+                           }
                        }
                        is Message.Error -> {
                            bindings.progressbar.isVisible = false
