@@ -1,9 +1,7 @@
 package org.xapps.apps.todox.views.popups
 
 import android.os.Bundle
-import android.system.Os.close
 import android.view.*
-import androidx.core.view.isVisible
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.setFragmentResult
@@ -11,38 +9,34 @@ import androidx.fragment.app.setFragmentResultListener
 import dagger.hilt.android.AndroidEntryPoint
 import org.xapps.apps.todox.R
 import org.xapps.apps.todox.core.repositories.SettingsRepository
-import org.xapps.apps.todox.databinding.ContentPopupConfirmBinding
+import org.xapps.apps.todox.databinding.ContentPopupConfirmDeleteCategoryBinding
 import javax.inject.Inject
 
 
 @AndroidEntryPoint
-class ConfirmPopup @Inject constructor(
-    private val message: String,
-    private val confirmMode: Boolean
-) : DialogFragment() {
+class ConfirmDeleteCategoryPopup @Inject constructor() : DialogFragment() {
 
     companion object {
 
-        const val REQUEST_KEY = "ConfirmPopup"
+        const val REQUEST_KEY = "ConfirmDeleteCategoryPopup"
 
-        const val POPUP_OPTION = "ConfirmPopup"
-        const val POPUP_YES = 802
-        const val POPUP_NO = 803
+        const val POPUP_OPTION = "ConfirmDeleteCategoryPopup"
+        const val POPUP_OPTION_DELETE_ALL_TASKS = "OptionDeleteAllTasks"
+        const val POPUP_YES = 702
+        const val POPUP_NO = 703
 
         fun showDialog(
             fragmentManager: FragmentManager,
-            message: String,
-            confirmMode: Boolean = true,
             listener: ((requestKey: String, bundle: Bundle) -> Unit)
         ) {
-            val popup = ConfirmPopup(message, confirmMode)
-            popup.show(fragmentManager, ConfirmPopup::class.java.name)
+            val popup = ConfirmDeleteCategoryPopup()
+            popup.show(fragmentManager, ConfirmDeleteCategoryPopup::class.java.name)
             popup.setFragmentResultListener(REQUEST_KEY, listener)
         }
 
     }
 
-    private lateinit var bindings: ContentPopupConfirmBinding
+    private lateinit var bindings: ContentPopupConfirmDeleteCategoryBinding
 
     @Inject
     lateinit var settings: SettingsRepository
@@ -57,18 +51,17 @@ class ConfirmPopup @Inject constructor(
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         val layoutInflater = LayoutInflater.from(context)
-        bindings = ContentPopupConfirmBinding.inflate(layoutInflater, container, false)
+        bindings = ContentPopupConfirmDeleteCategoryBinding.inflate(layoutInflater, container, false)
         return bindings.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        bindings.txvMessage.text = message
-
         bindings.btnYes.setOnClickListener {
             val data = Bundle().apply {
                 putInt(POPUP_OPTION, POPUP_YES)
+                putBoolean(POPUP_OPTION_DELETE_ALL_TASKS, bindings.chxDeleteTasks.isChecked)
             }
             close(data)
         }
@@ -78,11 +71,6 @@ class ConfirmPopup @Inject constructor(
                 putInt(POPUP_OPTION, POPUP_NO)
             }
             close(data)
-        }
-
-        if(!confirmMode) {
-            bindings.btnNo.isVisible = false
-            bindings.btnYes.text = getString(R.string.close)
         }
 
         bindings.rootLayout.setOnClickListener {

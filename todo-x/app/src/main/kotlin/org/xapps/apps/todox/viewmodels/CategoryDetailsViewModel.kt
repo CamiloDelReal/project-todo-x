@@ -18,6 +18,7 @@ import org.xapps.apps.todox.core.models.Task
 import org.xapps.apps.todox.core.models.TaskWithItems
 import org.xapps.apps.todox.core.repositories.CategoryRepository
 import org.xapps.apps.todox.core.repositories.TaskRepository
+import org.xapps.apps.todox.core.repositories.failures.CategoryFailure
 import org.xapps.apps.todox.core.repositories.failures.TaskFailure
 import org.xapps.apps.todox.core.utils.debug
 import org.xapps.apps.todox.core.utils.error
@@ -34,6 +35,7 @@ class CategoryDetailsViewModel @Inject constructor(
     private val taskRepository: TaskRepository
 ): ViewModel() {
 
+    private var categoryJob: Job? = null
     private var tasksJob: Job? = null
     private val _messageFlow: MutableSharedFlow<Message> = MutableSharedFlow(replay = 1)
     private val _tasksPaginatedFlow: MutableSharedFlow<PagingData<TaskWithItems>?> = MutableSharedFlow(replay = 1)
@@ -65,7 +67,8 @@ class CategoryDetailsViewModel @Inject constructor(
 
     fun category(id: Long) {
         _messageFlow.tryEmit(Message.Loading)
-        viewModelScope.launch {
+        categoryJob?.cancel()
+        categoryJob = viewModelScope.launch {
             categoryRepository.category(id)
                 .catch { ex ->
                     _messageFlow.emit(Message.Error(Exception(ex.localizedMessage)))
@@ -137,8 +140,44 @@ class CategoryDetailsViewModel @Inject constructor(
         _messageFlow.tryEmit(Message.Success())
     }
 
+    private fun handleTaskSuccess(success: Boolean) {
+        _messageFlow.tryEmit(Message.Success())
+    }
+
     private fun handleTaskFailure(failure: TaskFailure) {
         _messageFlow.tryEmit(Message.Error(Exception(context.getString(R.string.error_updating_task_in_db))))
+    }
+
+    fun deleteAllTasks() {
+        _messageFlow.tryEmit(Message.Loading)
+        viewModelScope.launch {
+            val result = taskRepository.deleteTasksInCategory(categoryId)
+            result.either(::handleTaskFailure, ::handleTaskSuccess)
+        }
+    }
+
+    fun completeAllTasks() {
+        _messageFlow.tryEmit(Message.Loading)
+        viewModelScope.launch {
+            val result = taskRepository.completeTasksInCategory(categoryId)
+            result.either(::handleTaskFailure, ::handleTaskSuccess)
+        }
+    }
+
+    fun canCategoryBeDeleted(): Boolean {
+        debug<CategoryDetailsViewModel>("Can category $categoryId be deleted when ${Constants.UNCLASSIFED_CATEGORY_ID} is blocked?")
+        return categoryId != Constants.UNCLASSIFED_CATEGORY_ID
+    }
+
+    fun deleteCategory(deleteTasks: Boolean) {
+        _messageFlow.tryEmit(Message.Loading)
+        viewModelScope.launch {
+            categoryJob?.cancel()
+            categoryJob = null
+            tasksJob?.cancel()
+            tasksJob = null
+//            val result = categoryRepository.dele
+        }
     }
 
 }

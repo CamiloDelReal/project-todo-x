@@ -49,8 +49,8 @@ class LocalModule {
 
     @Singleton
     @Provides
-    fun provideTaskRepository(taskDao: TaskDao, itemDao: ItemDao): TaskRepository =
-        TaskRepository(Dispatchers.IO, taskDao, itemDao)
+    fun provideTaskRepository(taskDao: TaskDao, itemRepository: ItemRepository): TaskRepository =
+        TaskRepository(Dispatchers.IO, taskDao, itemRepository)
 
     @Singleton
     @Provides

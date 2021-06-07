@@ -21,12 +21,10 @@ import org.xapps.apps.todox.core.utils.info
 import org.xapps.apps.todox.databinding.FragmentTaskDetailsBinding
 import org.xapps.apps.todox.viewmodels.TaskDetailsViewModel
 import org.xapps.apps.todox.views.adapters.ItemAdapter
-import org.xapps.apps.todox.views.popups.CategoryDetailsMoreOptionsPopup
 import org.xapps.apps.todox.views.popups.ConfirmPopup
 import org.xapps.apps.todox.views.popups.TaskDetailsMoreOptionsPopup
 import org.xapps.apps.todox.views.utils.ColorUtils
 import org.xapps.apps.todox.views.utils.Message
-import timber.log.Timber
 import javax.inject.Inject
 
 
@@ -77,7 +75,7 @@ class TaskDetailsFragment @Inject constructor(): Fragment() {
         }
 
         bindings.btnChangePriority.setOnClickListener {
-            viewModel.updateTask()
+            viewModel.changePriority()
         }
 
         bindings.btnMoreOptions.setOnClickListener {
@@ -99,7 +97,7 @@ class TaskDetailsFragment @Inject constructor(): Fragment() {
                     TaskDetailsMoreOptionsPopup.MORE_OPTIONS_POPUP_DELETE -> {
                         ConfirmPopup.showDialog(
                             parentFragmentManager,
-                            getString(R.string.confirm_delete)
+                            getString(R.string.confirm_delete_task)
                         ) { _, data ->
                             val option = if (data.containsKey(ConfirmPopup.POPUP_OPTION)) {
                                 data.getInt(ConfirmPopup.POPUP_OPTION)

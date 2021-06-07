@@ -82,7 +82,7 @@ class TaskDetailsViewModel @Inject constructor(
         }
     }
 
-    fun updateTask() {
+    fun changePriority() {
         _messageFlow.tryEmit(Message.Loading)
         viewModelScope.launch {
             val taskUpdated = taskWithItemsAndCategory.get()!!.task.copy()
@@ -116,8 +116,7 @@ class TaskDetailsViewModel @Inject constructor(
         _messageFlow.tryEmit(Message.Loading)
         viewModelScope.launch {
             val taskUpdated = taskWithItemsAndCategory.get()!!.task.copy()
-            taskUpdated.done = !taskUpdated.done
-            val result = taskRepository.update(taskUpdated)
+            val result = taskRepository.complete(taskUpdated)
             result.either(::handleTaskFailure, ::handleTaskSuccess)
         }
     }

@@ -44,6 +44,8 @@ class EditTaskViewModel @Inject constructor(
 
     val messageFlow: SharedFlow<Message> = _messageFlow
 
+    val hasTaskToEdit: ObservableField<Boolean> = ObservableField(false)
+
     init {
         taskWithItems.set(TaskWithItems(task = Task(), items = listOf()))
         items.add(Item())
@@ -51,6 +53,7 @@ class EditTaskViewModel @Inject constructor(
             taskId = savedStateHandle[Constants.TASK_ID] ?: throw kotlin.IllegalArgumentException("Task Id not provided")
             Timber.i("Edit task request for id $taskId")
             if(taskId != Constants.ID_INVALID) {
+                hasTaskToEdit.set(true)
                 taskWithItems(taskId)
             } else {
                 categoryId = savedStateHandle[Constants.CATEGORY_ID] ?: Constants.UNCLASSIFED_CATEGORY_ID
@@ -87,7 +90,11 @@ class EditTaskViewModel @Inject constructor(
                     Timber.i("Task with items received $it")
                     taskWithItems.set(it)
                     items.clear()
-                    items.addAll(it.items)
+                    if(it.items.isEmpty()) {
+                        items.add(Item())
+                    } else {
+                        items.addAll(it.items)
+                    }
                     categoryId = it.task.categoryId
                     category(categoryId)
                 }
@@ -112,13 +119,14 @@ class EditTaskViewModel @Inject constructor(
         _messageFlow.tryEmit(Message.Loading)
         viewModelScope.launch {
             taskWithItems.get()?.task?.categoryId = selectedCategory.get()?.get(0)?.id ?: Constants.ID_INVALID
+            val fixedItems = items.filter { it.description.isNotEmpty() && it.description.isNotBlank() }
+            taskWithItems.get()!!.items = fixedItems
             if(taskId == Constants.ID_INVALID) {
-                val fixedItems = items.filter { it.description.isNotEmpty() && it.description.isNotBlank() }
-                taskWithItems.get()!!.items = fixedItems
-                val result = taskRepository.insertTaskWithItems(taskWithItems.get()!!)
+                val result = taskRepository.insertWithItems(taskWithItems.get()!!)
                 result.either(::handleTaskFailure, ::handleTaskSuccess)
             } else {
-//                taskRepository.updateTaskWithItems
+                val result = taskRepository.updateWithItems(taskWithItems.get()!!)
+                result.either(::handleTaskFailure, ::handleTaskSuccess)
             }
         }
     }

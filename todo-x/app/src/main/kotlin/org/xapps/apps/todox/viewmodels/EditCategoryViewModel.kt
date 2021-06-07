@@ -35,6 +35,8 @@ class EditCategoryViewModel @Inject constructor(
     var categoryId: Long = Constants.ID_INVALID
         private set
 
+    val canCategoryNameBeEdited: ObservableField<Boolean> = ObservableField(true)
+
     val colors: ObservableArrayList<Color> = ObservableArrayList()
     val chosenColor: ObservableField<String> = ObservableField()
 
@@ -48,6 +50,9 @@ class EditCategoryViewModel @Inject constructor(
             category.set(Category(color = defaultColor))
             chosenColor.set(defaultColor)
         } else {
+            if(categoryId == Constants.UNCLASSIFED_CATEGORY_ID) {
+                canCategoryNameBeEdited.set(false)
+            }
             category(categoryId)
         }
 
@@ -95,10 +100,10 @@ class EditCategoryViewModel @Inject constructor(
         _messageFlow.tryEmit(Message.Loading)
         viewModelScope.launch {
             val result = if(categoryId == Constants.ID_INVALID) {
-                categoryRepository.insertCategory(category.get()!!)
+                categoryRepository.insert(category.get()!!)
 
             } else {
-                categoryRepository.updateCategory(category.get()!!)
+                categoryRepository.update(category.get()!!)
             }
             result.either(::handleCategoryFailure, ::handleCategorySuccess)
         }

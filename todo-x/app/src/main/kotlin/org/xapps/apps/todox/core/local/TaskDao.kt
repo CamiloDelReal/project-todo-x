@@ -125,6 +125,16 @@ interface TaskDao {
     @Query("SELECT * FROM tasks WHERE date = :date ORDER BY date ASC")
     fun tasksForDateWithItemsAndCategoryPaginatedAsync(date: String): PagingSource<Int, TaskWithItemsAndCategory>
 
+    @Transaction
+    @Query("SELECT tasks.id FROM tasks WHERE category_id = :categoryId")
+    suspend fun tasksIdByCategoryAsync(categoryId: Long): List<Long>
+
+    @Query("UPDATE tasks SET done = 1 WHERE category_id = :categoryId")
+    suspend fun completeByCategoryAsync(categoryId: Long): Int
+
+    @Query("DELETE FROM tasks WHERE category_id = :categoryId")
+    suspend fun deleteByCategoryAsync(categoryId: Long): Int
+
     @Update
     suspend fun updateAsync(task: Task): Int
 

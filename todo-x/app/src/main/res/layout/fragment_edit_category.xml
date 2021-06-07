@@ -6,6 +6,8 @@
 
     <data>
 
+        <import type="android.view.View" />
+
         <variable
             name="viewModel"
             type="org.xapps.apps.todox.viewmodels.EditCategoryViewModel" />
@@ -77,7 +79,8 @@
                     android:id="@+id/tilName"
                     style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    android:enabled="@{viewModel.canCategoryNameBeEdited}">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/tieName"
@@ -89,6 +92,14 @@
                         android:maxLines="1"
                         android:text="@={viewModel.category.name}" />
                 </com.google.android.material.textfield.TextInputLayout>
+
+                <TextView
+                    android:id="@+id/txvNameCannotBeEditedAlert"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/cannot_edit_name"
+                    android:visibility="@{viewModel.canCategoryNameBeEdited ? View.GONE : View.VISIBLE}"
+                    android:textAppearance="@style/TextAppearance.MaterialComponents.Caption"/>
 
                 <Space
                     android:layout_width="wrap_content"

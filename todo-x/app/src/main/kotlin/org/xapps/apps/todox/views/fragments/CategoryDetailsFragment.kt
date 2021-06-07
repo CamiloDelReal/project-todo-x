@@ -5,11 +5,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.activity.OnBackPressedCallback
-import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.Observer
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.paging.LoadState
@@ -20,19 +18,20 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
+import org.xapps.apps.todox.R
 import org.xapps.apps.todox.core.models.Task
-import org.xapps.apps.todox.core.models.TaskWithItems
+import org.xapps.apps.todox.core.utils.debug
 import org.xapps.apps.todox.core.utils.error
 import org.xapps.apps.todox.core.utils.info
 import org.xapps.apps.todox.core.utils.warning
 import org.xapps.apps.todox.databinding.FragmentCategoryDetailsBinding
 import org.xapps.apps.todox.viewmodels.CategoryDetailsViewModel
 import org.xapps.apps.todox.viewmodels.FilterType
-import org.xapps.apps.todox.views.adapters.CategoryListAdapter
 import org.xapps.apps.todox.views.adapters.DateHeaderDecoration
 import org.xapps.apps.todox.views.adapters.TaskWithItemsAdapter
 import org.xapps.apps.todox.views.popups.CategoryDetailsMoreOptionsPopup
-import org.xapps.apps.todox.views.popups.HomeMoreOptionsPopup
+import org.xapps.apps.todox.views.popups.ConfirmDeleteCategoryPopup
+import org.xapps.apps.todox.views.popups.ConfirmPopup
 import org.xapps.apps.todox.views.utils.ColorUtils
 import org.xapps.apps.todox.views.utils.Message
 import timber.log.Timber
@@ -95,9 +94,9 @@ class CategoryDetailsFragment @Inject constructor() : Fragment() {
 
         bindings.btnNewTask.setOnClickListener {
             findNavController().navigate(
-                    CategoryDetailsFragmentDirections.actionCategoryDetailsFragmentToEditTaskFragment(
-                            categoryId = viewModel.categoryId
-                    )
+                CategoryDetailsFragmentDirections.actionCategoryDetailsFragmentToEditTaskFragment(
+                    categoryId = viewModel.categoryId
+                )
             )
         }
 
@@ -111,11 +110,21 @@ class CategoryDetailsFragment @Inject constructor() : Fragment() {
                     -1
                 }
                 when (option) {
+                    CategoryDetailsMoreOptionsPopup.MORE_OPTIONS_POPUP_COMPLETE_ALL -> {
+                        viewModel.completeAllTasks()
+                    }
+                    CategoryDetailsMoreOptionsPopup.MORE_OPTIONS_POPUP_DELETE_ALL -> {
+                        confirmDeleteAllTasks()
+                    }
                     CategoryDetailsMoreOptionsPopup.MORE_OPTIONS_POPUP_EDIT -> {
                         findNavController().navigate(CategoryDetailsFragmentDirections.actionCategoryDetailsFragmentToEditCategoryFragment(viewModel.categoryId))
                     }
-                    CategoryDetailsMoreOptionsPopup.MORE_OPTIONS_POPUP_COMPLETE_ALL -> {
-                        Timber.w("ToDo")
+                    CategoryDetailsMoreOptionsPopup.MORE_OPTIONS_POPUP_DELETE -> {
+                        if(viewModel.canCategoryBeDeleted()) {
+                            confirmDeleteCategory()
+                        } else {
+                            categoryCannotBeDeleted()
+                        }
                     }
                 }
             }
@@ -172,6 +181,7 @@ class CategoryDetailsFragment @Inject constructor() : Fragment() {
                .collect {
                    when (it) {
                        is Message.Loading -> {
+                           debug<CategoryDetailsFragment>("Loading message recieved")
                            bindings.progressbar.isVisible = true
                        }
                        is Message.Loaded -> {
@@ -216,6 +226,56 @@ class CategoryDetailsFragment @Inject constructor() : Fragment() {
             }
             else -> {
                 warning<CategoryDetailsFragment>("Task filter ${viewModel.filter} wrong for this view")
+            }
+        }
+    }
+
+    private fun confirmDeleteAllTasks() {
+        ConfirmPopup.showDialog(
+                parentFragmentManager,
+                getString(R.string.confirm_delete_all_tasks_in_category)
+        ) { _, data ->
+            val option = if (data.containsKey(ConfirmPopup.POPUP_OPTION)) {
+                data.getInt(ConfirmPopup.POPUP_OPTION)
+            } else {
+                -1
+            }
+            when(option) {
+                ConfirmPopup.POPUP_YES -> {
+                    viewModel.deleteAllTasks()
+                }
+                ConfirmPopup.POPUP_NO -> {
+                    info<CategoryDetailsViewModel>("User has cancelled the delete operation")
+                }
+            }
+        }
+    }
+
+    private fun categoryCannotBeDeleted() {
+        ConfirmPopup.showDialog(
+            parentFragmentManager,
+            getString(R.string.unclassified_cannot_be_deleted),
+            confirmMode = false
+        ) { _, _ -> }
+    }
+
+    private fun confirmDeleteCategory() {
+        ConfirmDeleteCategoryPopup.showDialog(
+            parentFragmentManager,
+        ) { _, data ->
+            val option = if (data.containsKey(ConfirmDeleteCategoryPopup.POPUP_OPTION)) {
+                data.getInt(ConfirmDeleteCategoryPopup.POPUP_OPTION)
+            } else {
+                -1
+            }
+            when(option) {
+                ConfirmDeleteCategoryPopup.POPUP_YES -> {
+                    val deleteTasks = data.getBoolean(ConfirmDeleteCategoryPopup.POPUP_OPTION_DELETE_ALL_TASKS, false)
+                    viewModel.deleteCategory(deleteTasks = deleteTasks)
+                }
+                ConfirmDeleteCategoryPopup.POPUP_NO -> {
+                    info<CategoryDetailsViewModel>("User has cancelled the delete operation")
+                }
             }
         }
     }

@@ -23,20 +23,44 @@ import javax.inject.Inject
 class TaskRepository @Inject constructor(
     private val dispatcher: CoroutineDispatcher,
     private val taskDao: TaskDao,
-    private val itemDao: ItemDao
+    private val itemRepository: ItemRepository
 ) {
 
-    suspend fun insertTaskWithItems(taskWithItems: TaskWithItems): Either<TaskFailure, TaskWithItems> = withContext(dispatcher) {
+    suspend fun insertWithItems(taskWithItems: TaskWithItems): Either<TaskFailure, TaskWithItems> = withContext(dispatcher) {
         info<TaskRepository>("Insert $taskWithItems")
         try {
             val taskId = taskDao.insertAsync(taskWithItems.task)
             if (taskId != Constants.ID_INVALID) {
                 taskWithItems.task.id = taskId
                 taskWithItems.items.forEach { it.taskId = taskId }
-                val itemsId = itemDao.insertAsync(taskWithItems.items)
-                if(itemsId.size == taskWithItems.items.size) {
-                    taskWithItems.items.forEachIndexed { index, item -> item.id = itemsId[index] }
+                val itemsSuccess = itemRepository.insert(taskWithItems.items)
+                if(itemsSuccess.isSuccess) {
                     taskWithItems.toSuccess()
+                } else {
+                    TaskFailure.Database.toError()
+                }
+            } else {
+                TaskFailure.Database.toError()
+            }
+        } catch (ex: Exception) {
+            TaskFailure.Exception(ex.localizedMessage).toError()
+        }
+    }
+
+    suspend fun updateWithItems(taskWithItems: TaskWithItems): Either<TaskFailure, TaskWithItems> = withContext(dispatcher) {
+        info<TaskRepository>("Update $taskWithItems")
+        try {
+            val taskSuccess = taskDao.updateAsync(taskWithItems.task)
+            if (taskSuccess == 1) {
+                taskWithItems.items.forEach { it.taskId = taskWithItems.task.id }
+                val itemsDeleteSuccess = itemRepository.deleteByTask(taskWithItems.task.id)
+                if(itemsDeleteSuccess.isSuccess) {
+                    val itemsInsertSuccess = itemRepository.insert(taskWithItems.items)
+                    if(itemsInsertSuccess.isSuccess) {
+                        taskWithItems.toSuccess()
+                    } else {
+                        TaskFailure.Database.toError()
+                    }
                 } else {
                     TaskFailure.Database.toError()
                 }
@@ -64,13 +88,81 @@ class TaskRepository @Inject constructor(
         }
     }
 
+    suspend fun complete(task: Task): Either<TaskFailure, Task> = withContext(dispatcher) {
+        info<TaskRepository>("Update $task")
+        try {
+            val itemsSuccess = itemRepository.completeByTask(task.id)
+            if(itemsSuccess.isSuccess) {
+                task.done = true
+                val count = taskDao.updateAsync(task)
+                if(count == 1) {
+                    info<TaskRepository>("Task updated successfully $task")
+                    task.toSuccess()
+                } else {
+                    TaskFailure.Database.toError()
+                }
+            } else {
+                TaskFailure.Database.toError()
+            }
+        } catch(ex: Exception) {
+            error<TaskRepository>(ex, "Exception captured")
+            TaskFailure.Exception(ex.localizedMessage).toError()
+        }
+    }
+
+    suspend fun completeTasksInCategory(categoryId: Long): Either<TaskFailure, Boolean> = withContext(dispatcher) {
+        info<TaskRepository>("Complete all tasks of category $categoryId")
+        try {
+            val tasksId = taskDao.tasksIdByCategoryAsync(categoryId)
+            val itemsResult = itemRepository.completeByTasks(tasksId)
+            if(itemsResult.isSuccess) {
+                val tasksUpdated = taskDao.completeByCategoryAsync(categoryId)
+                if(tasksUpdated == tasksId.size) {
+                    true.toSuccess()
+                } else {
+                    TaskFailure.Database.toError()
+                }
+            } else {
+                TaskFailure.Database.toError()
+            }
+        } catch (ex: Exception) {
+            error<TaskRepository>(ex, "Exception captured")
+            TaskFailure.Exception(ex.localizedMessage).toError()
+        }
+    }
+
+    suspend fun deleteTasksInCategory(categoryId: Long): Either<TaskFailure, Boolean> = withContext(dispatcher) {
+        info<TaskRepository>("Delete all tasks of category $categoryId")
+        try {
+            val tasksId = taskDao.tasksIdByCategoryAsync(categoryId)
+            val itemsResult = itemRepository.deleteByTasks(tasksId)
+            if(itemsResult.isSuccess){
+                val tasksDeleted = taskDao.deleteByCategoryAsync(categoryId)
+                if(tasksDeleted == tasksId.size) {
+                    true.toSuccess()
+                } else {
+                    TaskFailure.Database.toError()
+                }
+            } else {
+                TaskFailure.Database.toError()
+            }
+        } catch (ex: Exception) {
+            error<TaskRepository>(ex, "Exception captured")
+            TaskFailure.Exception(ex.localizedMessage).toError()
+        }
+    }
+
     suspend fun delete(task: Task): Either<TaskFailure, Task> = withContext(dispatcher) {
         info<TaskRepository>("Delete $task")
         try {
-            itemDao.deleteByTaskAsync(task.id)
-            val count = taskDao.delete(task)
-            if(count == 1) {
-                task.toSuccess()
+            val itemsSuccess = itemRepository.deleteByTask(task.id)
+            if(itemsSuccess.isSuccess) {
+                val count = taskDao.delete(task)
+                if(count == 1) {
+                    task.toSuccess()
+                } else {
+                    TaskFailure.Database.toError()
+                }
             } else {
                 TaskFailure.Database.toError()
             }

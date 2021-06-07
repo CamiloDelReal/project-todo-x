@@ -12,7 +12,9 @@ import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.withContext
 import org.xapps.apps.todox.core.local.CategoryDao
 import org.xapps.apps.todox.core.models.Category
+import org.xapps.apps.todox.core.models.Task
 import org.xapps.apps.todox.core.repositories.failures.CategoryFailure
+import org.xapps.apps.todox.core.repositories.failures.TaskFailure
 import org.xapps.apps.todox.core.utils.*
 import org.xapps.apps.todox.viewmodels.Constants
 import timber.log.Timber
@@ -65,7 +67,7 @@ class CategoryRepository @Inject constructor(
             .flowOn(dispatcher)
     }
 
-    suspend fun insertCategory(category: Category): Either<CategoryFailure, Category> = withContext(dispatcher) {
+    suspend fun insert(category: Category): Either<CategoryFailure, Category> = withContext(dispatcher) {
         try {
             val id = categoryDao.insertAsync(category)
             if(id != Constants.ID_INVALID) {
@@ -79,7 +81,7 @@ class CategoryRepository @Inject constructor(
         }
     }
 
-    suspend fun updateCategory(category: Category): Either<CategoryFailure, Category> = withContext(dispatcher) {
+    suspend fun update(category: Category): Either<CategoryFailure, Category> = withContext(dispatcher) {
         try {
             val count = categoryDao.updateAsync(category)
             if(count == 1) {
@@ -91,5 +93,21 @@ class CategoryRepository @Inject constructor(
             CategoryFailure.Exception(ex.localizedMessage).toError()
         }
     }
+
+//    suspend fun delete(task: Task): Either<TaskFailure, Task> = withContext(dispatcher) {
+//        info<TaskRepository>("Delete $task")
+//        try {
+//            itemDao.deleteByTaskAsync(task.id)
+//            val count = taskDao.delete(task)
+//            if(count == 1) {
+//                task.toSuccess()
+//            } else {
+//                TaskFailure.Database.toError()
+//            }
+//        } catch (ex: Exception) {
+//            error<TaskRepository>(ex, "Exception captured")
+//            TaskFailure.Exception(ex.localizedMessage).toError()
+//        }
+//    }
 
 }

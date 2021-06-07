@@ -24,7 +24,7 @@ class CategoryDetailsMoreOptionsPopup @Inject constructor() : DialogFragment() {
         const val MORE_OPTIONS_POPUP_COMPLETE_ALL = 503
         const val MORE_OPTIONS_POPUP_DELETE_ALL = 504
         const val MORE_OPTIONS_POPUP_EDIT = 505
-        const val MORE_OPTIONS_POPUP_DELETE = 505
+        const val MORE_OPTIONS_POPUP_DELETE = 506
 
         fun showDialog(
                 fragmentManager: FragmentManager,

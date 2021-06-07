@@ -2,7 +2,7 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context=".views.popups.ConfirmPopup">
+    tools:context=".views.popups.ConfirmDeleteCategoryPopup">
 
     <FrameLayout
         android:id="@+id/rootLayout"
@@ -32,20 +32,35 @@
                     android:text="@string/alert"
                     android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6"/>
 
-                <Space
-                    android:layout_width="wrap_content"
-                    android:layout_height="@dimen/content_padding_small" />
-
                 <TextView
                     android:id="@+id/txvMessage"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    tools:text="This is the message"
+                    android:text="@string/confirm_delete_category"
                     android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"/>
 
                 <Space
                     android:layout_width="wrap_content"
                     android:layout_height="@dimen/content_padding_small" />
+
+                <com.google.android.material.checkbox.MaterialCheckBox
+                    android:id="@+id/chxDeleteTasks"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:minWidth="0dp"
+                    android:minHeight="0dp"
+                    android:checked="true"
+                    android:text="@string/delete_all_tasks" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/move_to_unclassified"
+                    android:textAppearance="@style/TextAppearance.MaterialComponents.Caption"/>
+
+                <Space
+                    android:layout_width="wrap_content"
+                    android:layout_height="@dimen/content_padding" />
 
                 <LinearLayout
                     android:layout_width="wrap_content"

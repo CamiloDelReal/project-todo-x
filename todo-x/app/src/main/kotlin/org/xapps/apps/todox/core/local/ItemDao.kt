@@ -44,6 +44,18 @@ interface ItemDao {
     @Update
     fun update(items: List<Item>): Int
 
+    // The clause from inside an update sentence isn't supported yet by Room
+//    @Query("UPDATE items SET done = 1 FROM (SELECT * FROM tasks WHERE tasks.category_id = 4) AS tasks_in_category WHERE task_id = tasks_in_category.id")
+//    suspend fun completeByCategory(categoryId: Long): Int
+
+    // While update-from isn't supported by room, items done field must be set given his task id
+    @Query("UPDATE items SET done = 1 WHERE task_id = :taskId")
+    suspend fun completeByTaskAsync(taskId: Long): Int
+
+    // While update-from isn't supported by room, items done field must be set given his task id
+    @Query("UPDATE items SET done = 1 WHERE task_id in (:tasksId)")
+    suspend fun completeByTasksAsync(tasksId: List<Long>): Int
+
     @Delete
     suspend fun deleteAsync(item: Item): Int
 
@@ -56,11 +68,18 @@ interface ItemDao {
     @Delete
     fun delete(items: List<Item>): Int
 
-    @Transaction
+    @Query("SELECT COUNT(id) FROM items WHERE task_id = :taskId")
+    suspend fun countByTaskAsync(taskId: Long): Int
+
+    @Query("SELECT COUNT(id) FROM items WHERE task_id in (:tasksId)")
+    suspend fun countByTasksAsync(tasksId: List<Long>): Int
+
     @Query("DELETE FROM items WHERE task_id = :taskId")
     suspend fun deleteByTaskAsync(taskId: Long): Int
 
-    @Transaction
+    @Query("DELETE FROM items WHERE task_id in (:tasksId)")
+    suspend fun deleteByTasksAsync(tasksId: List<Long>): Int
+
     @Query("DELETE FROM items WHERE task_id = :taskId")
     fun deleteByTask(taskId: Long): Int
 

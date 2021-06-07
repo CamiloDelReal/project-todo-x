@@ -39,14 +39,13 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-
         <me.zhanghai.android.materialprogressbar.MaterialProgressBar
             android:id="@+id/progressbar"
             style="@style/Widget.MaterialProgressBar.ProgressBar.Horizontal"
             android:layout_width="0dp"
             android:layout_height="@dimen/horizontal_indeterminated_progressbar"
-            android:indeterminate="true"
             android:visibility="gone"
+            android:indeterminate="true"
             app:layout_constraintBottom_toBottomOf="@id/toolbar"
             app:layout_constraintEnd_toEndOf="@id/toolbar"
             app:layout_constraintStart_toStartOf="@id/toolbar"
