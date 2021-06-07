@@ -124,7 +124,7 @@ object Libraries {
         }
 
         object Room {
-            private const val VERSION = "2.3.0"
+            private const val VERSION = "2.4.0-alpha02"
 
             const val RUNTIME = "androidx.room:room-runtime:$VERSION"
             const val CORE_KTX = "androidx.room:room-ktx:$VERSION"
