@@ -86,6 +86,7 @@
     <string name="flatuicolors_url">https://flatuicolors.com/</string>
     <string name="flatuicolors">Flat UI Colors 2</string>
     <string name="create_task">Create Task</string>
+    <string name="edit_task">Edit Task</string>
     <string name="create_category">Create Category</string>
     <string name="edit_category">Edit Category</string>
     <string name="color">Color</string>
@@ -101,5 +102,13 @@
     <string name="no">No</string>
     <string name="yes">Yes</string>
     <string name="alert">Alert</string>
-    <string name="confirm_delete">You are about to delete this task, are you sure to continue?</string>
+    <string name="unclassified_cannot_be_deleted">This is a special category, cannot be deleted</string>
+    <string name="confirm_delete_task">You are about to delete this task, are you sure to continue?</string>
+    <string name="confirm_delete_category">You are about to delete this category, are you sure to continue?</string>
+    <string name="confirm_delete_all_tasks_in_category">You are about to delete all the tasks in this category, are you sure to continue?</string>
+    <string name="delete_all">Delete all</string>
+    <string name="close">Close</string>
+    <string name="delete_all_tasks">Delete all tasks</string>
+    <string name="move_to_unclassified">Uncheck to move all the tasks to Unclassified category</string>
+    <string name="cannot_edit_name">This is a special category, name cannot be edited.</string>
 </resources>
