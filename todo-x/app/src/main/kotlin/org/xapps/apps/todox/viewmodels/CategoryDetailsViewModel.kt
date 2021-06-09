@@ -18,8 +18,6 @@ import org.xapps.apps.todox.core.models.Task
 import org.xapps.apps.todox.core.models.TaskWithItems
 import org.xapps.apps.todox.core.repositories.CategoryRepository
 import org.xapps.apps.todox.core.repositories.TaskRepository
-import org.xapps.apps.todox.core.repositories.failures.CategoryFailure
-import org.xapps.apps.todox.core.repositories.failures.TaskFailure
 import org.xapps.apps.todox.core.utils.debug
 import org.xapps.apps.todox.core.utils.error
 import org.xapps.apps.todox.core.utils.info

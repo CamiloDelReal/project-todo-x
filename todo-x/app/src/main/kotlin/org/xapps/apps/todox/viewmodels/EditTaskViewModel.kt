@@ -3,7 +3,9 @@ package org.xapps.apps.todox.viewmodels
 import android.content.Context
 import androidx.databinding.ObservableArrayList
 import androidx.databinding.ObservableField
-import androidx.lifecycle.*
+import androidx.lifecycle.SavedStateHandle
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -18,7 +20,7 @@ import org.xapps.apps.todox.core.models.Task
 import org.xapps.apps.todox.core.models.TaskWithItems
 import org.xapps.apps.todox.core.repositories.CategoryRepository
 import org.xapps.apps.todox.core.repositories.TaskRepository
-import org.xapps.apps.todox.core.repositories.failures.TaskFailure
+import org.xapps.apps.todox.core.utils.error
 import org.xapps.apps.todox.views.utils.Message
 import timber.log.Timber
 import javax.inject.Inject
@@ -123,20 +125,22 @@ class EditTaskViewModel @Inject constructor(
             taskWithItems.get()!!.items = fixedItems
             if(taskId == Constants.ID_INVALID) {
                 val result = taskRepository.insertWithItems(taskWithItems.get()!!)
-                result.either(::handleTaskFailure, ::handleTaskSuccess)
+                result.either({ failure ->
+                    error<EditTaskViewModel>("Error received $failure")
+                    _messageFlow.tryEmit(Message.Error(Exception(context.getString(R.string.error_inserting_task_in_db))))
+                }, { taskWithItems ->
+                    _messageFlow.tryEmit(Message.Success())
+                })
             } else {
                 val result = taskRepository.updateWithItems(taskWithItems.get()!!)
-                result.either(::handleTaskFailure, ::handleTaskSuccess)
+                result.either({ failure ->
+                    error<EditTaskViewModel>("Error received $failure")
+                    _messageFlow.tryEmit(Message.Error(Exception(context.getString(R.string.error_updating_task_in_db))))
+                }, { taskWithItems ->
+                    _messageFlow.tryEmit(Message.Success())
+                })
             }
         }
-    }
-
-    private fun handleTaskSuccess(taskWithItems: TaskWithItems) {
-        _messageFlow.tryEmit(Message.Success())
-    }
-
-    private fun handleTaskFailure(failure: TaskFailure) {
-        _messageFlow.tryEmit(Message.Error(Exception(context.getString(R.string.error_inserting_task_in_db))))
     }
 
 }

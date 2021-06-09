@@ -1,27 +1,21 @@
 package org.xapps.apps.todox.viewmodels
 
 import android.content.Context
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.SharedFlow
-import kotlinx.coroutines.flow.catch
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import org.xapps.apps.todox.R
 import org.xapps.apps.todox.core.models.Category
 import org.xapps.apps.todox.core.repositories.CategoryRepository
 import org.xapps.apps.todox.core.repositories.SettingsRepository
-import org.xapps.apps.todox.core.repositories.failures.CategoryFailure
 import org.xapps.apps.todox.core.utils.debug
+import org.xapps.apps.todox.core.utils.error
 import org.xapps.apps.todox.core.utils.info
 import org.xapps.apps.todox.views.utils.Message
-import timber.log.Timber
-import java.lang.Exception
 import javax.inject.Inject
 
 
@@ -51,7 +45,15 @@ class SplashViewModel @Inject constructor(
                 )
                 debug<SplashViewModel>("Categories $categories")
                 val result = categoryRepository.insert(categories)
-                result.either(::handleCategoryFailure, ::handleCategorySuccess)
+                result.either({ failure ->
+                    error<SplashViewModel>("Error received $failure")
+                    _messageFlow.tryEmit((Message.Error(Exception(context.getString(R.string.error_creating_default_categories)))))
+                }, {
+                    _messageFlow.tryEmit((Message.Success()))
+                    viewModelScope.launch {
+                        settingsRepository.setIsFirstTime(false)
+                    }
+                })
             } else {
                 info<SplashViewModel>("Isn't first time ToDoX is running in this device")
                 _messageFlow.emit((Message.Success()))
@@ -59,14 +61,4 @@ class SplashViewModel @Inject constructor(
         }
     }
 
-    private fun handleCategorySuccess(categories: List<Category>) {
-        _messageFlow.tryEmit((Message.Success()))
-        viewModelScope.launch {
-            settingsRepository.setIsFirstTime(false)
-        }
-    }
-
-    private fun handleCategoryFailure(failure: CategoryFailure) {
-        _messageFlow.tryEmit((Message.Error(Exception(context.getString(R.string.error_creating_default_categories)))))
-    }
 }

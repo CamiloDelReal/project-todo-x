@@ -3,7 +3,9 @@ package org.xapps.apps.todox.viewmodels
 import android.content.Context
 import androidx.databinding.ObservableArrayList
 import androidx.databinding.ObservableField
-import androidx.lifecycle.*
+import androidx.lifecycle.SavedStateHandle
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.Job
@@ -14,16 +16,13 @@ import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import org.xapps.apps.todox.R
 import org.xapps.apps.todox.core.models.Item
-import org.xapps.apps.todox.core.models.Task
 import org.xapps.apps.todox.core.models.TaskWithItemsAndCategory
 import org.xapps.apps.todox.core.repositories.ItemRepository
 import org.xapps.apps.todox.core.repositories.TaskRepository
-import org.xapps.apps.todox.core.repositories.failures.ItemFailure
-import org.xapps.apps.todox.core.repositories.failures.TaskFailure
 import org.xapps.apps.todox.core.utils.debug
+import org.xapps.apps.todox.core.utils.error
 import org.xapps.apps.todox.core.utils.info
 import org.xapps.apps.todox.views.utils.Message
-import timber.log.Timber
 import javax.inject.Inject
 
 
@@ -78,7 +77,12 @@ class TaskDetailsViewModel @Inject constructor(
         _messageFlow.tryEmit(Message.Loading)
         viewModelScope.launch {
             val result = itemRepository.update(item)
-            result.either(::handleItemFailure, ::handleItemSuccess)
+            result.either({ failure ->
+                error<TaskDetailsViewModel>("Error recieved $failure")
+                _messageFlow.tryEmit(Message.Error(Exception(context.getString(R.string.error_updating_item_in_db))))
+            }, {
+                _messageFlow.tryEmit(Message.Success(Operation.ITEM_EDIT))
+            })
         }
     }
 
@@ -88,28 +92,13 @@ class TaskDetailsViewModel @Inject constructor(
             val taskUpdated = taskWithItemsAndCategory.get()!!.task.copy()
             taskUpdated.important = !taskUpdated.important
             val result = taskRepository.update(taskUpdated)
-            result.either(::handleTaskFailure, ::handleTaskSuccess)
+            result.either({ failure ->
+                error<TaskDetailsViewModel>("Error received $failure")
+                _messageFlow.tryEmit(Message.Error(Exception(context.getString(R.string.error_updating_task_in_db))))
+            }, {
+                _messageFlow.tryEmit(Message.Success(Operation.TASK_EDIT))
+            })
         }
-    }
-
-    private fun handleItemFailure(failure: ItemFailure) {
-        _messageFlow.tryEmit(Message.Error(Exception(context.getString(R.string.error_updating_item_in_db))))
-    }
-
-    private fun handleItemSuccess(item: Item) {
-        _messageFlow.tryEmit(Message.Success(Operation.ITEM_EDIT))
-    }
-
-    private fun handleTaskFailure(failure: TaskFailure) {
-        _messageFlow.tryEmit(Message.Error(Exception(context.getString(R.string.error_updating_task_in_db))))
-    }
-
-    private fun handleTaskSuccess(task: Task) {
-        _messageFlow.tryEmit(Message.Success(Operation.TASK_EDIT))
-    }
-
-    private fun handleTaskDeleteSuccess(task: Task) {
-        _messageFlow.tryEmit(Message.Success(Operation.TASK_DELETE))
     }
 
     fun completeTask() {
@@ -117,7 +106,12 @@ class TaskDetailsViewModel @Inject constructor(
         viewModelScope.launch {
             val taskUpdated = taskWithItemsAndCategory.get()!!.task.copy()
             val result = taskRepository.complete(taskUpdated)
-            result.either(::handleTaskFailure, ::handleTaskSuccess)
+            result.either({ failure ->
+                error<TaskDetailsViewModel>("Error received $failure")
+                _messageFlow.tryEmit(Message.Error(Exception(context.getString(R.string.error_updating_task_in_db))))
+            }, {
+                _messageFlow.tryEmit(Message.Success(Operation.TASK_EDIT))
+            })
         }
     }
 
@@ -127,7 +121,12 @@ class TaskDetailsViewModel @Inject constructor(
             taskJob?.cancel()
             taskJob = null
             val result = taskRepository.delete(taskWithItemsAndCategory.get()!!.task)
-            result.either(::handleTaskFailure, ::handleTaskDeleteSuccess)
+            result.either({ failure ->
+                error<TaskDetailsViewModel>("Error received $failure")
+                _messageFlow.tryEmit(Message.Error(Exception(context.getString(R.string.error_updating_task_in_db))))
+            }, {
+                _messageFlow.tryEmit(Message.Success(Operation.TASK_DELETE))
+            })
         }
     }
 

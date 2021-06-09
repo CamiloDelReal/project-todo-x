@@ -3,7 +3,9 @@ package org.xapps.apps.todox.viewmodels
 import android.content.Context
 import androidx.databinding.ObservableArrayList
 import androidx.databinding.ObservableField
-import androidx.lifecycle.*
+import androidx.lifecycle.SavedStateHandle
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -15,7 +17,6 @@ import org.xapps.apps.todox.R
 import org.xapps.apps.todox.core.models.Category
 import org.xapps.apps.todox.core.models.Color
 import org.xapps.apps.todox.core.repositories.CategoryRepository
-import org.xapps.apps.todox.core.repositories.failures.CategoryFailure
 import org.xapps.apps.todox.core.utils.error
 import org.xapps.apps.todox.views.utils.Message
 import timber.log.Timber
@@ -105,17 +106,13 @@ class EditCategoryViewModel @Inject constructor(
             } else {
                 categoryRepository.update(category.get()!!)
             }
-            result.either(::handleCategoryFailure, ::handleCategorySuccess)
+            result.either({ failure ->
+                error<EditCategoryViewModel>("Error received $failure")
+                _messageFlow.tryEmit(Message.Error(Exception(context.getString(R.string.error_saving_category_in_db))))
+            }, { category ->
+                _messageFlow.tryEmit(Message.Success())
+            })
         }
-    }
-
-    private fun handleCategorySuccess(category: Category) {
-        _messageFlow.tryEmit(Message.Success())
-    }
-
-    private fun handleCategoryFailure(failure: CategoryFailure) {
-        error<EditCategoryViewModel>("Error received $failure")
-        _messageFlow.tryEmit(Message.Error(Exception(context.getString(R.string.error_saving_category_in_db))))
     }
 
     fun setColor(colorHex: String) {

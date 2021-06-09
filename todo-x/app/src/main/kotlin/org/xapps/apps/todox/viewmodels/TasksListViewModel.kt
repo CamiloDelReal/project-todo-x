@@ -19,7 +19,7 @@ import org.xapps.apps.todox.R
 import org.xapps.apps.todox.core.models.Task
 import org.xapps.apps.todox.core.models.TaskWithItemsAndCategory
 import org.xapps.apps.todox.core.repositories.TaskRepository
-import org.xapps.apps.todox.core.repositories.failures.TaskFailure
+import org.xapps.apps.todox.core.utils.error
 import org.xapps.apps.todox.core.utils.info
 import org.xapps.apps.todox.views.utils.Message
 import timber.log.Timber
@@ -161,6 +161,7 @@ class TasksListViewModel @Inject constructor(
         viewModelScope.launch {
             val result = taskRepository.update(task)
             result.either({ failure ->
+                error<TasksListViewModel>("Error received $failure")
                 _messageFlow.tryEmit(Message.Error(Exception(context.getString(R.string.error_updating_task_in_db))))
             }, {
                 _messageFlow.tryEmit(Message.Loaded)
@@ -173,8 +174,9 @@ class TasksListViewModel @Inject constructor(
         viewModelScope.launch {
             val result = taskRepository.delete(task)
             result.either({ failure ->
+                error<TasksListViewModel>("Error received $failure")
                 _messageFlow.tryEmit(Message.Error(Exception(context.getString(R.string.error_deleting_task_from_db))))
-            }, { success ->
+            }, {
                 _messageFlow.tryEmit(Message.Success(CategoryDetailsViewModel.Operation.TASK_DELETE))
             })
         }
@@ -187,8 +189,9 @@ class TasksListViewModel @Inject constructor(
         viewModelScope.launch {
             val result = taskRepository.complete(task)
             result.either({ failure ->
+                error<TasksListViewModel>("Error received $failure")
                 _messageFlow.tryEmit(Message.Error(Exception(context.getString(R.string.error_updating_task_in_db))))
-            }, { success ->
+            }, {
                 _messageFlow.tryEmit(Message.Success(CategoryDetailsViewModel.Operation.TASK_EDIT_DELETE))
             })
         }
