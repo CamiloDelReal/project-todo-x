@@ -55,9 +55,11 @@ class TasksListFragment @Inject constructor() : Fragment() {
         override fun clicked(task: Task) {
             findNavController().navigate(TasksListFragmentDirections.actionTasksListFragmentToTaskDetailsFragment(task.id))
         }
+
         override fun taskUpdated(task: Task) {
             viewModel.updateTask(task)
         }
+
         override fun requestEdit(task: Task) {
             findNavController().navigate(TasksListFragmentDirections.actionTasksListFragmentToEditTaskFragment(task.id))
         }
@@ -81,6 +83,10 @@ class TasksListFragment @Inject constructor() : Fragment() {
                     }
                 }
             }
+        }
+
+        override fun requestComplete(task: Task) {
+            viewModel.completeTask(task)
         }
     }
 

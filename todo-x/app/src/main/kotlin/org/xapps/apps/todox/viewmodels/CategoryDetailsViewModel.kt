@@ -199,6 +199,18 @@ class CategoryDetailsViewModel @Inject constructor(
         }
     }
 
+    fun completeTask(task: Task) {
+        _messageFlow.tryEmit(Message.Loading)
+        viewModelScope.launch {
+            val result = taskRepository.complete(task)
+            result.either({ failure ->
+                _messageFlow.tryEmit(Message.Error(Exception(context.getString(R.string.error_updating_task_in_db))))
+            }, { success ->
+                _messageFlow.tryEmit(Message.Success(Operation.TASK_EDIT_DELETE))
+            })
+        }
+    }
+
     enum class Operation {
         CATEGORY_DELETE,
         TASK_EDIT_DELETE,

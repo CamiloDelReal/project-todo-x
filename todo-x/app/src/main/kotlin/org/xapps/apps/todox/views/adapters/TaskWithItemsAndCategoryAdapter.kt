@@ -2,6 +2,7 @@ package org.xapps.apps.todox.views.adapters
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.core.view.isVisible
 import androidx.databinding.ObservableField
 import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
@@ -33,11 +34,11 @@ class TaskWithItemsAndCategoryAdapter(
     }
 
     interface ItemListener {
-
         fun clicked(task: Task)
         fun taskUpdated(task: Task)
         fun requestEdit(task: Task)
         fun requestDelete(task: Task)
+        fun requestComplete(task: Task)
     }
 
     override fun hasHeader(index: Int): Boolean {
@@ -83,7 +84,10 @@ class TaskWithItemsAndCategoryAdapter(
 
         init {
             bindings.rootLayout.setOnClickListener {
-                itemListener.clicked(task?.task!!)
+                bindings.swipeRevealLayout.animateReset()
+                task?.task?.let {
+                    itemListener.clicked(it)
+                }
             }
             bindings.swipeRevealLayout.setOnSwipeListener(object: SwipeLayout.OnSwipeListener {
                 override fun onBeginSwipe(swipeLayout: SwipeLayout?, moveToRight: Boolean) {}
@@ -108,6 +112,12 @@ class TaskWithItemsAndCategoryAdapter(
                     itemListener.taskUpdated(taskUpdated)
                 }
             }
+            bindings.btnComplete.setOnClickListener {
+                bindings.swipeRevealLayout.animateReset()
+                task?.task?.let {
+                    itemListener.requestComplete(it)
+                }
+            }
             bindings.btnEdit.setOnClickListener {
                 bindings.swipeRevealLayout.animateReset()
                 task?.task?.let {
@@ -126,6 +136,7 @@ class TaskWithItemsAndCategoryAdapter(
             Timber.i("About to bind $task")
             this.task = task
             bindings.data = this.task
+            bindings.btnComplete.isVisible = !(task!!.task.done)
         }
 
     }

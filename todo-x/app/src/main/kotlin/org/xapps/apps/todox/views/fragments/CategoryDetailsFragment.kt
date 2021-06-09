@@ -92,6 +92,10 @@ class CategoryDetailsFragment @Inject constructor() : Fragment() {
                 }
             }
         }
+
+        override fun requestComplete(task: Task) {
+            viewModel.completeTask(task)
+        }
     }
 
     override fun onCreateView(

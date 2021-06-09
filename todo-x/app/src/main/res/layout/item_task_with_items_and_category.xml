@@ -18,14 +18,25 @@
         app:mode="same_level"
         app:dragEdge="left">
 
-        <!-- Menu -->
+        <!-- Right Menu -->
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            app:bring_to_clamp="200dp"
+            app:bring_to_clamp="@dimen/context_button_width"
             app:clamp="self"
             app:gravity="right"
-            app:sticky="self">
+            app:sticky="self"
+            android:orientation="horizontal">
+
+            <org.xapps.apps.todox.views.custom.ContextButton
+                android:id="@+id/btnComplete"
+                android:layout_width="@dimen/context_button_width"
+                android:layout_height="match_parent"
+                app:cb_icon="@drawable/ic_check_circle_outline"
+                app:cb_iconTint="@color/white"
+                app:cb_backgroundTint="@color/green_500"
+                app:cb_text="@string/complete"
+                app:cb_textColor="@color/white" />
 
             <org.xapps.apps.todox.views.custom.ContextButton
                 android:id="@+id/btnEdit"
@@ -50,7 +61,6 @@
         </LinearLayout>
 
         <!-- Item -->
-
         <com.google.android.material.card.MaterialCardView
             android:id="@+id/rootLayout"
             android:layout_width="match_parent"

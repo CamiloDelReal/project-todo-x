@@ -3,6 +3,7 @@ package org.xapps.apps.todox.views.adapters
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.core.view.isVisible
 import androidx.databinding.ObservableField
 import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
@@ -10,6 +11,7 @@ import androidx.recyclerview.widget.RecyclerView
 import org.xapps.apps.todox.R
 import org.xapps.apps.todox.core.models.Task
 import org.xapps.apps.todox.core.models.TaskWithItems
+import org.xapps.apps.todox.core.utils.debug
 import org.xapps.apps.todox.core.utils.info
 import org.xapps.apps.todox.core.utils.parseToString
 import org.xapps.apps.todox.databinding.ItemDateHeaderBinding
@@ -40,6 +42,7 @@ class TaskWithItemsAdapter(
         fun taskUpdated(task: Task)
         fun requestEdit(task: Task)
         fun requestDelete(task: Task)
+        fun requestComplete(task: Task)
     }
 
     override fun hasHeader(index: Int): Boolean {
@@ -86,7 +89,9 @@ class TaskWithItemsAdapter(
         init {
             bindings.rootLayout.setOnClickListener {
                 bindings.swipeRevealLayout.animateReset()
-                itemListener.clicked(task?.task!!)
+                task?.task?.let {
+                    itemListener.clicked(it)
+                }
             }
             bindings.swipeRevealLayout.setOnSwipeListener(object: SwipeLayout.OnSwipeListener {
                 override fun onBeginSwipe(swipeLayout: SwipeLayout?, moveToRight: Boolean) {}
@@ -111,6 +116,12 @@ class TaskWithItemsAdapter(
                     itemListener.taskUpdated(taskUpdated)
                 }
             }
+            bindings.btnComplete.setOnClickListener {
+                bindings.swipeRevealLayout.animateReset()
+                task?.task?.let {
+                    itemListener.requestComplete(it)
+                }
+            }
             bindings.btnEdit.setOnClickListener {
                 bindings.swipeRevealLayout.animateReset()
                 task?.task?.let {
@@ -126,9 +137,10 @@ class TaskWithItemsAdapter(
         }
 
         fun bind(task: TaskWithItems?) {
-            Timber.i("About to bind $task")
+            debug<TaskWithItemsAdapter>("About to bind $task")
             this.task = task
             bindings.data = this.task
+            bindings.btnComplete.isVisible = !(task!!.task.done)
         }
 
     }
