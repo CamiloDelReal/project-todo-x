@@ -9,9 +9,19 @@
         <attr name="si_iconBackground" format="reference" />
     </declare-styleable>
 
+    <declare-styleable name="ContextButton">
+        <attr name="cb_icon" format="reference" />
+        <attr name="cb_iconTint" format="reference" />
+        <attr name="cb_text" format="string" />
+        <attr name="cb_textColor" format="reference" />
+        <attr name="cb_backgroundTint" format="reference" />
+        <attr name="cb_strokeColor" format="reference" />
+    </declare-styleable>
+
     <declare-styleable name="EmptyView">
         <attr name="ev_icon" format="reference" />
         <attr name="ev_description" format="string" />
+        <attr name="ev_action" format="string" />
     </declare-styleable>
 
     <declare-styleable name="AboutReference">
