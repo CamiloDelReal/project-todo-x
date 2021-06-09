@@ -233,7 +233,6 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@id/toolbar"
             app:layout_constraintStart_toStartOf="parent"
-            app:ev_icon="@drawable/ic_information_outline"
             app:ev_description="@string/no_tasks"/>
 
     </androidx.constraintlayout.motion.widget.MotionLayout>

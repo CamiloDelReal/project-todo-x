@@ -12,6 +12,8 @@
 
         <import type="org.xapps.apps.todox.R" />
 
+        <import type="android.view.View" />
+
         <variable
             name="viewModel"
             type="org.xapps.apps.todox.viewmodels.TaskDetailsViewModel" />
@@ -267,6 +269,14 @@
                     android:layout_height="wrap_content"
                     android:text="@string/tasks"
                     android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
+
+                <org.xapps.apps.todox.views.custom.EmptyView
+                    android:id="@+id/emptyView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:visibility="@{viewModel.items.size() == 0 ? View.VISIBLE : View.GONE}"
+                    android:paddingVertical="@dimen/content_padding"
+                    app:ev_action="@string/add_tasks"/>
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/lstItems"

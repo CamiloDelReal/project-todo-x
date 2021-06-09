@@ -15,10 +15,14 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collect
+import org.xapps.apps.todox.R
 import org.xapps.apps.todox.core.repositories.SettingsRepository
+import org.xapps.apps.todox.core.utils.error
 import org.xapps.apps.todox.databinding.FragmentEditCategoryBinding
 import org.xapps.apps.todox.viewmodels.EditCategoryViewModel
 import org.xapps.apps.todox.views.adapters.ColorAdapter
+import org.xapps.apps.todox.views.extensions.showError
+import org.xapps.apps.todox.views.extensions.showSuccess
 import org.xapps.apps.todox.views.utils.Message
 import timber.log.Timber
 import javax.inject.Inject
@@ -84,12 +88,13 @@ class EditCategoryFragment @Inject constructor(): Fragment() {
                         }
                         is Message.Success -> {
                             bindings.progressbar.isVisible = false
+                            showSuccess(getString(R.string.category_saved))
                             findNavController().navigateUp()
                         }
                         is Message.Error -> {
                             bindings.progressbar.isVisible = false
-                            Timber.e(it.exception)
-                            // TODO Message here
+                            error<EditCategoryFragment>(it.exception)
+                            showError(it.exception.message!!)
                         }
                     }
                 }

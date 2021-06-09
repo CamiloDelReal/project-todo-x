@@ -29,6 +29,8 @@ import org.xapps.apps.todox.viewmodels.CategoryDetailsViewModel
 import org.xapps.apps.todox.viewmodels.FilterType
 import org.xapps.apps.todox.views.adapters.DateHeaderDecoration
 import org.xapps.apps.todox.views.adapters.TaskWithItemsAdapter
+import org.xapps.apps.todox.views.extensions.showError
+import org.xapps.apps.todox.views.extensions.showSuccess
 import org.xapps.apps.todox.views.popups.CategoryDetailsMoreOptionsPopup
 import org.xapps.apps.todox.views.popups.ConfirmDeleteCategoryPopup
 import org.xapps.apps.todox.views.popups.ConfirmPopup
@@ -57,20 +59,44 @@ class CategoryDetailsFragment @Inject constructor() : Fragment() {
 
     private val tasksItemListener = object : TaskWithItemsAdapter.ItemListener {
         override fun clicked(task: Task) {
-            Timber.i("Requesting opening details for $task")
-            findNavController().navigate(
-                    CategoryDetailsFragmentDirections.actionCategoryDetailsFragmentToTaskDetailsFragment(task.id)
-            )
+            info<CategoryDetailsFragment>("Requesting opening details for $task")
+            findNavController().navigate(CategoryDetailsFragmentDirections.actionCategoryDetailsFragmentToTaskDetailsFragment(task.id))
         }
 
         override fun taskUpdated(task: Task) {
             viewModel.updateTask(task)
         }
+
+        override fun requestEdit(task: Task) {
+            info<CategoryDetailsFragment>("Requesting edit for $task")
+            findNavController().navigate(CategoryDetailsFragmentDirections.actionCategoryDetailsFragmentToEditTaskFragment(taskId = task.id, categoryId = viewModel.categoryId))
+        }
+
+        override fun requestDelete(task: Task) {
+            ConfirmPopup.showDialog(
+                parentFragmentManager,
+                getString(R.string.confirm_delete_task)
+            ) { _, data ->
+                val option = if (data.containsKey(ConfirmPopup.POPUP_OPTION)) {
+                    data.getInt(ConfirmPopup.POPUP_OPTION)
+                } else {
+                    -1
+                }
+                when(option) {
+                    ConfirmPopup.POPUP_YES -> {
+                        viewModel.deleteTask(task)
+                    }
+                    ConfirmPopup.POPUP_NO -> {
+                        info<CategoryDetailsFragment>("User has cancelled the delete operation")
+                    }
+                }
+            }
+        }
     }
 
     override fun onCreateView(
-            inflater: LayoutInflater, container: ViewGroup?,
-            savedInstanceState: Bundle?
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
     ): View {
         bindings = FragmentCategoryDetailsBinding.inflate(layoutInflater)
         bindings.lifecycleOwner = viewLifecycleOwner
@@ -82,7 +108,7 @@ class CategoryDetailsFragment @Inject constructor() : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         bindings.lstTasks.layoutManager =
-                LinearLayoutManager(requireContext(), RecyclerView.VERTICAL, false)
+            LinearLayoutManager(requireContext(), RecyclerView.VERTICAL, false)
         taskAdapter = TaskWithItemsAdapter(tasksItemListener)
         bindings.lstTasks.adapter = taskAdapter
         val dateHeaderDecoration = DateHeaderDecoration(taskAdapter)
@@ -102,7 +128,7 @@ class CategoryDetailsFragment @Inject constructor() : Fragment() {
 
         bindings.btnMoreOptions.setOnClickListener {
             CategoryDetailsMoreOptionsPopup.showDialog(
-                    parentFragmentManager
+                parentFragmentManager
             ) { _, data ->
                 val option = if (data.containsKey(CategoryDetailsMoreOptionsPopup.MORE_OPTIONS_POPUP_OPTION)) {
                     data.getInt(CategoryDetailsMoreOptionsPopup.MORE_OPTIONS_POPUP_OPTION)
@@ -151,7 +177,7 @@ class CategoryDetailsFragment @Inject constructor() : Fragment() {
         })
 
         bindings.filterTabsLayout.addOnTabSelectedListener(object :
-                TabLayout.OnTabSelectedListener {
+            TabLayout.OnTabSelectedListener {
             override fun onTabReselected(tab: TabLayout.Tab?) {}
 
             override fun onTabUnselected(tab: TabLayout.Tab?) {}
@@ -177,32 +203,38 @@ class CategoryDetailsFragment @Inject constructor() : Fragment() {
         })
 
         lifecycleScope.launchWhenResumed {
-           viewModel.messageFlow
-               .collect {
-                   when (it) {
-                       is Message.Loading -> {
-                           debug<CategoryDetailsFragment>("Loading message recieved")
-                           bindings.progressbar.isVisible = true
-                       }
-                       is Message.Loaded -> {
-                           bindings.progressbar.isVisible = false
-                           setStatusBarForegoundColor(!ColorUtils.isDarkColor(viewModel.category.get()!!.color))
-                       }
-                       is Message.Success -> {
-                           bindings.progressbar.isVisible = false
-                           val op = it.data as CategoryDetailsViewModel.Operation
-                           if(op == CategoryDetailsViewModel.Operation.CATEGORY_DELETE) {
-                               // TODO Message here
-                                findNavController().navigateUp()
-                           }
-                       }
-                       is Message.Error -> {
-                           bindings.progressbar.isVisible = false
-                           error<CategoryDetailsFragment>(it.exception, "Exception captured")
-                           // TODO Show some message here
-                       }
-                   }
-               }
+            viewModel.messageFlow
+                .collect {
+                    when (it) {
+                        is Message.Loading -> {
+                            debug<CategoryDetailsFragment>("Loading message recieved")
+                            bindings.progressbar.isVisible = true
+                        }
+                        is Message.Loaded -> {
+                            bindings.progressbar.isVisible = false
+                            setStatusBarForegoundColor(!ColorUtils.isDarkColor(viewModel.category.get()!!.color))
+                        }
+                        is Message.Success -> {
+                            debug<CategoryDetailsFragment>("Success mesage received with value ${it.data}")
+                            bindings.progressbar.isVisible = false
+                            val op = it.data as CategoryDetailsViewModel.Operation
+                            when(op) {
+                                CategoryDetailsViewModel.Operation.CATEGORY_DELETE -> {
+                                    showSuccess(getString(R.string.category_deleted_successfully))
+                                    findNavController().navigateUp()
+                                }
+                                CategoryDetailsViewModel.Operation.TASK_DELETE -> {
+                                    showSuccess(getString(R.string.task_deleted_successfully))
+                                }
+                            }
+                        }
+                        is Message.Error -> {
+                            bindings.progressbar.isVisible = false
+                            error<CategoryDetailsFragment>(it.exception, "Exception captured")
+                            showError(it.exception.message!!)
+                        }
+                    }
+                }
         }
 
         lifecycleScope.launchWhenResumed {
@@ -237,8 +269,8 @@ class CategoryDetailsFragment @Inject constructor() : Fragment() {
 
     private fun confirmDeleteAllTasks() {
         ConfirmPopup.showDialog(
-                parentFragmentManager,
-                getString(R.string.confirm_delete_all_tasks_in_category)
+            parentFragmentManager,
+            getString(R.string.confirm_delete_all_tasks_in_category)
         ) { _, data ->
             val option = if (data.containsKey(ConfirmPopup.POPUP_OPTION)) {
                 data.getInt(ConfirmPopup.POPUP_OPTION)
@@ -292,4 +324,5 @@ class CategoryDetailsFragment @Inject constructor() : Fragment() {
             setStatusBarForegoundColor(!ColorUtils.isDarkColor(it.color))
         }
     }
+
 }

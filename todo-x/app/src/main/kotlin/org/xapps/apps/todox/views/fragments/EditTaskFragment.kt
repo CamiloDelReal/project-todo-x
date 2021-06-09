@@ -20,10 +20,13 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collect
 import org.xapps.apps.todox.R
 import org.xapps.apps.todox.core.repositories.SettingsRepository
+import org.xapps.apps.todox.core.utils.error
 import org.xapps.apps.todox.core.utils.parseToString
 import org.xapps.apps.todox.databinding.FragmentEditTaskBinding
 import org.xapps.apps.todox.viewmodels.EditTaskViewModel
 import org.xapps.apps.todox.views.adapters.ItemAdapter
+import org.xapps.apps.todox.views.extensions.showError
+import org.xapps.apps.todox.views.extensions.showSuccess
 import org.xapps.apps.todox.views.popups.DatePickerFragment
 import org.xapps.apps.todox.views.popups.TimePickerFragment
 import org.xapps.apps.todox.views.utils.Message
@@ -136,13 +139,13 @@ class EditTaskFragment @Inject constructor() : Fragment() {
                         }
                         is Message.Success -> {
                             bindings.progressbar.isVisible = false
-                            // TODO Success message here
+                            showSuccess(getString(R.string.task_saved))
                             findNavController().navigateUp()
                         }
                         is Message.Error -> {
                             bindings.progressbar.isVisible = false
-                            Timber.e(it.exception)
-                            // TODO Error Message here
+                            error<EditTaskFragment>(it.exception)
+                            showError(it.exception.message!!)
                         }
                     }
                 }

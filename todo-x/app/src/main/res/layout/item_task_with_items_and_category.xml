@@ -87,7 +87,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:maxLines="2"
-                    android:text="@{data.items.size() != 0 ? data.itemsDescriptions() : @string/no_pending_items}"
+                    android:text="@{data.items.size() != 0 ? data.itemsDescriptions() : @string/no_items}"
                     android:textAppearance="@style/TextAppearance.MaterialComponents.Caption"
                     tools:text="Bread, eggs, milk, sugar, " />
 

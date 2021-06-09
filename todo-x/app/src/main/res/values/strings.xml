@@ -58,13 +58,16 @@
     <string name="empty_field">Empty field</string>
     <string name="error_inserting_task_in_db">Error inserting task in database</string>
     <string name="error_updating_task_in_db">Error updating task in database</string>
+    <string name="error_deleting_task_from_db">Error deleting task from database</string>
+    <string name="error_deleting_tasks_from_db">Error deleting tasks from database</string>
     <string name="error_inserting_category_in_db">Error inserting category in database</string>
     <string name="error_updating_category_in_db">Error updating category in database</string>
+    <string name="error_deleting_category_from_db">Error deleting category from database</string>
     <string name="important">Important</string>
     <string name="not_important">Not important</string>
     <string name="completed">Completed</string>
     <string name="scheduled">Scheduled</string>
-    <string name="no_pending_items">No pending items</string>
+    <string name="no_items">No items</string>
     <string name="unspecified_time">Unspecified time</string>
     <string name="no_date">No date</string>
     <string name="edit">Edit</string>
@@ -111,4 +114,9 @@
     <string name="delete_all_tasks">Delete all tasks</string>
     <string name="move_to_unclassified">Uncheck to move all the tasks to Unclassified category</string>
     <string name="cannot_edit_name">This is a special category, name cannot be edited.</string>
+    <string name="add_tasks">Add tasks</string>
+    <string name="task_deleted_successfully">Task deleted successfully</string>
+    <string name="category_deleted_successfully">Category deleted successfully</string>
+    <string name="category_saved">Category saved</string>
+    <string name="task_saved">Task saved</string>
 </resources>

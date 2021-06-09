@@ -158,7 +158,10 @@ dependencies {
     implementation(Libraries.UI.DRAWABLE_TOOLBOX)
     implementation(Libraries.UI.CIRCULAR_PROGRESSBAR)
     implementation(Libraries.UI.MATERIAL_PROGRESSBAR)
-    implementation(Libraries.UI.COLOR_PICKER)
+    implementation(Libraries.UI.TOASTY)
+    implementation(Libraries.UI.SWIPE_REVEAL_LAYOUT)
+
+    implementation("ru.rambler.android:swipe-layout:1.1.0")
 
     // Logger
     implementation(Libraries.Logger.Timber.CORE)

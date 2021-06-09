@@ -16,11 +16,14 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collect
 import org.xapps.apps.todox.R
 import org.xapps.apps.todox.core.models.Item
+import org.xapps.apps.todox.core.utils.debug
 import org.xapps.apps.todox.core.utils.error
 import org.xapps.apps.todox.core.utils.info
 import org.xapps.apps.todox.databinding.FragmentTaskDetailsBinding
 import org.xapps.apps.todox.viewmodels.TaskDetailsViewModel
 import org.xapps.apps.todox.views.adapters.ItemAdapter
+import org.xapps.apps.todox.views.extensions.showError
+import org.xapps.apps.todox.views.extensions.showSuccess
 import org.xapps.apps.todox.views.popups.ConfirmPopup
 import org.xapps.apps.todox.views.popups.TaskDetailsMoreOptionsPopup
 import org.xapps.apps.todox.views.utils.ColorUtils
@@ -118,6 +121,10 @@ class TaskDetailsFragment @Inject constructor(): Fragment() {
             }
         }
 
+        bindings.emptyView.setOnActionClickListener {
+            TODO()
+        }
+
         lifecycleScope.launchWhenResumed {
             viewModel.messageFlow
                 .collect {
@@ -129,17 +136,18 @@ class TaskDetailsFragment @Inject constructor(): Fragment() {
                             bindings.progressbar.isVisible = false
                         }
                         is Message.Success -> {
+                            debug<CategoryDetailsFragment>("Success mesage received with value ${it.data}")
                             bindings.progressbar.isVisible = false
                             val op = it.data as TaskDetailsViewModel.Operation
                             if(op == TaskDetailsViewModel.Operation.TASK_DELETE) {
-                                // TODO Message here
+                                showSuccess(getString(R.string.task_deleted_successfully))
                                 findNavController().navigateUp()
                             }
                         }
                         is Message.Error -> {
                             bindings.progressbar.isVisible = false
                             error<TaskDetailsFragment>(it.exception, "Exception received")
-                            // TODO Message here
+                            showError(it.exception.message!!)
                         }
                     }
                 }

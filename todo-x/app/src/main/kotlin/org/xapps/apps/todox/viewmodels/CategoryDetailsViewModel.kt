@@ -132,35 +132,23 @@ class CategoryDetailsViewModel @Inject constructor(
         _messageFlow.tryEmit(Message.Loading)
         viewModelScope.launch {
             val result = taskRepository.update(task)
-            result.either(::handleTaskFailure, ::handleTaskSuccess)
+            result.either({ failure ->
+                _messageFlow.tryEmit(Message.Error(Exception(context.getString(R.string.error_updating_task_in_db))))
+            }, { task ->
+                _messageFlow.tryEmit(Message.Success(Operation.TASK_EDIT_DELETE))
+            })
         }
-    }
-
-    private fun handleTaskSuccess(task: Task) {
-        _messageFlow.tryEmit(Message.Success(Operation.TASK_EDIT_DELETE))
-    }
-
-    private fun handleTaskSuccess(success: Boolean) {
-        _messageFlow.tryEmit(Message.Success(Operation.TASK_EDIT_DELETE))
-    }
-
-    private fun handleTaskFailure(failure: TaskFailure) {
-        _messageFlow.tryEmit(Message.Error(Exception(context.getString(R.string.error_updating_task_in_db))))
-    }
-
-    private fun handleCategorySuccess(success: Boolean) {
-        _messageFlow.tryEmit(Message.Success(Operation.CATEGORY_DELETE))
-    }
-
-    private fun handleCategoryFailure(failure: CategoryFailure) {
-        _messageFlow.tryEmit(Message.Error(Exception(context.getString(R.string.error_updating_category_in_db))))
     }
 
     fun deleteAllTasks() {
         _messageFlow.tryEmit(Message.Loading)
         viewModelScope.launch {
             val result = taskRepository.deleteTasksInCategory(categoryId)
-            result.either(::handleTaskFailure, ::handleTaskSuccess)
+            result.either({ failure ->
+                _messageFlow.tryEmit(Message.Error(Exception(context.getString(R.string.error_deleting_tasks_from_db))))
+            }, { success ->
+                _messageFlow.tryEmit(Message.Success(Operation.TASK_EDIT_DELETE))
+            })
         }
     }
 
@@ -168,7 +156,11 @@ class CategoryDetailsViewModel @Inject constructor(
         _messageFlow.tryEmit(Message.Loading)
         viewModelScope.launch {
             val result = taskRepository.completeTasksInCategory(categoryId)
-            result.either(::handleTaskFailure, ::handleTaskSuccess)
+            result.either({ failure ->
+                _messageFlow.tryEmit(Message.Error(Exception(context.getString(R.string.error_updating_task_in_db))))
+            }, { success ->
+                _messageFlow.tryEmit(Message.Success(Operation.TASK_EDIT_DELETE))
+            })
         }
     }
 
@@ -178,6 +170,7 @@ class CategoryDetailsViewModel @Inject constructor(
     }
 
     fun deleteCategory(deleteTasks: Boolean) {
+        debug<CategoryDetailsViewModel>("Requesting delete category")
         _messageFlow.tryEmit(Message.Loading)
         viewModelScope.launch {
             categoryJob?.cancel()
@@ -185,13 +178,31 @@ class CategoryDetailsViewModel @Inject constructor(
             tasksJob?.cancel()
             tasksJob = null
             val result = categoryRepository.delete(categoryId, deleteTasks = deleteTasks)
-            result.either(::handleCategoryFailure, ::handleCategorySuccess)
+            result.either({ failure ->
+                _messageFlow.tryEmit(Message.Error(Exception(context.getString(R.string.error_deleting_category_from_db))))
+            }, { success ->
+                debug<CategoryDetailsViewModel>("handleCategorySuccess $success")
+                _messageFlow.tryEmit(Message.Success(Operation.CATEGORY_DELETE))
+            })
+        }
+    }
+
+    fun deleteTask(task: Task) {
+        _messageFlow.tryEmit(Message.Loading)
+        viewModelScope.launch {
+            val result = taskRepository.delete(task)
+            result.either({ failure ->
+                _messageFlow.tryEmit(Message.Error(Exception(context.getString(R.string.error_deleting_task_from_db))))
+            }, { success ->
+                _messageFlow.tryEmit(Message.Success(Operation.TASK_DELETE))
+            })
         }
     }
 
     enum class Operation {
         CATEGORY_DELETE,
-        TASK_EDIT_DELETE
+        TASK_EDIT_DELETE,
+        TASK_DELETE
     }
 
 }
