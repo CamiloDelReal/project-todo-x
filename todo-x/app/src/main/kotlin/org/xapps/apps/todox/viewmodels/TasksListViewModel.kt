@@ -160,16 +160,24 @@ class TasksListViewModel @Inject constructor(
         _messageFlow.tryEmit(Message.Loading)
         viewModelScope.launch {
             val result = taskRepository.update(task)
-            result.either(::handleTaskFailure, ::handleTaskSuccess)
+            result.either({ failure ->
+                _messageFlow.tryEmit(Message.Error(Exception(context.getString(R.string.error_updating_task_in_db))))
+            }, {
+                _messageFlow.tryEmit(Message.Loaded)
+            })
         }
     }
 
-    private fun handleTaskSuccess(task: Task) {
-        _messageFlow.tryEmit(Message.Loaded)
-    }
-
-    private fun handleTaskFailure(failure: TaskFailure) {
-        _messageFlow.tryEmit(Message.Error(Exception(context.getString(R.string.error_updating_task_in_db))))
+    fun deleteTask(task: Task) {
+        _messageFlow.tryEmit(Message.Loading)
+        viewModelScope.launch {
+            val result = taskRepository.delete(task)
+            result.either({ failure ->
+                _messageFlow.tryEmit(Message.Error(Exception(context.getString(R.string.error_deleting_task_from_db))))
+            }, { success ->
+                _messageFlow.tryEmit(Message.Success(CategoryDetailsViewModel.Operation.TASK_DELETE))
+            })
+        }
     }
 
 }

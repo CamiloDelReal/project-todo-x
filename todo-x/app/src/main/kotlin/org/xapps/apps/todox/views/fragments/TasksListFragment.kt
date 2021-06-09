@@ -18,12 +18,15 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
+import org.xapps.apps.todox.R
 import org.xapps.apps.todox.core.models.Task
+import org.xapps.apps.todox.core.utils.info
 import org.xapps.apps.todox.databinding.FragmentTasksListBinding
 import org.xapps.apps.todox.viewmodels.FilterType
 import org.xapps.apps.todox.viewmodels.TasksListViewModel
 import org.xapps.apps.todox.views.adapters.DateHeaderDecoration
 import org.xapps.apps.todox.views.adapters.TaskWithItemsAndCategoryAdapter
+import org.xapps.apps.todox.views.popups.ConfirmPopup
 import org.xapps.apps.todox.views.popups.HomeMoreOptionsPopup
 import org.xapps.apps.todox.views.popups.TasksListMoreOptionsPopup
 import org.xapps.apps.todox.views.utils.Message
@@ -54,6 +57,30 @@ class TasksListFragment @Inject constructor() : Fragment() {
         }
         override fun taskUpdated(task: Task) {
             viewModel.updateTask(task)
+        }
+        override fun requestEdit(task: Task) {
+            findNavController().navigate(TasksListFragmentDirections.actionTasksListFragmentToEditTaskFragment(task.id))
+        }
+
+        override fun requestDelete(task: Task) {
+            ConfirmPopup.showDialog(
+                parentFragmentManager,
+                getString(R.string.confirm_delete_task)
+            ) { _, data ->
+                val option = if (data.containsKey(ConfirmPopup.POPUP_OPTION)) {
+                    data.getInt(ConfirmPopup.POPUP_OPTION)
+                } else {
+                    -1
+                }
+                when(option) {
+                    ConfirmPopup.POPUP_YES -> {
+                        viewModel.deleteTask(task)
+                    }
+                    ConfirmPopup.POPUP_NO -> {
+                        info<CategoryDetailsFragment>("User has cancelled the delete operation")
+                    }
+                }
+            }
         }
     }
 
