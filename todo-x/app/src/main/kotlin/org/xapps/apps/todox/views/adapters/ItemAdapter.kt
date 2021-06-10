@@ -1,16 +1,14 @@
 package org.xapps.apps.todox.views.adapters
 
-import androidx.core.view.isVisible
 import androidx.databinding.ObservableArrayList
 import androidx.databinding.ViewDataBinding
-import androidx.recyclerview.widget.DiffUtil
 import org.xapps.apps.todox.R
 import org.xapps.apps.todox.core.models.Item
-import org.xapps.apps.todox.core.models.Task
-import org.xapps.apps.todox.core.models.TaskWithItems
 import org.xapps.apps.todox.core.utils.debug
 import org.xapps.apps.todox.databinding.ItemItemBinding
 import org.xapps.apps.todox.databinding.ItemItemEditBinding
+import ru.rambler.libs.swipe_layout.SwipeLayout
+import java.lang.Math.random
 
 
 class ItemAdapter(
@@ -27,18 +25,37 @@ class ItemAdapter(
             is ItemItemEditBinding -> {
                 debug<ItemAdapter>("ItemItemEditBinding detected")
                 bindings.item = item
+                bindings.swipeRevealLayout.reset()
+
+                bindings.swipeRevealLayout.setOnSwipeListener(object: SwipeLayout.OnSwipeListener {
+                    override fun onBeginSwipe(swipeLayout: SwipeLayout?, moveToRight: Boolean) {}
+
+                    override fun onSwipeClampReached(swipeLayout: SwipeLayout?, moveToRight: Boolean) {
+                        debug<ItemAdapter>("Data size = ${data.size}, items size = ${items.size}")
+                        if(data.size > 1) {
+                            val index = items.indexOf(item)
+                            data.removeAt(index)
+                        } else {
+                            bindings.swipeRevealLayout.animateReset()
+                        }
+                    }
+
+                    override fun onLeftStickyEdge(swipeLayout: SwipeLayout?, moveToRight: Boolean) {}
+
+                    override fun onRightStickyEdge(swipeLayout: SwipeLayout?, moveToRight: Boolean) {}
+                })
 
                 bindings.btnAddAbove.setOnClickListener {
                     val index = items.indexOf(item)
-                    data.add(index, Item())
+                    data.add(index, Item(id = random().toLong()))
                 }
 
                 bindings.btnAddBelow.setOnClickListener {
                     val index = items.indexOf(item)
                     if(index == (items.size - 1)) {
-                        data.add(Item())
+                        data.add(Item(id = random().toLong()))
                     } else {
-                        data.add(index + 1, Item())
+                        data.add(index + 1, Item(id = random().toLong()))
                     }
                 }
             }

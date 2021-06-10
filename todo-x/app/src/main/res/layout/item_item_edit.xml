@@ -8,61 +8,112 @@
             type="org.xapps.apps.todox.core.models.Item" />
     </data>
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <ru.rambler.libs.swipe_layout.SwipeLayout
+        android:id="@+id/swipeRevealLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingVertical="4dp">
+        app:mode="same_level"
+        app:dragEdge="right">
 
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/tilTask"
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-            app:layout_constraintTop_toTopOf="parent"
+        <!-- Left Action -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:bring_to_clamp="@dimen/context_button_width"
+            app:clamp="self"
+            app:gravity="left"
+            app:sticky="self"
+            android:orientation="vertical"
+            android:paddingVertical="4dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal"
+                android:gravity="center"
+                android:background="@color/red_500">
+
+                <ImageView
+                    android:id="@+id/imgIcon"
+                    android:layout_width="32dp"
+                    android:layout_height="32dp"
+                    android:src="@drawable/ic_delete"
+                    app:tint="?attr/colorOnPrimarySurface" />
+
+                <Space
+                    android:layout_width="wrap_content"
+                    android:layout_height="@dimen/content_space_small" />
+
+                <TextView
+                    android:id="@+id/txvText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/delete"
+                    android:textColor="?attr/colorOnPrimarySurface"
+                    android:textAppearance="@style/TextAppearance.MaterialComponents.Body2" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <!-- Item -->
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:descendantFocusability="afterDescendants"
-            app:hintEnabled="false">
+            android:paddingVertical="4dp">
 
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/tieTask"
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/tilTask"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                app:layout_constraintTop_toTopOf="parent"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@={item.description}"
-                android:paddingStart="40dp"
-                android:paddingEnd="72dp"
-                android:inputType="textMultiLine" />
-        </com.google.android.material.textfield.TextInputLayout>
+                android:descendantFocusability="afterDescendants"
+                app:hintEnabled="false">
 
-        <com.google.android.material.checkbox.MaterialCheckBox
-            android:layout_width="32dp"
-            android:layout_height="?attr/actionBarSize"
-            android:layout_marginStart="8dp"
-            android:checked="@={item.done}"
-            app:layout_constraintTop_toTopOf="@id/tilTask"
-            app:layout_constraintStart_toStartOf="@id/tilTask" />
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/tieTask"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@={item.description}"
+                    android:paddingStart="40dp"
+                    android:paddingEnd="72dp"
+                    android:inputType="textMultiLine" />
+            </com.google.android.material.textfield.TextInputLayout>
 
-        <ImageButton
-            android:id="@+id/btnAddBelow"
-            android:layout_width="32dp"
-            android:layout_height="?attr/actionBarSize"
-            android:layout_centerInParent="true"
-            android:background="?attr/selectableItemBackgroundBorderless"
-            android:src="@drawable/ic_plus_chevron_down"
-            android:layout_marginEnd="8dp"
-            android:tint="?attr/colorOnSurface"
-            app:layout_constraintEnd_toEndOf="@id/tilTask"
-            app:layout_constraintTop_toTopOf="@id/tilTask" />
+            <com.google.android.material.checkbox.MaterialCheckBox
+                android:layout_width="32dp"
+                android:layout_height="?attr/actionBarSize"
+                android:layout_marginStart="8dp"
+                android:checked="@={item.done}"
+                app:layout_constraintTop_toTopOf="@id/tilTask"
+                app:layout_constraintStart_toStartOf="@id/tilTask" />
 
-        <ImageButton
-            android:id="@+id/btnAddAbove"
-            android:layout_width="32dp"
-            android:layout_height="?attr/actionBarSize"
-            android:layout_centerInParent="true"
-            android:background="?attr/selectableItemBackgroundBorderless"
-            android:src="@drawable/ic_plus_chevron_up"
-            android:tint="?attr/colorOnSurface"
-            app:layout_constraintEnd_toStartOf="@id/btnAddBelow"
-            app:layout_constraintTop_toTopOf="@id/tilTask"/>
+            <ImageButton
+                android:id="@+id/btnAddBelow"
+                android:layout_width="32dp"
+                android:layout_height="?attr/actionBarSize"
+                android:layout_centerInParent="true"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:src="@drawable/ic_plus_chevron_down"
+                android:layout_marginEnd="8dp"
+                android:tint="?attr/colorOnSurface"
+                app:layout_constraintEnd_toEndOf="@id/tilTask"
+                app:layout_constraintTop_toTopOf="@id/tilTask" />
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+            <ImageButton
+                android:id="@+id/btnAddAbove"
+                android:layout_width="32dp"
+                android:layout_height="?attr/actionBarSize"
+                android:layout_centerInParent="true"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:src="@drawable/ic_plus_chevron_up"
+                android:tint="?attr/colorOnSurface"
+                app:layout_constraintEnd_toStartOf="@id/btnAddBelow"
+                app:layout_constraintTop_toTopOf="@id/tilTask"/>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </ru.rambler.libs.swipe_layout.SwipeLayout>
 
 </layout>

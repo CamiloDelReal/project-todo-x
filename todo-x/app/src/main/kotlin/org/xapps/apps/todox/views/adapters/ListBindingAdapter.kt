@@ -76,7 +76,8 @@ abstract class ListBindingAdapter<TItem>(items: List<TItem>) :
                 positionStart: Int,
                 itemCount: Int
             ) {
-                notifyItemRangeRemoved(positionStart, itemCount)
+//                notifyItemRangeRemoved(positionStart, itemCount)
+                notifyDataSetChanged()
             }
 
             override fun onItemRangeMoved(
@@ -85,7 +86,8 @@ abstract class ListBindingAdapter<TItem>(items: List<TItem>) :
                 toPosition: Int,
                 itemCount: Int
             ) {
-                notifyItemMoved(fromPosition, toPosition)
+//                notifyItemMoved(fromPosition, toPosition)
+                notifyDataSetChanged()
             }
 
             override fun onItemRangeInserted(
@@ -93,7 +95,8 @@ abstract class ListBindingAdapter<TItem>(items: List<TItem>) :
                 positionStart: Int,
                 itemCount: Int
             ) {
-                notifyItemRangeChanged(positionStart, itemCount)
+//                notifyItemRangeChanged(positionStart, itemCount)
+                notifyDataSetChanged()
             }
 
             override fun onItemRangeChanged(
@@ -101,7 +104,8 @@ abstract class ListBindingAdapter<TItem>(items: List<TItem>) :
                 positionStart: Int,
                 itemCount: Int
             ) {
-                notifyItemRangeChanged(positionStart, itemCount)
+//                notifyItemRangeChanged(positionStart, itemCount)
+                notifyDataSetChanged()
             }
         }
 
