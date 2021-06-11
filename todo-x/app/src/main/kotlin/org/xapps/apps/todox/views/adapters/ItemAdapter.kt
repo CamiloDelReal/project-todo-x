@@ -47,15 +47,15 @@ class ItemAdapter(
 
                 bindings.btnAddAbove.setOnClickListener {
                     val index = items.indexOf(item)
-                    data.add(index, Item(id = random().toLong()))
+                    data.add(index, Item())
                 }
 
                 bindings.btnAddBelow.setOnClickListener {
                     val index = items.indexOf(item)
                     if(index == (items.size - 1)) {
-                        data.add(Item(id = random().toLong()))
+                        data.add(Item())
                     } else {
-                        data.add(index + 1, Item(id = random().toLong()))
+                        data.add(index + 1, Item())
                     }
                 }
             }

@@ -1,331 +1,110 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-xmlns:app="http://schemas.android.com/apk/res-auto"
-xmlns:tools="http://schemas.android.com/tools"
-tools:context=".views.fragments.EditTaskFragment">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".views.fragments.TaskEditItemsBottomSheetFragment"
+    app:layout_behavior="android.support.design.widget.BottomSheetBehavior">
 
-<data>
+    <data>
 
-    <variable
-        name="viewModel"
-        type="org.xapps.apps.todox.viewmodels.EditTaskViewModel" />
+        <variable
+            name="viewModel"
+            type="org.xapps.apps.todox.viewmodels.EditTaskViewModel" />
 
-    <import type="java.util.Arrays" />
-    <import type="org.xapps.apps.todox.core.models.Category" />
+        <import type="java.util.Arrays" />
+        <import type="org.xapps.apps.todox.core.models.Category" />
 
-</data>
+    </data>
 
-<androidx.constraintlayout.widget.ConstraintLayout
-    android:id="@+id/rootLayout"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="?attr/colorSurface"
-    android:fitsSystemWindows="true">
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/rootLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="?attr/colorSurface"
+        android:fitsSystemWindows="true">
 
-    <View
-        android:id="@+id/toolbar"
-        android:layout_width="0dp"
-        android:layout_height="@dimen/edit_toolbar_collapsed"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        <View
+            android:id="@+id/toolbar"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/edit_toolbar_collapsed"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
 
-    <me.zhanghai.android.materialprogressbar.MaterialProgressBar
-        android:id="@+id/progressbar"
-        style="@style/Widget.MaterialProgressBar.ProgressBar.Horizontal"
-        android:layout_width="0dp"
-        android:layout_height="@dimen/horizontal_indeterminated_progressbar"
-        android:indeterminate="true"
-        android:visibility="gone"
-        app:layout_constraintBottom_toBottomOf="@id/toolbar"
-        app:layout_constraintEnd_toEndOf="@id/toolbar"
-        app:layout_constraintStart_toStartOf="@id/toolbar"
-        app:mpb_progressStyle="horizontal"
-        app:mpb_useIntrinsicPadding="false"
-        tools:visibility="visible" />
+        <me.zhanghai.android.materialprogressbar.MaterialProgressBar
+            android:id="@+id/progressbar"
+            style="@style/Widget.MaterialProgressBar.ProgressBar.Horizontal"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/horizontal_indeterminated_progressbar"
+            android:indeterminate="true"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="@id/toolbar"
+            app:layout_constraintEnd_toEndOf="@id/toolbar"
+            app:layout_constraintStart_toStartOf="@id/toolbar"
+            app:mpb_progressStyle="horizontal"
+            app:mpb_useIntrinsicPadding="false"
+            tools:visibility="visible" />
 
-    <TextView
-        android:id="@+id/txvTitle"
-        style="@style/TextAppearance.MaterialComponents.Headline5"
-        android:layout_width="0dp"
-        android:layout_height="@dimen/edit_title_height_collapsed"
-        app:layout_constraintEnd_toEndOf="@id/toolbar"
-        app:layout_constraintBottom_toBottomOf="@id/btnBack"
-        app:layout_constraintStart_toEndOf="@id/btnBack"
-        app:layout_constraintTop_toTopOf="@id/btnBack"
-        android:gravity="center_vertical"
-        android:text="@{viewModel.hasTaskToEdit ? @string/edit_task : @string/create_task}"
-        android:textColor="?attr/colorOnSurface"
-        android:textSize="@dimen/title_text_size_collapsed" />
+        <TextView
+            android:id="@+id/txvTitle"
+            style="@style/TextAppearance.MaterialComponents.Headline5"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/edit_title_height_collapsed"
+            app:layout_constraintEnd_toEndOf="@id/toolbar"
+            app:layout_constraintBottom_toBottomOf="@id/btnBack"
+            app:layout_constraintStart_toEndOf="@id/btnBack"
+            app:layout_constraintTop_toTopOf="@id/btnBack"
+            android:gravity="center_vertical"
+            android:text="@string/edit_items"
+            android:textColor="?attr/colorOnSurface"
+            android:textSize="@dimen/title_text_size_collapsed" />
 
-    <androidx.core.widget.NestedScrollView
-        android:id="@+id/content"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:background="@color/backgroundSecondary"
-        android:scrollbars="vertical"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/toolbar">
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/lstTasks"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:background="@color/backgroundSecondary"
+            android:padding="@dimen/content_padding"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/toolbar"
+            android:scrollbars="vertical"
+            tools:listitem="@layout/item_item_edit"
+            tools:itemCount="5"/>
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:padding="@dimen/content_padding">
+        <ImageButton
+            android:id="@+id/btnBack"
+            android:layout_width="?attr/actionBarSize"
+            android:layout_height="?attr/actionBarSize"
+            android:layout_centerInParent="true"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:elevation="8dp"
+            android:contentDescription="@string/back"
+            android:src="@drawable/ic_close"
+            android:tint="?attr/colorOnSurface"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/tilName"
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+        <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+            android:id="@+id/btnFinish"
+            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+            android:layout_width="@dimen/button_width_collapsed"
+            android:layout_height="@dimen/button_height_collapsed"
+            android:backgroundTint="?attr/colorSurface"
+            android:gravity="start|center_vertical"
+            android:text="@string/create_task"
+            android:textAllCaps="false"
+            android:textSize="@dimen/button_text_size"
+            app:icon="@drawable/ic_check"
+            app:iconPadding="@dimen/button_icon_padding"
+            android:layout_marginEnd="@dimen/content_margin"
+            app:iconSize="@dimen/button_icon_size"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@id/btnBack"
+            app:layout_constraintBottom_toBottomOf="@id/btnBack"/>
 
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/tieName"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="@string/name"
-                    android:inputType="text"
-                    android:lines="1"
-                    android:maxLines="1"
-                    android:text="@={viewModel.taskWithItems.task.name}" />
-            </com.google.android.material.textfield.TextInputLayout>
-
-            <Space
-                android:layout_width="wrap_content"
-                android:layout_height="@dimen/edit_content_space" />
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
-
-                <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/tilDate"
-                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="2"
-                    app:endIconDrawable="@drawable/ic_calendar"
-                    app:endIconMode="custom">
-
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/tieDate"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:editable="false"
-                        android:hint="@string/date"
-                        android:inputType="none"
-                        android:lines="1"
-                        android:maxLines="1" />
-                </com.google.android.material.textfield.TextInputLayout>
-
-                <Space
-                    android:layout_width="@dimen/edit_content_space"
-                    android:layout_height="wrap_content" />
-
-                <RelativeLayout
-                    android:layout_width="120dp"
-                    android:layout_height="60dp">
-
-                    <com.google.android.material.textfield.TextInputLayout
-                        android:id="@+id/txfRatingContainer"
-                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:hint="@string/important">
-
-                        <com.google.android.material.textfield.TextInputEditText
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:cursorVisible="false"
-                            android:inputType="none"
-                            android:focusable="false"
-                            android:editable="false"
-                            android:lines="1"
-                            android:text="   "
-                            tools:ignore="HardcodedText" />
-                    </com.google.android.material.textfield.TextInputLayout>
-
-                    <LinearLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:paddingTop="8dp"
-                        android:gravity="center"
-                        android:layout_centerInParent="true"
-                        android:orientation="horizontal">
-
-                        <ImageView
-                            android:layout_width="@dimen/edit_important_icon_size"
-                            android:layout_height="@dimen/edit_important_icon_size"
-                            android:alpha="0.6"
-                            app:srcCompat="@drawable/ic_star_outline"
-                            app:tint="?attr/colorOnSurface" />
-
-                        <com.google.android.material.switchmaterial.SwitchMaterial
-                            android:id="@+id/swtStored"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:checked="@={viewModel.taskWithItems.task.important}"
-                            android:theme="@style/SwitchImportant"
-                            tools:checked="false" />
-
-                        <ImageView
-                            android:layout_width="@dimen/edit_important_icon_size"
-                            android:layout_height="@dimen/edit_important_icon_size"
-                            app:srcCompat="@drawable/ic_star"
-                            app:tint="@color/important" />
-
-                    </LinearLayout>
-
-                </RelativeLayout>
-
-            </LinearLayout>
-
-            <Space
-                android:layout_width="wrap_content"
-                android:layout_height="@dimen/edit_content_space" />
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
-
-                <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/tilStartDate"
-                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    app:endIconDrawable="@drawable/ic_clock"
-                    app:endIconMode="custom">
-
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/tieStartDate"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:editable="false"
-                        android:hint="@string/start_time"
-                        android:inputType="none" />
-                </com.google.android.material.textfield.TextInputLayout>
-
-                <Space
-                    android:layout_width="@dimen/edit_content_space"
-                    android:layout_height="wrap_content" />
-
-                <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/tilEndDate"
-                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    app:endIconDrawable="@drawable/ic_clock"
-                    app:endIconMode="custom">
-
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/tieEndDate"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:editable="false"
-                        android:hint="@string/end_time"
-                        android:inputType="none" />
-                </com.google.android.material.textfield.TextInputLayout>
-
-            </LinearLayout>
-
-            <Space
-                android:layout_width="wrap_content"
-                android:layout_height="@dimen/edit_content_space" />
-
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/tilDescription"
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/tieDescription"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="@string/description" />
-            </com.google.android.material.textfield.TextInputLayout>
-
-            <Space
-                android:layout_width="wrap_content"
-                android:layout_height="@dimen/edit_content_space" />
-
-            <TextView
-                style="@style/TextAppearance.MaterialComponents.Body1"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/category" />
-
-            <org.xapps.apps.todox.views.bindings.CategoryChipGroup
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:checkable="@{true}"
-                app:entries="@{viewModel.categories}"
-                app:selectionRequired="true"
-                app:singleSelection="true"
-                app:values="@={viewModel.selectedCategory}" />
-
-            <Space
-                android:layout_width="wrap_content"
-                android:layout_height="@dimen/edit_content_space" />
-
-            <TextView
-                style="@style/TextAppearance.MaterialComponents.Body1"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/tasks" />
-
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/lstTasks"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:descendantFocusability="afterDescendants"
-                android:nestedScrollingEnabled="false"
-                android:scrollbars="none"
-                tools:listitem="@layout/item_item_edit"
-                tools:itemCount="5"/>
-
-        </LinearLayout>
-
-    </androidx.core.widget.NestedScrollView>
-
-    <ImageButton
-        android:id="@+id/btnBack"
-        android:layout_width="?attr/actionBarSize"
-        android:layout_height="?attr/actionBarSize"
-        android:layout_centerInParent="true"
-        android:background="?attr/selectableItemBackgroundBorderless"
-        android:elevation="8dp"
-        android:contentDescription="@string/back"
-        android:src="@drawable/ic_close"
-        android:tint="?attr/colorOnSurface"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
-        android:id="@+id/btnFinish"
-        style="@style/Widget.MaterialComponents.Button.OutlinedButton"
-        android:layout_width="@dimen/button_width_collapsed"
-        android:layout_height="@dimen/button_height_collapsed"
-        android:backgroundTint="?attr/colorSurface"
-        android:gravity="start|center_vertical"
-        android:text="@string/create_task"
-        android:textAllCaps="false"
-        android:textSize="@dimen/button_text_size"
-        app:icon="@drawable/ic_check"
-        app:iconPadding="@dimen/button_icon_padding"
-        android:layout_marginEnd="@dimen/content_margin"
-        app:iconSize="@dimen/button_icon_size"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@id/btnBack"
-        app:layout_constraintBottom_toBottomOf="@id/btnBack"/>
-
-</androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 </layout>

@@ -1,6 +1,7 @@
 package org.xapps.apps.todox.views.fragments
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -20,6 +21,7 @@ import org.xapps.apps.todox.core.utils.debug
 import org.xapps.apps.todox.core.utils.error
 import org.xapps.apps.todox.core.utils.info
 import org.xapps.apps.todox.databinding.FragmentTaskDetailsBinding
+import org.xapps.apps.todox.viewmodels.Constants
 import org.xapps.apps.todox.viewmodels.TaskDetailsViewModel
 import org.xapps.apps.todox.views.adapters.ItemAdapter
 import org.xapps.apps.todox.views.extensions.showError
@@ -122,7 +124,15 @@ class TaskDetailsFragment @Inject constructor(): Fragment() {
         }
 
         bindings.emptyView.setOnActionClickListener {
-            TODO()
+            val itemsEditSheet = TaskEditItemsBottomSheetFragment()
+            val data = Bundle().apply {
+                putLong(Constants.TASK_ID, viewModel.taskId)
+            }
+            itemsEditSheet.arguments = data
+            itemsEditSheet.show(parentFragmentManager, TaskEditItemsBottomSheetFragment::class.java.name)
+            itemsEditSheet.dialog?.setOnDismissListener {
+                Log.i("AppLogger", "Bottom closed")
+            }
         }
 
         lifecycleScope.launchWhenResumed {
@@ -136,7 +146,7 @@ class TaskDetailsFragment @Inject constructor(): Fragment() {
                             bindings.progressbar.isVisible = false
                         }
                         is Message.Success -> {
-                            debug<CategoryDetailsFragment>("Success mesage received with value ${it.data}")
+                            debug<CategoryDetailsFragment>("Success message received with value ${it.data}")
                             bindings.progressbar.isVisible = false
                             val op = it.data as TaskDetailsViewModel.Operation
                             if(op == TaskDetailsViewModel.Operation.TASK_DELETE) {

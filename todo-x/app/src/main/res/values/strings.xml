@@ -119,4 +119,10 @@
     <string name="category_deleted_successfully">Category deleted successfully</string>
     <string name="category_saved">Category saved</string>
     <string name="task_saved">Task saved</string>
+    <string name="edit_items">Edit items</string>
+    <string name="items">Items</string>
+    <string name="add_items">Add items</string>
+    <string name="error_reading_items_from_db">Error reading items from database</string>
+    <string name="error_saving_items_in_db">Error saving items in databse</string>
+    <string name="items_saved">Items saved</string>
 </resources>

@@ -111,4 +111,15 @@ class ItemRepository @Inject constructor(
         }
     }
 
+    suspend fun itemsByTask(taskId: Long): Either<ItemFailure, List<Item>> = withContext(dispatcher) {
+        info<ItemRepository>("Requesting items of task $taskId")
+        try {
+            val items = itemDao.itemsByTaskAsync(taskId)
+            items.toSuccess()
+        } catch (ex: Exception) {
+            error<ItemRepository>(ex, "Exception captured")
+            ItemFailure.Exception(ex.localizedMessage).toError()
+        }
+    }
+
 }

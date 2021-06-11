@@ -20,17 +20,25 @@ interface ItemDao {
     @Insert
     fun insert(items: List<Item>): List<Long>
 
+    @Transaction
     @Query("SELECT * FROM items")
     fun itemsAsync(): Flow<List<Item>>
 
+    @Transaction
     @Query("SELECT * FROM items")
     fun items(): List<Item>
 
+    @Transaction
     @Query("SELECT * FROM items WHERE id = :id")
     fun itemAsync(id: Long): Flow<Item>
 
+    @Transaction
     @Query("SELECT * FROM items WHERE id = :id")
     fun item(id: Long): Item
+
+    @Transaction
+    @Query("SELECT * FROM items WHERE task_id = :taskId")
+    suspend fun itemsByTaskAsync(taskId: Long): List<Item>
 
     @Update
     suspend fun updateAsync(item: Item): Int
