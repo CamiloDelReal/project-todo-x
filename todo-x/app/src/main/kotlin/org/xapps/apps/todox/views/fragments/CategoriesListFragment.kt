@@ -14,6 +14,7 @@ import androidx.paging.LoadState
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
@@ -33,6 +34,11 @@ class CategoriesListFragment @Inject constructor(): Fragment() {
     private lateinit var bindings: FragmentCategoriesListBinding
 
     private val viewModel: CategoriesListViewModel by viewModels()
+
+    private var messageJob: Job? = null
+    private var paginationStatesJob: Job? = null
+    private var paginationJob: Job? = null
+    private var statusBarForegroundJob: Job? = null
 
     private val onBackPressedCallback: OnBackPressedCallback by lazy {
         object: OnBackPressedCallback(true) {
@@ -106,7 +112,7 @@ class CategoriesListFragment @Inject constructor(): Fragment() {
             }
         })
 
-        lifecycleScope.launchWhenResumed {
+        messageJob = lifecycleScope.launchWhenResumed {
             viewModel.messageFlow
                 .collect {
                     when(it) {
@@ -129,20 +135,20 @@ class CategoriesListFragment @Inject constructor(): Fragment() {
                 }
         }
 
-        lifecycleScope.launch {
+        paginationStatesJob = lifecycleScope.launchWhenResumed {
             categoryAdapter.loadStateFlow.collectLatest { loadStates ->
                 bindings.progressbar.isVisible = (loadStates.refresh is LoadState.Loading)
             }
         }
 
-        lifecycleScope.launchWhenResumed {
+        paginationJob = lifecycleScope.launchWhenResumed {
             viewModel.categoriesPaginatedFlow
                 .collect {
                     categoryAdapter.submitData(it)
                 }
         }
 
-        lifecycleScope.launchWhenResumed {
+        statusBarForegroundJob = lifecycleScope.launchWhenResumed {
             setStatusBarForegoundColor(!settings.isDarkModeOnValue())
         }
     }
@@ -150,5 +156,17 @@ class CategoriesListFragment @Inject constructor(): Fragment() {
     override fun onResume() {
         super.onResume()
         requireActivity().onBackPressedDispatcher.addCallback(onBackPressedCallback)
+    }
+
+    override fun onPause() {
+        super.onPause()
+        messageJob?.cancel()
+        messageJob = null
+        paginationStatesJob?.cancel()
+        paginationStatesJob = null
+        paginationJob?.cancel()
+        paginationJob = null
+        statusBarForegroundJob?.cancel()
+        statusBarForegroundJob = null
     }
 }

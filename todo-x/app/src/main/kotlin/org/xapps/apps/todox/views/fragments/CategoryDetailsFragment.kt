@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.tabs.TabLayout
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
@@ -46,6 +47,10 @@ class CategoryDetailsFragment @Inject constructor() : Fragment() {
     private lateinit var bindings: FragmentCategoryDetailsBinding
 
     private val viewModel: CategoryDetailsViewModel by viewModels()
+
+    private var messageJob: Job? = null
+    private var paginationStatesJob: Job? = null
+    private var paginationJob: Job? = null
 
     private val onBackPressedCallback: OnBackPressedCallback by lazy {
         object : OnBackPressedCallback(true) {
@@ -206,7 +211,8 @@ class CategoryDetailsFragment @Inject constructor() : Fragment() {
 
         })
 
-        lifecycleScope.launchWhenResumed {
+        messageJob = lifecycleScope.launchWhenCreated {
+            info<CategoryDetailsFragment>("About to register messageFlow collector")
             viewModel.messageFlow
                 .collect {
                     when (it) {
@@ -241,13 +247,13 @@ class CategoryDetailsFragment @Inject constructor() : Fragment() {
                 }
         }
 
-        lifecycleScope.launchWhenResumed {
+        paginationStatesJob = lifecycleScope.launchWhenResumed {
             taskAdapter.loadStateFlow.collectLatest { loadStates ->
                 bindings.progressbar.isVisible = (loadStates.refresh is LoadState.Loading)
             }
         }
 
-        lifecycleScope.launchWhenResumed {
+        paginationJob = lifecycleScope.launchWhenResumed {
             viewModel.tasksPaginatedFlow
                 .collectLatest { data ->
                     info<CategoryDetailsFragment>("Task paging data received $data")
@@ -329,4 +335,13 @@ class CategoryDetailsFragment @Inject constructor() : Fragment() {
         }
     }
 
+    override fun onPause() {
+        super.onPause()
+        messageJob?.cancel()
+        messageJob = null
+        paginationStatesJob?.cancel()
+        paginationStatesJob = null
+        paginationJob?.cancel()
+        paginationJob = null
+    }
 }

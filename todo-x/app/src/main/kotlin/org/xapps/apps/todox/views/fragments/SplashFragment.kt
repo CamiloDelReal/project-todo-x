@@ -13,6 +13,7 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.collect
 import org.xapps.apps.todox.core.utils.info
 import org.xapps.apps.todox.databinding.FragmentSplashBinding
@@ -27,6 +28,8 @@ class SplashFragment @Inject constructor() : Fragment() {
     private lateinit var bindings: FragmentSplashBinding
 
     private val viewModel: SplashViewModel by viewModels()
+
+    private var messageJob: Job? = null
 
     private val onBackPressedCallback: OnBackPressedCallback by lazy {
         object: OnBackPressedCallback(true) {
@@ -48,7 +51,7 @@ class SplashFragment @Inject constructor() : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        lifecycleScope.launchWhenResumed {
+        messageJob = lifecycleScope.launchWhenResumed {
             viewModel.messageFlow
                 .collect {
                     info<SplashFragment>("Message received $it")
@@ -72,4 +75,9 @@ class SplashFragment @Inject constructor() : Fragment() {
         requireActivity().onBackPressedDispatcher.addCallback(onBackPressedCallback)
     }
 
+    override fun onPause() {
+        super.onPause()
+        messageJob?.cancel()
+        messageJob = null
+    }
 }

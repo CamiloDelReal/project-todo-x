@@ -17,6 +17,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.collect
 import org.xapps.apps.todox.R
 import org.xapps.apps.todox.core.repositories.SettingsRepository
@@ -42,6 +43,9 @@ class EditTaskFragment @Inject constructor() : Fragment() {
     private lateinit var bindings: FragmentEditTaskBinding
 
     private val viewModel: EditTaskViewModel by viewModels()
+
+    private var messageJob: Job? = null
+    private var statusBarForegroundJob: Job? = null
 
     private val onBackPressedCallback: OnBackPressedCallback by lazy {
         object : OnBackPressedCallback(true) {
@@ -124,7 +128,7 @@ class EditTaskFragment @Inject constructor() : Fragment() {
             }
         }
 
-        lifecycleScope.launchWhenResumed {
+        messageJob = lifecycleScope.launchWhenResumed {
             viewModel.messageFlow
                 .collect {
                     when (it) {
@@ -151,7 +155,7 @@ class EditTaskFragment @Inject constructor() : Fragment() {
                 }
         }
 
-        lifecycleScope.launchWhenResumed {
+        statusBarForegroundJob = lifecycleScope.launchWhenResumed {
             setStatusBarForegoundColor(!settings.isDarkModeOnValue())
         }
     }
@@ -159,5 +163,13 @@ class EditTaskFragment @Inject constructor() : Fragment() {
     override fun onResume() {
         super.onResume()
         requireActivity().onBackPressedDispatcher.addCallback(onBackPressedCallback)
+    }
+
+    override fun onPause() {
+        super.onPause()
+        messageJob?.cancel()
+        messageJob = null
+        statusBarForegroundJob?.cancel()
+        statusBarForegroundJob = null
     }
 }

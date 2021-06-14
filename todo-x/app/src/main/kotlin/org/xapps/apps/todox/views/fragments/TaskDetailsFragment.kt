@@ -1,7 +1,6 @@
 package org.xapps.apps.todox.views.fragments
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -14,6 +13,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.collect
 import org.xapps.apps.todox.R
 import org.xapps.apps.todox.core.models.Item
@@ -40,6 +40,8 @@ class TaskDetailsFragment @Inject constructor(): Fragment() {
     private lateinit var bindings: FragmentTaskDetailsBinding
 
     private val viewModel: TaskDetailsViewModel by viewModels()
+
+    private var messageJob: Job? = null
 
     private val onBackPressedCallback: OnBackPressedCallback by lazy {
         object: OnBackPressedCallback(true) {
@@ -135,12 +137,9 @@ class TaskDetailsFragment @Inject constructor(): Fragment() {
             }
             itemsEditSheet.arguments = data
             itemsEditSheet.show(parentFragmentManager, TaskEditItemsBottomSheetFragment::class.java.name)
-            itemsEditSheet.dialog?.setOnDismissListener {
-                Log.i("AppLogger", "Bottom closed")
-            }
         }
 
-        lifecycleScope.launchWhenResumed {
+        messageJob = lifecycleScope.launchWhenResumed {
             viewModel.messageFlow
                 .collect {
                     when (it) {
@@ -185,4 +184,9 @@ class TaskDetailsFragment @Inject constructor(): Fragment() {
         }
     }
 
+    override fun onPause() {
+        super.onPause()
+        messageJob?.cancel()
+        messageJob = null
+    }
 }

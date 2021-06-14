@@ -15,6 +15,7 @@ import androidx.paging.LoadState
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
@@ -40,6 +41,10 @@ class TasksListFragment @Inject constructor() : Fragment() {
     private lateinit var bindings: FragmentTasksListBinding
 
     private val viewModel: TasksListViewModel by viewModels()
+
+    private var messageJob: Job? = null
+    private var paginationStatesJob: Job? = null
+    private var paginationJob: Job? = null
 
     private val onBackPressedCallback: OnBackPressedCallback by lazy {
         object : OnBackPressedCallback(true) {
@@ -149,7 +154,7 @@ class TasksListFragment @Inject constructor() : Fragment() {
             override fun onItemRangeChanged(positionStart: Int, itemCount: Int, payload: Any?) {}
         })
 
-        lifecycleScope.launchWhenResumed {
+        messageJob = lifecycleScope.launchWhenResumed {
             viewModel.messageFlow.collect {
                 when (it) {
                     is Message.Loading -> {
@@ -170,13 +175,13 @@ class TasksListFragment @Inject constructor() : Fragment() {
             }
         }
 
-        lifecycleScope.launch {
+        paginationStatesJob = lifecycleScope.launch {
             taskAdapter.loadStateFlow.collectLatest { loadStates ->
                 bindings.progressbar.isVisible = (loadStates.refresh is LoadState.Loading)
             }
         }
 
-        lifecycleScope.launchWhenResumed {
+        paginationJob = lifecycleScope.launchWhenResumed {
             viewModel.tasksFlow
                 .collectLatest {
                     taskAdapter.submitData(it)
@@ -187,5 +192,15 @@ class TasksListFragment @Inject constructor() : Fragment() {
     override fun onResume() {
         super.onResume()
         requireActivity().onBackPressedDispatcher.addCallback(onBackPressedCallback)
+    }
+
+    override fun onPause() {
+        super.onPause()
+        messageJob?.cancel()
+        messageJob = null
+        paginationStatesJob?.cancel()
+        paginationStatesJob = null
+        paginationJob?.cancel()
+        paginationJob = null
     }
 }

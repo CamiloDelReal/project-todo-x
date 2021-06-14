@@ -15,6 +15,7 @@ import androidx.paging.LoadState
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.collectLatest
@@ -40,6 +41,15 @@ class HomeFragment @Inject constructor() : Fragment() {
     private lateinit var bindings: FragmentHomeBinding
 
     private val viewModel: HomeViewModel by viewModels()
+
+    private var messageJob: Job? = null
+    private var paginationStatesJob: Job? = null
+    private var paginationJob: Job? = null
+    private var statusBarForegroundJob: Job? = null
+    private var tasksImportantJob: Job? = null
+    private var tasksInScheduleJob: Job? = null
+    private var tasksTodayJob: Job? = null
+    private var darkModeJob: Job? = null
 
     private val onBackPressedCallback: OnBackPressedCallback by lazy {
         object : OnBackPressedCallback(true) {
@@ -125,13 +135,13 @@ class HomeFragment @Inject constructor() : Fragment() {
             findNavController().navigate(HomeFragmentDirections.actionHomeFragmentToTasksListFragment(FilterType.TODAY))
         }
 
-        lifecycleScope.launch {
+        paginationStatesJob = lifecycleScope.launch {
             categoryAdapter.loadStateFlow.collectLatest { loadStates ->
                 bindings.progressbar.isVisible = (loadStates.refresh is LoadState.Loading)
             }
         }
 
-        lifecycleScope.launchWhenResumed {
+        messageJob = lifecycleScope.launchWhenResumed {
             viewModel.messageFlow
                 .collect {
                     when (it) {
@@ -151,14 +161,14 @@ class HomeFragment @Inject constructor() : Fragment() {
                 }
         }
 
-        lifecycleScope.launchWhenResumed {
+        paginationJob = lifecycleScope.launchWhenResumed {
             viewModel.categoriesPaginatedFlow
                 .collect {
                     categoryAdapter.submitData(it)
                 }
         }
 
-        lifecycleScope.launchWhenResumed {
+        tasksImportantJob = lifecycleScope.launchWhenResumed {
             viewModel.tasksImportantCount()
                 .collect { count ->
                     info<HomeFragment>("Tasks important count received: $count")
@@ -166,7 +176,7 @@ class HomeFragment @Inject constructor() : Fragment() {
                 }
         }
 
-        lifecycleScope.launchWhenResumed {
+        tasksInScheduleJob = lifecycleScope.launchWhenResumed {
             viewModel.tasksInScheduleCount()
                 .collect { count ->
                     info<HomeFragment>("Tasks in schedule count received: $count")
@@ -174,7 +184,7 @@ class HomeFragment @Inject constructor() : Fragment() {
                 }
         }
 
-        lifecycleScope.launchWhenResumed {
+        tasksTodayJob = lifecycleScope.launchWhenResumed {
             viewModel.tasksTodayCount()
                 .collect { count ->
                     info<HomeFragment>("Tasks for today count received: $count")
@@ -182,7 +192,7 @@ class HomeFragment @Inject constructor() : Fragment() {
                 }
         }
 
-        lifecycleScope.launchWhenResumed {
+        darkModeJob = lifecycleScope.launchWhenResumed {
             viewModel.isDarkModeOn()
                 .catch { ex->
                     error<HomeFragment>(ex)
@@ -193,7 +203,7 @@ class HomeFragment @Inject constructor() : Fragment() {
                 }
         }
 
-        lifecycleScope.launchWhenResumed {
+        statusBarForegroundJob = lifecycleScope.launchWhenResumed {
             setStatusBarForegoundColor(!viewModel.isDarkModeOnValue())
         }
     }
@@ -203,4 +213,23 @@ class HomeFragment @Inject constructor() : Fragment() {
         requireActivity().onBackPressedDispatcher.addCallback(onBackPressedCallback)
     }
 
+    override fun onPause() {
+        super.onPause()
+        messageJob?.cancel()
+        messageJob = null
+        paginationStatesJob?.cancel()
+        paginationStatesJob = null
+        paginationJob?.cancel()
+        paginationJob = null
+        statusBarForegroundJob?.cancel()
+        statusBarForegroundJob = null
+        tasksImportantJob?.cancel()
+        tasksImportantJob = null
+        tasksInScheduleJob?.cancel()
+        tasksInScheduleJob = null
+        tasksTodayJob?.cancel()
+        tasksTodayJob = null
+        darkModeJob?.cancel()
+        darkModeJob = null
+    }
 }

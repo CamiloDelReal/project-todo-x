@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.collect
 import org.xapps.apps.todox.R
 import org.xapps.apps.todox.databinding.FragmentTaskEditItemsBinding
@@ -29,6 +30,8 @@ class TaskEditItemsBottomSheetFragment @Inject constructor(): BottomSheetDialogF
     private lateinit var bindings: FragmentTaskEditItemsBinding
 
     private val viewModel: TaskEditItemsViewModel by viewModels()
+
+    private var messageJob: Job? = null
 
     private lateinit var bottomSheetBehavior: BottomSheetBehavior<View>
 
@@ -78,7 +81,7 @@ class TaskEditItemsBottomSheetFragment @Inject constructor(): BottomSheetDialogF
             viewModel.saveItems()
         }
 
-        lifecycleScope.launchWhenResumed {
+        messageJob = lifecycleScope.launchWhenResumed {
             viewModel.messageFlow
                 .collect {
                     when (it) {
@@ -108,4 +111,9 @@ class TaskEditItemsBottomSheetFragment @Inject constructor(): BottomSheetDialogF
         return bottomSheet
     }
 
+    override fun onPause() {
+        super.onPause()
+        messageJob?.cancel()
+        messageJob = null
+    }
 }
