@@ -21,10 +21,10 @@ import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import org.xapps.apps.todox.R
-import org.xapps.apps.todox.core.utils.error
-import org.xapps.apps.todox.core.utils.info
 import org.xapps.apps.todox.core.models.Category
 import org.xapps.apps.todox.core.repositories.SettingsRepository
+import org.xapps.apps.todox.core.utils.error
+import org.xapps.apps.todox.core.utils.info
 import org.xapps.apps.todox.databinding.FragmentHomeBinding
 import org.xapps.apps.todox.viewmodels.FilterType
 import org.xapps.apps.todox.viewmodels.HomeViewModel
@@ -54,7 +54,7 @@ class HomeFragment @Inject constructor() : Fragment() {
     private val onBackPressedCallback: OnBackPressedCallback by lazy {
         object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
-                Timber.i("Pending to do")
+                requireActivity().finish()
             }
         }
     }
