@@ -35,6 +35,15 @@
                 app:customDimension="@dimen/tasks_and_categories_list_title_text_size_expanded" />
         </Constraint>
 
+        <Constraint
+            android:id="@+id/btnNewTask"
+            android:layout_width="@dimen/home_button_width_expanded"
+            android:layout_height="@dimen/home_button_height_expanded"
+            app:layout_constraintTop_toTopOf="@id/btnBack"
+            android:layout_marginEnd="@dimen/home_button_margin_end"
+            app:layout_constraintEnd_toStartOf="@id/btnMoreOptions"
+            app:layout_constraintBottom_toBottomOf="@id/btnBack" />
+
         <Constraint android:id="@+id/progressbar">
             <PropertySet
                 app:applyMotionScene="false"
@@ -76,6 +85,15 @@
                 app:attributeName="textSize"
                 app:customDimension="@dimen/tasks_and_categories_list_title_text_size_collapsed" />
         </Constraint>
+
+        <Constraint
+            android:id="@+id/btnNewTask"
+            android:layout_width="@dimen/home_button_width_collapsed"
+            android:layout_height="@dimen/home_button_height_collapsed"
+            app:layout_constraintTop_toTopOf="@id/btnBack"
+            app:layout_constraintEnd_toStartOf="@id/btnMoreOptions"
+            android:layout_marginEnd="@dimen/home_button_margin_end"
+            app:layout_constraintBottom_toBottomOf="@id/btnBack" />
 
         <Constraint android:id="@+id/progressbar">
             <PropertySet

@@ -87,6 +87,20 @@
             tools:text="Important" />
 
         <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+            android:id="@+id/btnNewTask"
+            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+            android:layout_width="@dimen/home_button_width_expanded"
+            android:layout_height="@dimen/home_button_height_expanded"
+            android:gravity="start|center_vertical"
+            android:text="@string/new_task"
+            android:textAllCaps="false"
+            android:textSize="@dimen/home_button_text_size"
+            app:icon="@drawable/ic_plus"
+            app:iconGravity="start"
+            app:iconPadding="@dimen/home_button_icon_padding"
+            app:iconSize="@dimen/home_button_icon_size" />
+
+        <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
             android:id="@+id/btnMoreOptions"
             style="@style/Widget.MaterialComponents.Button.OutlinedButton"
             android:layout_width="@dimen/home_button_width_collapsed"

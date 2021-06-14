@@ -111,6 +111,10 @@ class TasksListFragment @Inject constructor() : Fragment() {
             findNavController().navigateUp()
         }
 
+        bindings.btnNewTask.setOnClickListener {
+            findNavController().navigate(TasksListFragmentDirections.actionTasksListFragmentToEditTaskFragment())
+        }
+
         bindings.btnMoreOptions.setOnClickListener {
             TasksListMoreOptionsPopup.showDialog(
                     parentFragmentManager,
