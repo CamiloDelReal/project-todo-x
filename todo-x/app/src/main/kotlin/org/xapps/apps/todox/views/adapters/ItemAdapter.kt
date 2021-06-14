@@ -36,6 +36,10 @@ class ItemAdapter(
                             val index = items.indexOf(item)
                             data.removeAt(index)
                         } else {
+                            item.done = false
+                            item.description = ""
+                            val index = items.indexOf(item)
+                            data.set(index, item)
                             bindings.swipeRevealLayout.animateReset()
                         }
                     }
