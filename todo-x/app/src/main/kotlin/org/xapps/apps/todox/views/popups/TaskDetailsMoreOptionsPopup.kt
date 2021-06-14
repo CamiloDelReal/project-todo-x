@@ -14,7 +14,9 @@ import javax.inject.Inject
 
 
 @AndroidEntryPoint
-class TaskDetailsMoreOptionsPopup @Inject constructor() : DialogFragment() {
+class TaskDetailsMoreOptionsPopup @Inject constructor(
+    private val isCompleted: Boolean
+) : DialogFragment() {
 
     companion object {
 
@@ -22,14 +24,16 @@ class TaskDetailsMoreOptionsPopup @Inject constructor() : DialogFragment() {
 
         const val MORE_OPTIONS_POPUP_OPTION = "TaskDetailsMoreOptionsPopup"
         const val MORE_OPTIONS_POPUP_COMPLETE = 302
-        const val MORE_OPTIONS_POPUP_EDIT = 303
-        const val MORE_OPTIONS_POPUP_DELETE = 304
+        const val MORE_OPTIONS_POPUP_UNCOMPLETE = 303
+        const val MORE_OPTIONS_POPUP_EDIT = 304
+        const val MORE_OPTIONS_POPUP_DELETE = 305
 
         fun showDialog(
             fragmentManager: FragmentManager,
+            isCompleted: Boolean,
             listener: ((requestKey: String, bundle: Bundle) -> Unit)
         ) {
-            val popup = TaskDetailsMoreOptionsPopup()
+            val popup = TaskDetailsMoreOptionsPopup(isCompleted)
             popup.show(fragmentManager, TaskDetailsMoreOptionsPopup::class.java.name)
             popup.setFragmentResultListener(REQUEST_KEY, listener)
         }
@@ -58,9 +62,15 @@ class TaskDetailsMoreOptionsPopup @Inject constructor() : DialogFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        bindings.btnComplete.text = if(isCompleted) {
+            getString(R.string.uncomplete)
+        } else {
+            getString(R.string.complete)
+        }
+
         bindings.btnComplete.setOnClickListener {
             val data = Bundle().apply {
-                putInt(MORE_OPTIONS_POPUP_OPTION, MORE_OPTIONS_POPUP_COMPLETE)
+                putInt(MORE_OPTIONS_POPUP_OPTION, if(isCompleted) MORE_OPTIONS_POPUP_UNCOMPLETE else MORE_OPTIONS_POPUP_COMPLETE)
             }
             close(data)
         }

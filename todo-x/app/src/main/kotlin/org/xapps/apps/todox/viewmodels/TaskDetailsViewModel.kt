@@ -43,6 +43,7 @@ class TaskDetailsViewModel @Inject constructor(
     val taskWithItemsAndCategory: ObservableField<TaskWithItemsAndCategory> = ObservableField()
 
     val items: ObservableArrayList<Item> = ObservableArrayList()
+    private var itemUpdateRequested = false
 
     private var taskJob: Job? = null
 
@@ -68,6 +69,17 @@ class TaskDetailsViewModel @Inject constructor(
                         taskWithItemsAndCategory.set(task)
                         items.clear()
                         items.addAll(task.items)
+                        if(itemUpdateRequested) {
+                            itemUpdateRequested = false
+                            val doneCount = task.items.count { it.done }
+                            if(doneCount == task.items.size) {
+                                _messageFlow.emit(Message.Success(Operation.TASK_COMPLETED))
+                                completeTask()
+                            } else if(task.task.done) {
+                                _messageFlow.emit(Message.Success(Operation.TASK_UNCOMPLETED))
+                                uncompleteTask()
+                            }
+                        }
                         _messageFlow.emit(Message.Loaded)
                     }
         }
@@ -76,9 +88,11 @@ class TaskDetailsViewModel @Inject constructor(
     fun updateItem(item: Item) {
         _messageFlow.tryEmit(Message.Loading)
         viewModelScope.launch {
+            itemUpdateRequested = true
             val result = itemRepository.update(item)
             result.either({ failure ->
                 error<TaskDetailsViewModel>("Error recieved $failure")
+                itemUpdateRequested = false
                 _messageFlow.tryEmit(Message.Error(Exception(context.getString(R.string.error_updating_item_in_db))))
             }, {
                 _messageFlow.tryEmit(Message.Success(Operation.ITEM_EDIT))
@@ -115,6 +129,20 @@ class TaskDetailsViewModel @Inject constructor(
         }
     }
 
+    fun uncompleteTask() {
+        _messageFlow.tryEmit(Message.Loading)
+        viewModelScope.launch {
+            val taskUpdated = taskWithItemsAndCategory.get()!!.task.copy()
+            val result = taskRepository.uncomplete(taskUpdated)
+            result.either({ failure ->
+                error<TaskDetailsViewModel>("Error received $failure")
+                _messageFlow.tryEmit(Message.Error(Exception(context.getString(R.string.error_updating_task_in_db))))
+            }, {
+                _messageFlow.tryEmit(Message.Success(Operation.TASK_EDIT))
+            })
+        }
+    }
+
     fun deleteTask() {
         _messageFlow.tryEmit(Message.Loading)
         viewModelScope.launch {
@@ -133,6 +161,8 @@ class TaskDetailsViewModel @Inject constructor(
     enum class Operation {
         ITEM_EDIT,
         TASK_EDIT,
-        TASK_DELETE
+        TASK_DELETE,
+        TASK_COMPLETED,
+        TASK_UNCOMPLETED
     }
 }

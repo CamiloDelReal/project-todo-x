@@ -89,7 +89,7 @@ class TaskRepository @Inject constructor(
     }
 
     suspend fun complete(task: Task): Either<TaskFailure, Task> = withContext(dispatcher) {
-        info<TaskRepository>("Update $task")
+        info<TaskRepository>("Complete $task")
         try {
             val itemsSuccess = itemRepository.completeByTask(task.id)
             if(itemsSuccess.isSuccess) {
@@ -101,6 +101,23 @@ class TaskRepository @Inject constructor(
                 } else {
                     TaskFailure.Database.toError()
                 }
+            } else {
+                TaskFailure.Database.toError()
+            }
+        } catch(ex: Exception) {
+            error<TaskRepository>(ex, "Exception captured")
+            TaskFailure.Exception(ex.localizedMessage).toError()
+        }
+    }
+
+    suspend fun uncomplete(task: Task): Either<TaskFailure, Task> = withContext(dispatcher) {
+        info<TaskRepository>("Uncomplete $task")
+        try {
+            task.done = false
+            val count = taskDao.updateAsync(task)
+            if(count == 1) {
+                info<TaskRepository>("Task updated successfully $task")
+                task.toSuccess()
             } else {
                 TaskFailure.Database.toError()
             }

@@ -36,6 +36,7 @@
 
     <color name="error">#F44336</color>
     <color name="success">#4CAF50</color>
+    <color name="warning">#ff9800</color>
 
     <color name="unclassified">#ff666666</color>
     <color name="groceries">#ff11998e</color>

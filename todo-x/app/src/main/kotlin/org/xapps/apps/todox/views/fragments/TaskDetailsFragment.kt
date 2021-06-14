@@ -26,6 +26,7 @@ import org.xapps.apps.todox.viewmodels.TaskDetailsViewModel
 import org.xapps.apps.todox.views.adapters.ItemAdapter
 import org.xapps.apps.todox.views.extensions.showError
 import org.xapps.apps.todox.views.extensions.showSuccess
+import org.xapps.apps.todox.views.extensions.showWarning
 import org.xapps.apps.todox.views.popups.ConfirmPopup
 import org.xapps.apps.todox.views.popups.TaskDetailsMoreOptionsPopup
 import org.xapps.apps.todox.views.utils.ColorUtils
@@ -85,7 +86,8 @@ class TaskDetailsFragment @Inject constructor(): Fragment() {
 
         bindings.btnMoreOptions.setOnClickListener {
             TaskDetailsMoreOptionsPopup.showDialog(
-                parentFragmentManager
+                parentFragmentManager,
+                viewModel.taskWithItemsAndCategory.get()!!.task.done
             ) { _, data ->
                 val option = if (data.containsKey(TaskDetailsMoreOptionsPopup.MORE_OPTIONS_POPUP_OPTION)) {
                     data.getInt(TaskDetailsMoreOptionsPopup.MORE_OPTIONS_POPUP_OPTION)
@@ -95,6 +97,9 @@ class TaskDetailsFragment @Inject constructor(): Fragment() {
                 when (option) {
                     TaskDetailsMoreOptionsPopup.MORE_OPTIONS_POPUP_COMPLETE -> {
                         viewModel.completeTask()
+                    }
+                    TaskDetailsMoreOptionsPopup.MORE_OPTIONS_POPUP_UNCOMPLETE -> {
+                        viewModel.uncompleteTask()
                     }
                     TaskDetailsMoreOptionsPopup.MORE_OPTIONS_POPUP_EDIT -> {
                         findNavController().navigate(TaskDetailsFragmentDirections.actionTaskDetailsFragmentToEditTaskFragment(viewModel.taskId))
@@ -149,9 +154,17 @@ class TaskDetailsFragment @Inject constructor(): Fragment() {
                             debug<CategoryDetailsFragment>("Success message received with value ${it.data}")
                             bindings.progressbar.isVisible = false
                             val op = it.data as TaskDetailsViewModel.Operation
-                            if(op == TaskDetailsViewModel.Operation.TASK_DELETE) {
-                                showSuccess(getString(R.string.task_deleted_successfully))
-                                findNavController().navigateUp()
+                            when(op) {
+                                TaskDetailsViewModel.Operation.TASK_DELETE -> {
+                                    showSuccess(getString(R.string.task_deleted_successfully))
+                                    findNavController().navigateUp()
+                                }
+                                TaskDetailsViewModel.Operation.TASK_COMPLETED -> {
+                                    showWarning(getString(R.string.complete_alert_message))
+                                }
+                                TaskDetailsViewModel.Operation.TASK_UNCOMPLETED -> {
+                                    showWarning(getString(R.string.uncomplete_alert_message))
+                                }
                             }
                         }
                         is Message.Error -> {

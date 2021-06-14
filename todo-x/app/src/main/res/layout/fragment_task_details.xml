@@ -260,6 +260,14 @@
 
                 </LinearLayout>
 
+                <TextView
+                    android:id="@+id/txvCompleted"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle1"
+                    android:text="@{viewModel.taskWithItemsAndCategory.task.done ? @string/completed : @string/scheduled}"
+                    tools:text="Completed" />
+
                 <Space
                     android:layout_height="@dimen/text_space_large"
                     android:layout_width="wrap_content" />

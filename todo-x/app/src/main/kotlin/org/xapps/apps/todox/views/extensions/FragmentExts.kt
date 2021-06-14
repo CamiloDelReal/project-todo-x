@@ -38,3 +38,19 @@ fun Fragment.showSuccess(message: String) {
         true
     ).show()
 }
+
+fun Fragment.showWarning(message: String) {
+    Toasty.custom(
+        requireContext(),
+        message,
+        AppCompatResources.getDrawable(
+            requireContext(),
+            R.drawable.ic_alert_circle_outline
+        ),
+        ContextCompat.getColor(requireContext(), R.color.warning),
+        ContextCompat.getColor(requireContext(), R.color.white),
+        Toasty.LENGTH_SHORT,
+        true,
+        true
+    ).show()
+}
