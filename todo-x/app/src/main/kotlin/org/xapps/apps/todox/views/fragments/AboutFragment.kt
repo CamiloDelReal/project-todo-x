@@ -72,6 +72,38 @@ class AboutFragment @Inject constructor(): Fragment() {
             launchUri(getString(R.string.android_kotlin_url))
         }
 
+        bindings.btnLinkDexterPermissions.setOnClickListener {
+            launchUri(getString(R.string.dexter_url))
+        }
+
+        bindings.btnLinkDrawableToolbox.setOnClickListener {
+            launchUri(getString(R.string.drawabletoolbox_url))
+        }
+
+        bindings.btnLinkCircularProgressBar.setOnClickListener {
+            launchUri(getString(R.string.circularprogressbar_url))
+        }
+
+        bindings.btnLinkMaterialProgressBar.setOnClickListener {
+            launchUri(getString(R.string.materialprogressbar_url))
+        }
+
+        bindings.btnLinkSwipeLayout.setOnClickListener {
+            launchUri(getString(R.string.swipelayout_url))
+        }
+
+        bindings.btnLinkCalendarView.setOnClickListener {
+            launchUri(getString(R.string.calendarview_url))
+        }
+
+        bindings.btnLinkWhatIf.setOnClickListener {
+            launchUri(getString(R.string.whatif_url))
+        }
+
+        bindings.btnLinkToasty.setOnClickListener {
+            launchUri(getString(R.string.toasty_url))
+        }
+
         bindings.btnLinkTimber.setOnClickListener {
             launchUri(getString(R.string.timber_url))
         }

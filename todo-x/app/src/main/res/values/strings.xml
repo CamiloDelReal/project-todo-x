@@ -40,6 +40,10 @@
     <string name="android_kotlin_url">https://developer.android.com/kotlin</string>
     <string name="timber">Timber</string>
     <string name="timber_url">https://github.com/JakeWharton/timber</string>
+    <string name="dexter">Dexter</string>
+    <string name="dexter_url">https://github.com/Karumi/Dexter</string>
+    <string name="toasty">Toasty</string>
+    <string name="toasty_url">https://github.com/GrenderG/Toasty</string>
     <string name="create">Create</string>
     <string name="save">Save</string>
     <string name="name">Name</string>
@@ -135,4 +139,16 @@
     <string name="thurday">Thu</string>
     <string name="friday">Fri</string>
     <string name="saturday">Sat</string>
+    <string name="whatif">WhatIf</string>
+    <string name="whatif_url">https://github.com/skydoves/WhatIf</string>
+    <string name="drawabletoolbox">DrawableToolbox</string>
+    <string name="drawabletoolbox_url">https://github.com/duanhong169/DrawableToolbox</string>
+    <string name="circularprogressbar">CircularProgressBar</string>
+    <string name="circularprogressbar_url">https://github.com/lopspower/CircularProgressBar</string>
+    <string name="materialprogressbar">MaterialProgressBar</string>
+    <string name="materialprogressbar_url">https://github.com/zhanghai/MaterialProgressBar</string>
+    <string name="swipelayout">Swipe Layout</string>
+    <string name="swipelayout_url">https://github.com/rambler-digital-solutions/swipe-layout-android</string>
+    <string name="calendarview">CalendarView</string>
+    <string name="calendarview_url">https://github.com/kizitonwose/CalendarView</string>
 </resources>
