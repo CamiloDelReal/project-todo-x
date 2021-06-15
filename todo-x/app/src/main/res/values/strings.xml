@@ -128,4 +128,11 @@
     <string name="uncomplete">Uncomplete</string>
     <string name="complete_alert_message">All items were marked as completed, task will be complete as well.</string>
     <string name="uncomplete_alert_message">All items are not completed, the task will also be uncompleted.</string>
+    <string name="sunday">Sun</string>
+    <string name="monday">Mon</string>
+    <string name="tuesday">Tue</string>
+    <string name="wednesday">Wed</string>
+    <string name="thurday">Thu</string>
+    <string name="friday">Fri</string>
+    <string name="saturday">Sat</string>
 </resources>

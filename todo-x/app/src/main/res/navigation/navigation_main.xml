@@ -87,7 +87,11 @@
         tools:layout="@layout/fragment_calendar">
         <action
             android:id="@+id/action_calendarFragment_to_editTaskFragment"
-            app:destination="@id/editTaskFragment" />
+            app:destination="@id/editTaskFragment"
+            app:enterAnim="@anim/translate_from_bottom"
+            app:exitAnim="@anim/translate_alpha_to_nothing"
+            app:popEnterAnim="@anim/translate_alpha_from_nothing"
+            app:popExitAnim="@anim/translate_to_bottom" />
     </fragment>
     <fragment
         android:id="@+id/categoryDetailsFragment"

@@ -14,9 +14,7 @@
     <ru.rambler.libs.swipe_layout.SwipeLayout
         android:id="@+id/swipeRevealLayout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:mode="same_level"
-        app:dragEdge="left">
+        android:layout_height="wrap_content">
 
         <!-- Right Menu -->
         <LinearLayout

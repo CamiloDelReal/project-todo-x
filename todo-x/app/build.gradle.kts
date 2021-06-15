@@ -160,8 +160,7 @@ dependencies {
     implementation(Libraries.UI.MATERIAL_PROGRESSBAR)
     implementation(Libraries.UI.TOASTY)
     implementation(Libraries.UI.SWIPE_REVEAL_LAYOUT)
-
-    implementation("ru.rambler.android:swipe-layout:1.1.0")
+    implementation(Libraries.UI.CALENDAR_VIEW)
 
     // Logger
     implementation(Libraries.Logger.Timber.CORE)

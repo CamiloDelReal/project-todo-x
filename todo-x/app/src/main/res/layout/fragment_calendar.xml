@@ -1,16 +1,203 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".views.fragments.CalendarFragment">
 
     <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/rootLayout"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:background="?attr/colorSurface"
+        android:fitsSystemWindows="true">
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/v96"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.96" />
+
+        <View
+            android:id="@+id/toolbar"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/calendar_toolbar_collapsed"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <me.zhanghai.android.materialprogressbar.MaterialProgressBar
+            android:id="@+id/progressbar"
+            style="@style/Widget.MaterialProgressBar.ProgressBar.Horizontal"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/horizontal_indeterminated_progressbar"
+            android:indeterminate="true"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="@id/toolbar"
+            app:layout_constraintEnd_toEndOf="@id/toolbar"
+            app:layout_constraintStart_toStartOf="@id/toolbar"
+            app:mpb_progressStyle="horizontal"
+            app:mpb_useIntrinsicPadding="false"
+            tools:visibility="visible" />
 
         <TextView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:text="Calendar Fragment" />
+            android:id="@+id/txvMonth"
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Headline5"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:gravity="center_vertical"
+            android:textSize="@dimen/title_text_size_collapsed"
+            android:text="September"
+            android:textColor="?attr/colorOnSurface"
+            app:layout_constraintBottom_toBottomOf="@id/btnBack"
+            app:layout_constraintStart_toEndOf="@id/btnBack"
+            app:layout_constraintTop_toTopOf="@id/btnBack"
+            tools:text="September" />
+
+        <TextView
+            android:id="@+id/txvYear"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toEndOf="@id/txvMonth"
+            app:layout_constraintBottom_toBottomOf="@id/btnBack"
+            app:layout_constraintTop_toTopOf="@id/btnBack"
+            android:layout_marginStart="@dimen/content_space_small"
+            android:text="2021"
+            tools:text="2021"
+            android:textSize="@dimen/title_text_size_collapsed"
+            android:alpha="0.8"
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Headline5" />
+
+        <LinearLayout
+            android:id="@+id/calendarLayout"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:background="?attr/colorSurface"
+            app:layout_constraintTop_toBottomOf="@id/toolbar"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:id="@+id/legendLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:orientation="horizontal"
+                android:layout_marginTop="@dimen/content_space_small">
+
+                <TextView
+                    android:id="@+id/txvLegendSunday"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    style="@style/TextView.Legend"
+                    android:layout_weight="1"
+                    android:text="@string/sunday" />
+
+                <TextView
+                    android:id="@+id/txvLegendMonday"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    style="@style/TextView.Legend"
+                    android:text="@string/monday" />
+
+                <TextView
+                    android:id="@+id/txvLegendTuesday"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    style="@style/TextView.Legend"
+                    android:text="@string/tuesday" />
+
+                <TextView
+                    android:id="@+id/txvLegendWednesday"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    style="@style/TextView.Legend"
+                    android:text="@string/wednesday" />
+
+                <TextView
+                    android:id="@+id/txvLegendThurday"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    style="@style/TextView.Legend"
+                    android:text="@string/thurday" />
+
+                <TextView
+                    android:id="@+id/txvLegendFriday"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    style="@style/TextView.Legend"
+                    android:text="@string/friday" />
+
+                <TextView
+                    android:id="@+id/txvLegendSaturday"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    style="@style/TextView.Legend"
+                    android:layout_weight="1"
+                    android:text="@string/saturday" />
+
+            </LinearLayout>
+
+            <com.kizitonwose.calendarview.CalendarView
+                android:id="@+id/calendarView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:cv_dayViewResource="@layout/item_calendar_day"
+                app:cv_orientation="horizontal"
+                app:cv_outDateStyle="endOfRow"
+                app:cv_inDateStyle="allMonths"
+                app:cv_scrollMode="paged" />
+
+        </LinearLayout>
+
+        <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+            android:id="@+id/btnNew"
+            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+            android:layout_width="@dimen/home_button_width_collapsed"
+            android:layout_height="@dimen/home_button_height_collapsed"
+            android:backgroundTint="?attr/colorSurface"
+            android:gravity="start|center_vertical"
+            android:text="@string/create_category"
+            android:textAllCaps="false"
+            android:textSize="@dimen/home_button_text_size"
+            app:icon="@drawable/ic_plus"
+            app:iconPadding="@dimen/home_button_icon_padding"
+            app:iconSize="@dimen/home_button_icon_size"
+            app:layout_constraintBottom_toBottomOf="@id/btnBack"
+            app:layout_constraintEnd_toStartOf="@id/v96"
+            app:layout_constraintTop_toTopOf="@id/btnBack" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/lstTasks"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:background="@color/backgroundSecondary"
+            android:paddingTop="@dimen/content_padding_small"
+            android:scrollbars="vertical"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/calendarLayout"
+            tools:itemCount="7"
+            tools:listitem="@layout/item_category_list" />
+
+        <ImageButton
+            android:id="@+id/btnBack"
+            android:layout_width="?attr/actionBarSize"
+            android:layout_height="?attr/actionBarSize"
+            android:layout_centerInParent="true"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:elevation="8dp"
+            android:src="@drawable/ic_arrow_left"
+            android:tint="?attr/colorOnSurface"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

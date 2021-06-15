@@ -164,14 +164,16 @@ object Libraries {
         private const val MATERIAL_PROGRESSBAR_VERSION = "1.6.1"
         private const val COLOR_PICKER_VERSION = "2.0"
         private const val TOASTY_VERSION = "1.5.0"
-        private const val SWIPE_REVEAL_LAYOUT_VERSION = "c55b6cb"
+        private const val SWIPE_REVEAL_LAYOUT_VERSION = "1.1.0"
+        private const val CALENDAR_VIEW_VERSION = "1.0.4"
 
         const val CIRCULAR_PROGRESSBAR = "com.mikhaellopez:circularprogressbar:$CIRCULAR_PROGRESSBAR_VERSION"
         const val DRAWABLE_TOOLBOX = "com.github.duanhong169:drawabletoolbox:$DRAWABLE_TOOLBOX_VERSION"
         const val MATERIAL_PROGRESSBAR = "me.zhanghai.android.materialprogressbar:library:$MATERIAL_PROGRESSBAR_VERSION"
         const val COLOR_PICKER = "com.github.dhaval2404:colorpicker:$COLOR_PICKER_VERSION"
         const val TOASTY = "com.github.GrenderG:Toasty:$TOASTY_VERSION"
-        const val SWIPE_REVEAL_LAYOUT = "com.github.hydrated:SwipeRevealLayout:$SWIPE_REVEAL_LAYOUT_VERSION"
+        const val SWIPE_REVEAL_LAYOUT = "ru.rambler.android:swipe-layout:$SWIPE_REVEAL_LAYOUT_VERSION"
+        const val CALENDAR_VIEW = "com.github.kizitonwose:CalendarView:$CALENDAR_VIEW_VERSION"
     }
 
     object Logger {

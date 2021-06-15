@@ -189,4 +189,14 @@
     <dimen name="context_button_corner_radius">0dp</dimen>
     <dimen name="context_button_width">90dp</dimen>
 
+<!--    <dimen name="calendar_toolbar_expanded">430dp</dimen>-->
+<!--    <dimen name="calendar_toolbar_collapsed">136dp</dimen>-->
+    <dimen name="calendar_toolbar_collapsed">56dp</dimen>
+    <dimen name="calendar_title_text_size_expanded">15sp</dimen>
+    <dimen name="calendar_title_height_expanded">56dp</dimen>
+    <dimen name="calendar_title_text_size_collapsed">11sp</dimen>
+    <dimen name="calendar_title_height_collapsed">42dp</dimen>
+    <dimen name="calendar_title_margin_horizontal_expended">20dp</dimen>
+    <dimen name="calendar_title_margin_bottom_expended">10dp</dimen>
+
 </resources>
