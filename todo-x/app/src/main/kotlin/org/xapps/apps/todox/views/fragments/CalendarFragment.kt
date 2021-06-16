@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.OnBackPressedCallback
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -97,6 +98,14 @@ class CalendarFragment @Inject constructor(): Fragment() {
 
         override fun requestComplete(task: Task) {
             viewModel.completeTask(task)
+        }
+    }
+
+    private val onBackPressedCallback: OnBackPressedCallback by lazy {
+        object: OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                findNavController().navigateUp()
+            }
         }
     }
 
@@ -252,6 +261,11 @@ class CalendarFragment @Inject constructor(): Fragment() {
             updateCurrentDay(current)
             viewModel.tasksByDate(current)
         }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        requireActivity().onBackPressedDispatcher.addCallback(onBackPressedCallback)
     }
 
     private fun updateCurrentDay(date: LocalDate) {
