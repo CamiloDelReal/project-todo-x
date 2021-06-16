@@ -17,6 +17,7 @@ import com.kizitonwose.calendarview.model.CalendarDay
 import com.kizitonwose.calendarview.model.DayOwner
 import com.kizitonwose.calendarview.ui.DayBinder
 import com.kizitonwose.calendarview.ui.ViewContainer
+import com.kizitonwose.calendarview.utils.yearMonth
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.collect
@@ -178,6 +179,7 @@ class CalendarFragment @Inject constructor(): Fragment() {
                         selectedDate = day.date
                         oldDate?.let { bindings.calendarView.notifyDateChanged(it) }
                         bindings.calendarView.notifyDateChanged(day.date)
+                        bindings.calendarView.scrollToMonth(day.date.yearMonth)
                         updateCurrentDay(day.date)
                         viewModel.tasksByDate(day.date)
                     }
