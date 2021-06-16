@@ -22,6 +22,7 @@ import org.xapps.apps.todox.core.utils.error
 import org.xapps.apps.todox.databinding.FragmentEditCategoryBinding
 import org.xapps.apps.todox.viewmodels.EditCategoryViewModel
 import org.xapps.apps.todox.views.adapters.ColorAdapter
+import org.xapps.apps.todox.views.extensions.hideKeyboard
 import org.xapps.apps.todox.views.extensions.showError
 import org.xapps.apps.todox.views.extensions.showSuccess
 import org.xapps.apps.todox.views.utils.Message
@@ -112,6 +113,11 @@ class EditCategoryFragment @Inject constructor(): Fragment() {
     override fun onResume() {
         super.onResume()
         requireActivity().onBackPressedDispatcher.addCallback(onBackPressedCallback)
+    }
+
+    override fun onPause() {
+        hideKeyboard(arrayListOf(bindings.tieName))
+        super.onPause()
     }
 
     override fun onDestroyView() {

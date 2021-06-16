@@ -26,6 +26,7 @@ import org.xapps.apps.todox.core.models.Task
 import org.xapps.apps.todox.core.utils.debug
 import org.xapps.apps.todox.core.utils.error
 import org.xapps.apps.todox.core.utils.info
+import org.xapps.apps.todox.core.utils.parseToString
 import org.xapps.apps.todox.databinding.FragmentCalendarBinding
 import org.xapps.apps.todox.databinding.ItemCalendarDayBinding
 import org.xapps.apps.todox.viewmodels.CalendarViewModel
@@ -115,6 +116,26 @@ class CalendarFragment @Inject constructor(): Fragment() {
         taskAdapter = TaskWithItemsAndCategoryAndNoHeaderAdapter(tasksItemListener)
         bindings.lstTasks.adapter = taskAdapter
 
+        taskAdapter.registerAdapterDataObserver(object : RecyclerView.AdapterDataObserver() {
+            override fun onChanged() {
+                bindings.noTasksView.isVisible = (taskAdapter.itemCount == 0)
+            }
+
+            override fun onItemRangeRemoved(positionStart: Int, itemCount: Int) {
+                bindings.noTasksView.isVisible = (taskAdapter.itemCount == 0)
+            }
+
+            override fun onItemRangeMoved(fromPosition: Int, toPosition: Int, itemCount: Int) {}
+
+            override fun onItemRangeInserted(positionStart: Int, itemCount: Int) {
+                bindings.noTasksView.isVisible = (taskAdapter.itemCount == 0)
+            }
+
+            override fun onItemRangeChanged(positionStart: Int, itemCount: Int) {}
+
+            override fun onItemRangeChanged(positionStart: Int, itemCount: Int, payload: Any?) {}
+        })
+
         bindings.btnBack.setOnClickListener {
             findNavController().navigateUp()
         }
@@ -148,6 +169,7 @@ class CalendarFragment @Inject constructor(): Fragment() {
                         selectedDate = day.date
                         oldDate?.let { bindings.calendarView.notifyDateChanged(it) }
                         bindings.calendarView.notifyDateChanged(day.date)
+                        updateCurrentDay(day.date)
                         viewModel.tasksByDate(day.date)
                     }
                 }
@@ -223,10 +245,17 @@ class CalendarFragment @Inject constructor(): Fragment() {
         }
 
         viewModel.lastDateForTasks?.let {
+            updateCurrentDay(it)
             viewModel.tasksByDate(it)
         } ?: run {
-            viewModel.tasksByDate(LocalDate.now())
+            val current = LocalDate.now()
+            updateCurrentDay(current)
+            viewModel.tasksByDate(current)
         }
+    }
+
+    private fun updateCurrentDay(date: LocalDate) {
+        bindings.txvDate.text = date.parseToString(Constants.DATE_PATTERN_UI)
     }
 
     override fun onDestroyView() {

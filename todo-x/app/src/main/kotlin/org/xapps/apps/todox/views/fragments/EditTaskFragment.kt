@@ -8,6 +8,7 @@ import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import androidx.core.view.children
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -26,6 +27,7 @@ import org.xapps.apps.todox.core.utils.parseToString
 import org.xapps.apps.todox.databinding.FragmentEditTaskBinding
 import org.xapps.apps.todox.viewmodels.EditTaskViewModel
 import org.xapps.apps.todox.views.adapters.ItemAdapter
+import org.xapps.apps.todox.views.extensions.hideKeyboard
 import org.xapps.apps.todox.views.extensions.showError
 import org.xapps.apps.todox.views.extensions.showSuccess
 import org.xapps.apps.todox.views.popups.DatePickerFragment
@@ -163,6 +165,12 @@ class EditTaskFragment @Inject constructor() : Fragment() {
     override fun onResume() {
         super.onResume()
         requireActivity().onBackPressedDispatcher.addCallback(onBackPressedCallback)
+    }
+
+    override fun onPause() {
+        hideKeyboard(arrayListOf(bindings.tieName, bindings.tieDate, bindings.tieStartDate,
+            bindings.tieEndDate, bindings.tieDescription, bindings.lstTasks))
+        super.onPause()
     }
 
     override fun onDestroyView() {

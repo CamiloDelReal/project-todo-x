@@ -173,6 +173,37 @@
             app:layout_constraintEnd_toStartOf="@id/v96"
             app:layout_constraintTop_toTopOf="@id/btnBack" />
 
+        <LinearLayout
+            android:id="@+id/headerLayout"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/calendarLayout"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:paddingTop="@dimen/content_padding"
+            android:background="@color/backgroundSecondary"
+            android:orientation="horizontal"
+            android:paddingHorizontal="@dimen/content_padding_small">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6"
+                android:text="@string/tasks_for" />
+
+            <Space
+                android:layout_width="@dimen/content_space_small"
+                android:layout_height="wrap_content" />
+
+            <TextView
+                android:id="@+id/txvDate"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="@style/TextAppearance.MaterialComponents.Headline5"
+                tools:text="October 2, 2021" />
+
+        </LinearLayout>
+
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/lstTasks"
             android:layout_width="0dp"
@@ -183,9 +214,19 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/calendarLayout"
+            app:layout_constraintTop_toBottomOf="@id/headerLayout"
             tools:itemCount="7"
             tools:listitem="@layout/item_task_with_items_and_category_and_no_header" />
+
+        <org.xapps.apps.todox.views.custom.EmptyView
+            android:id="@+id/noTasksView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/headerLayout"
+            app:ev_description="@string/no_tasks"/>
 
         <ImageButton
             android:id="@+id/btnBack"

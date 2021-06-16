@@ -21,10 +21,12 @@ import org.xapps.apps.todox.R
 import org.xapps.apps.todox.core.models.Category
 import org.xapps.apps.todox.core.repositories.SettingsRepository
 import org.xapps.apps.todox.core.utils.debug
+import org.xapps.apps.todox.core.utils.error
 import org.xapps.apps.todox.core.utils.info
 import org.xapps.apps.todox.databinding.FragmentCategoriesListBinding
 import org.xapps.apps.todox.viewmodels.CategoriesListViewModel
 import org.xapps.apps.todox.views.adapters.CategoryListAdapter
+import org.xapps.apps.todox.views.extensions.showError
 import org.xapps.apps.todox.views.extensions.showSuccess
 import org.xapps.apps.todox.views.popups.ConfirmDeleteCategoryPopup
 import org.xapps.apps.todox.views.popups.ConfirmPopup
@@ -149,8 +151,8 @@ class CategoriesListFragment @Inject constructor(): Fragment() {
                         }
                         is Message.Error -> {
                             bindings.progressbar.isVisible = false
-                            Timber.e(it.exception)
-                            //Message here
+                            error<CategoriesListFragment>("Error received ${it.exception}")
+                            showError(it.exception.message ?: getString(R.string.unknown_error))
                         }
                     }
                 }

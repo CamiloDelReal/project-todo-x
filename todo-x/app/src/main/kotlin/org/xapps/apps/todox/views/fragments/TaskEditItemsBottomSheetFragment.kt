@@ -18,6 +18,7 @@ import org.xapps.apps.todox.R
 import org.xapps.apps.todox.databinding.FragmentTaskEditItemsBinding
 import org.xapps.apps.todox.viewmodels.TaskEditItemsViewModel
 import org.xapps.apps.todox.views.adapters.ItemAdapter
+import org.xapps.apps.todox.views.extensions.hideKeyboard
 import org.xapps.apps.todox.views.extensions.showError
 import org.xapps.apps.todox.views.extensions.showSuccess
 import org.xapps.apps.todox.views.utils.Message
@@ -109,6 +110,11 @@ class TaskEditItemsBottomSheetFragment @Inject constructor(): BottomSheetDialogF
         }
 
         return bottomSheet
+    }
+
+    override fun onPause() {
+        hideKeyboard(arrayListOf(bindings.lstTasks))
+        super.onPause()
     }
 
     override fun onDestroyView() {

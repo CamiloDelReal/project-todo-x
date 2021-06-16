@@ -1,5 +1,8 @@
 package org.xapps.apps.todox.views.extensions
 
+import android.content.Context
+import android.view.View
+import android.view.inputmethod.InputMethodManager
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
@@ -53,4 +56,16 @@ fun Fragment.showWarning(message: String) {
         true,
         true
     ).show()
+}
+
+fun Fragment.hideKeyboard(views: List<View?>) {
+    val inputMethodManager: InputMethodManager = requireActivity().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+    views.forEach { view ->
+        view?.let {
+            if (it.hasFocus()) {
+                inputMethodManager.hideSoftInputFromWindow(view.windowToken, 0)
+                return@forEach
+            }
+        }
+    }
 }
