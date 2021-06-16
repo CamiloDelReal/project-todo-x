@@ -177,6 +177,7 @@ class CategoryDetailsViewModel @Inject constructor(
             tasksJob = null
             val result = categoryRepository.delete(categoryId, deleteTasks = deleteTasks)
             result.either({ failure ->
+                error<CategoryDetailsViewModel>("Error received $failure")
                 _messageFlow.tryEmit(Message.Error(Exception(context.getString(R.string.error_deleting_category_from_db))))
             }, { success ->
                 debug<CategoryDetailsViewModel>("handleCategorySuccess $success")

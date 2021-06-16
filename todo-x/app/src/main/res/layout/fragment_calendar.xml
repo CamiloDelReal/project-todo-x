@@ -185,7 +185,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/calendarLayout"
             tools:itemCount="7"
-            tools:listitem="@layout/item_category_list" />
+            tools:listitem="@layout/item_task_with_items_and_category_and_no_header" />
 
         <ImageButton
             android:id="@+id/btnBack"

@@ -114,6 +114,18 @@ interface TaskDao {
     fun tasksInScheduleWithItemsAndCategoryPaginatedAsync(): PagingSource<Int, TaskWithItemsAndCategory>
 
     @Transaction
+    @Query("SELECT * FROM tasks WHERE done = 0 AND date LIKE :month||'%' ORDER BY date ASC")
+    fun tasksInScheduleWithItemsAndCategoryByMonthPaginatedAsync(month: String): PagingSource<Int, TaskWithItemsAndCategory>
+
+    @Transaction
+    @Query("SELECT * FROM tasks WHERE done = 0 AND date = :date ORDER BY date ASC")
+    fun tasksInScheduleWithItemsAndCategoryByDatePaginatedAsync(date: String): PagingSource<Int, TaskWithItemsAndCategory>
+
+    @Transaction
+    @Query("SELECT * FROM tasks WHERE done = 0 AND date = :date ORDER BY date ASC")
+    suspend fun test(date: String): List<TaskWithItemsAndCategory>
+
+    @Transaction
     @Query("SELECT * FROM tasks WHERE category_id = :categoryId AND done = 1 ORDER BY date ASC")
     fun tasksCompletedWithItemsByCategoryPaginatedAsync(categoryId: Long): PagingSource<Int, TaskWithItems>
 

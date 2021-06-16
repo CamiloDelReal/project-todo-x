@@ -10,72 +10,111 @@
 
         <import type="androidx.core.content.ContextCompat" />
     </data>
-
-    <com.google.android.material.card.MaterialCardView
-        android:id="@+id/rootLayout"
+    <ru.rambler.libs.swipe_layout.SwipeLayout
+        android:id="@+id/swipeRevealLayout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginHorizontal="@dimen/content_margin_small"
-        app:cardBackgroundColor="@android:color/transparent"
-        app:cardCornerRadius="@dimen/item_corner_radius"
-        app:cardElevation="0dp"
-        app:cardUseCompatPadding="false"
-        app:contentPadding="@dimen/content_padding">
+        android:layout_height="wrap_content">
 
+        <!-- Right Menu -->
         <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            app:bring_to_clamp="@dimen/context_button_width"
+            app:clamp="self"
+            app:gravity="right"
+            app:sticky="self"
             android:orientation="horizontal">
 
-            <LinearLayout
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:orientation="vertical">
+            <org.xapps.apps.todox.views.custom.ContextButton
+                android:id="@+id/btnOpen"
+                android:layout_width="@dimen/context_button_width"
+                android:layout_height="match_parent"
+                app:cb_icon="@drawable/ic_view_list"
+                app:cb_iconTint="@color/white"
+                app:cb_backgroundTint="@color/orange_500"
+                app:cb_text="@string/details"
+                app:cb_textColor="@color/white" />
 
-                <TextView
-                    style="@style/TextAppearance.MaterialComponents.Headline6"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="@{data.name}"
-                    app:layout_constraintBottom_toTopOf="@id/txvTasksToday"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    tools:text="Groceries" />
-
-                <TextView
-                    android:id="@+id/txvTasksCount"
-                    style="@style/TextAppearance.MaterialComponents.Caption"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:tasksCount="@{data.tasksCount}"
-                    tools:text="20 tasks" />
-
-                <TextView
-                    android:id="@+id/txvTasksPending"
-                    style="@style/TextAppearance.MaterialComponents.Caption"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    app:tasksRemaining="@{data.pendingTasksCount}"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    tools:text="4 remaining" />
-
-            </LinearLayout>
-
-            <View
-                android:layout_width="48dp"
-                android:layout_height="48dp"
-                android:layout_gravity="center_vertical"
-                app:categoryBackground="@{data.color}"
-                tools:background="@color/family"/>
+            <org.xapps.apps.todox.views.custom.ContextButton
+                android:id="@+id/btnDelete"
+                android:layout_width="@dimen/context_button_width"
+                android:layout_height="match_parent"
+                app:cb_icon="@drawable/ic_delete"
+                app:cb_iconTint="@color/white"
+                app:cb_backgroundTint="@color/red_500"
+                app:cb_text="@string/delete"
+                app:cb_textColor="@color/white" />
 
         </LinearLayout>
 
-    </com.google.android.material.card.MaterialCardView>
+        <!-- Item -->
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/rootLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/content_margin_small"
+            app:cardBackgroundColor="@android:color/transparent"
+            app:cardCornerRadius="@dimen/item_corner_radius"
+            app:cardElevation="0dp"
+            app:cardUseCompatPadding="false"
+            app:contentPadding="@dimen/content_padding">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <TextView
+                        style="@style/TextAppearance.MaterialComponents.Headline6"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@{data.name}"
+                        app:layout_constraintBottom_toTopOf="@id/txvTasksToday"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        tools:text="Groceries" />
+
+                    <TextView
+                        android:id="@+id/txvTasksCount"
+                        style="@style/TextAppearance.MaterialComponents.Caption"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:tasksCount="@{data.tasksCount}"
+                        tools:text="20 tasks" />
+
+                    <TextView
+                        android:id="@+id/txvTasksPending"
+                        style="@style/TextAppearance.MaterialComponents.Caption"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        app:tasksRemaining="@{data.pendingTasksCount}"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        tools:text="4 remaining" />
+
+                </LinearLayout>
+
+                <View
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
+                    android:layout_gravity="center_vertical"
+                    app:categoryBackground="@{data.color}"
+                    tools:background="@color/family"/>
+
+            </LinearLayout>
+
+        </com.google.android.material.card.MaterialCardView>
+
+    </ru.rambler.libs.swipe_layout.SwipeLayout>
 
 </layout>

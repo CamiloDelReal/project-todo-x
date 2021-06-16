@@ -111,8 +111,8 @@ class TaskEditItemsBottomSheetFragment @Inject constructor(): BottomSheetDialogF
         return bottomSheet
     }
 
-    override fun onPause() {
-        super.onPause()
+    override fun onDestroyView() {
+        super.onDestroyView()
         messageJob?.cancel()
         messageJob = null
     }

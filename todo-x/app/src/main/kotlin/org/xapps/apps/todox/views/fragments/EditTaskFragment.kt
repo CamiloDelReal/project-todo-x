@@ -165,8 +165,8 @@ class EditTaskFragment @Inject constructor() : Fragment() {
         requireActivity().onBackPressedDispatcher.addCallback(onBackPressedCallback)
     }
 
-    override fun onPause() {
-        super.onPause()
+    override fun onDestroyView() {
+        super.onDestroyView()
         messageJob?.cancel()
         messageJob = null
         statusBarForegroundJob?.cancel()

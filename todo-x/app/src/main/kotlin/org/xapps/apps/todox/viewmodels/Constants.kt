@@ -15,6 +15,8 @@ object Constants {
 
     const val TIME_PATTERN = "hh:mm a"
     const val TIME_PATTERN_24H = "HH:mm"
+    const val YEAR_MONTH_PATTERN = "yyyy-MM"
+    const val MONTH_PATTERN = "MMMM"
 
     const val UNCLASSIFED_CATEGORY_ID = 1L    // Unclasiffied category will be always the first, so id will be 1
 }

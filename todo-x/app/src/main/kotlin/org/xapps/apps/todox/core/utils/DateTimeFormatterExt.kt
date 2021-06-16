@@ -3,6 +3,7 @@ package org.xapps.apps.todox.core.utils
 import org.xapps.apps.todox.viewmodels.Constants
 import java.time.LocalDate
 import java.time.LocalTime
+import java.time.YearMonth
 import java.time.format.DateTimeFormatter
 
 
@@ -18,6 +19,12 @@ fun LocalTime.parseToString(format: String? = null, use24Hour: Boolean = true): 
 
 fun LocalDate.parseToString(format: String? = null): String {
     val pattern = format ?: Constants.DATE_PATTERN_UI
+    val formatter = DateTimeFormatter.ofPattern(pattern)
+    return format(formatter)
+}
+
+fun YearMonth.parseToString(format: String? = null): String {
+    val pattern = format ?: Constants.YEAR_MONTH_PATTERN
     val formatter = DateTimeFormatter.ofPattern(pattern)
     return format(formatter)
 }

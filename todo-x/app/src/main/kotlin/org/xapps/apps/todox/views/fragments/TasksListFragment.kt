@@ -5,7 +5,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.activity.OnBackPressedCallback
-import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -21,17 +20,17 @@ import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import org.xapps.apps.todox.R
 import org.xapps.apps.todox.core.models.Task
+import org.xapps.apps.todox.core.utils.error
 import org.xapps.apps.todox.core.utils.info
 import org.xapps.apps.todox.databinding.FragmentTasksListBinding
 import org.xapps.apps.todox.viewmodels.FilterType
 import org.xapps.apps.todox.viewmodels.TasksListViewModel
 import org.xapps.apps.todox.views.adapters.DateHeaderDecoration
 import org.xapps.apps.todox.views.adapters.TaskWithItemsAndCategoryAdapter
+import org.xapps.apps.todox.views.extensions.showError
 import org.xapps.apps.todox.views.popups.ConfirmPopup
-import org.xapps.apps.todox.views.popups.HomeMoreOptionsPopup
 import org.xapps.apps.todox.views.popups.TasksListMoreOptionsPopup
 import org.xapps.apps.todox.views.utils.Message
-import timber.log.Timber
 import javax.inject.Inject
 
 
@@ -168,8 +167,8 @@ class TasksListFragment @Inject constructor() : Fragment() {
                     }
                     is Message.Error -> {
                         bindings.progressbar.isVisible = false
-                        Timber.e(it.exception)
-                        // Show some message here
+                        error<TasksListFragment>("Error received: ${it.exception.localizedMessage}")
+                        showError(it.exception.message ?: getString(R.string.unknown_error))
                     }
                 }
             }
@@ -194,8 +193,8 @@ class TasksListFragment @Inject constructor() : Fragment() {
         requireActivity().onBackPressedDispatcher.addCallback(onBackPressedCallback)
     }
 
-    override fun onPause() {
-        super.onPause()
+    override fun onDestroyView() {
+        super.onDestroyView()
         messageJob?.cancel()
         messageJob = null
         paginationStatesJob?.cancel()

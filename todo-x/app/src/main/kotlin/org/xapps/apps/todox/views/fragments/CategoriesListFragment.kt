@@ -1,12 +1,12 @@
 package org.xapps.apps.todox.views.fragments
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.activity.OnBackPressedCallback
 import androidx.core.view.isVisible
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
@@ -17,12 +17,17 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.launch
+import org.xapps.apps.todox.R
 import org.xapps.apps.todox.core.models.Category
 import org.xapps.apps.todox.core.repositories.SettingsRepository
+import org.xapps.apps.todox.core.utils.debug
+import org.xapps.apps.todox.core.utils.info
 import org.xapps.apps.todox.databinding.FragmentCategoriesListBinding
 import org.xapps.apps.todox.viewmodels.CategoriesListViewModel
 import org.xapps.apps.todox.views.adapters.CategoryListAdapter
+import org.xapps.apps.todox.views.extensions.showSuccess
+import org.xapps.apps.todox.views.popups.ConfirmDeleteCategoryPopup
+import org.xapps.apps.todox.views.popups.ConfirmPopup
 import org.xapps.apps.todox.views.utils.Message
 import timber.log.Timber
 import javax.inject.Inject
@@ -57,12 +62,24 @@ class CategoriesListFragment @Inject constructor(): Fragment() {
         override fun clicked(category: Category) {
             findNavController().navigate(CategoriesListFragmentDirections.actionCategoriesListFragmentToEditCategoryFragment(category.id))
         }
+
+        override fun requestOpen(category: Category) {
+            findNavController().navigate(CategoriesListFragmentDirections.actionCategoriesListFragmentToCategoryDetailsFragment(category.id))
+        }
+
+        override fun requestDelete(category: Category) {
+            if(viewModel.canCategoryBeDeleted(category.id)) {
+                confirmDeleteCategory(category.id)
+            } else {
+                categoryCannotBeDeleted()
+            }
+        }
     }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         bindings = FragmentCategoriesListBinding.inflate(layoutInflater)
         bindings.lifecycleOwner = viewLifecycleOwner
         return bindings.root
@@ -124,7 +141,11 @@ class CategoriesListFragment @Inject constructor(): Fragment() {
                         }
                         is Message.Success -> {
                             bindings.progressbar.isVisible = false
-                            findNavController().navigateUp()
+                            val op = it.data as CategoriesListViewModel.Operation
+                            debug<CategoriesListFragment>("Success message received with operation $op")
+                            if(op == CategoriesListViewModel.Operation.CATEGORY_DELETE) {
+                                showSuccess(getString(R.string.category_deleted_successfully))
+                            }
                         }
                         is Message.Error -> {
                             bindings.progressbar.isVisible = false
@@ -153,13 +174,42 @@ class CategoriesListFragment @Inject constructor(): Fragment() {
         }
     }
 
+    private fun categoryCannotBeDeleted() {
+        ConfirmPopup.showDialog(
+            parentFragmentManager,
+            getString(R.string.unclassified_cannot_be_deleted),
+            confirmMode = false
+        ) { _, _ -> }
+    }
+
+    private fun confirmDeleteCategory(categoryId: Long) {
+        ConfirmDeleteCategoryPopup.showDialog(
+            parentFragmentManager,
+        ) { _, data ->
+            val option = if (data.containsKey(ConfirmDeleteCategoryPopup.POPUP_OPTION)) {
+                data.getInt(ConfirmDeleteCategoryPopup.POPUP_OPTION)
+            } else {
+                -1
+            }
+            when(option) {
+                ConfirmDeleteCategoryPopup.POPUP_YES -> {
+                    val deleteTasks = data.getBoolean(ConfirmDeleteCategoryPopup.POPUP_OPTION_DELETE_ALL_TASKS, false)
+                    viewModel.deleteCategory(categoryId, deleteTasks)
+                }
+                ConfirmDeleteCategoryPopup.POPUP_NO -> {
+                    info<CategoriesListFragment>("User has cancelled the delete operation")
+                }
+            }
+        }
+    }
+
     override fun onResume() {
         super.onResume()
         requireActivity().onBackPressedDispatcher.addCallback(onBackPressedCallback)
     }
 
-    override fun onPause() {
-        super.onPause()
+    override fun onDestroyView() {
+        super.onDestroyView()
         messageJob?.cancel()
         messageJob = null
         paginationStatesJob?.cancel()

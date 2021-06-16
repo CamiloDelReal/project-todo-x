@@ -17,6 +17,7 @@ import org.xapps.apps.todox.core.utils.*
 import org.xapps.apps.todox.viewmodels.Constants
 import timber.log.Timber
 import java.time.LocalDate
+import java.time.YearMonth
 import javax.inject.Inject
 
 
@@ -232,6 +233,31 @@ class TaskRepository @Inject constructor(
             )
         ) {
             taskDao.tasksInScheduleWithItemsAndCategoryPaginatedAsync()
+        }.flow.flowOn(dispatcher)
+    }
+
+    fun tasksInScheduleWithItemsAndCategoryByMonthPaginated(yearMonth: YearMonth): Flow<PagingData<TaskWithItemsAndCategory>> {
+        return Pager(
+            config = PagingConfig(
+                pageSize = 10,
+                enablePlaceholders = true,
+                maxSize = 50
+            )
+        ) {
+            debug<TaskRepository>("Formatting $yearMonth\n\t${yearMonth.parseToString(Constants.YEAR_MONTH_PATTERN)}")
+            taskDao.tasksInScheduleWithItemsAndCategoryByMonthPaginatedAsync(yearMonth.parseToString(Constants.YEAR_MONTH_PATTERN))
+        }.flow.flowOn(dispatcher)
+    }
+
+    fun tasksInScheduleWithItemsAndCategoryByDatePaginated(date: LocalDate): Flow<PagingData<TaskWithItemsAndCategory>> {
+        return Pager(
+            config = PagingConfig(
+                pageSize = 10,
+                enablePlaceholders = true,
+                maxSize = 50
+            )
+        ) {
+            taskDao.tasksInScheduleWithItemsAndCategoryByDatePaginatedAsync(date.parseToString(Constants.DATE_PATTERN_DB))
         }.flow.flowOn(dispatcher)
     }
 

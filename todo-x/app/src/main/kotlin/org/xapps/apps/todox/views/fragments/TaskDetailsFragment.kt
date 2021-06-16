@@ -184,8 +184,8 @@ class TaskDetailsFragment @Inject constructor(): Fragment() {
         }
     }
 
-    override fun onPause() {
-        super.onPause()
+    override fun onDestroyView() {
+        super.onDestroyView()
         messageJob?.cancel()
         messageJob = null
     }

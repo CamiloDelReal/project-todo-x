@@ -4,18 +4,36 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
+import androidx.paging.LoadState
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.kizitonwose.calendarview.model.CalendarDay
 import com.kizitonwose.calendarview.model.DayOwner
 import com.kizitonwose.calendarview.ui.DayBinder
 import com.kizitonwose.calendarview.ui.ViewContainer
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
 import org.xapps.apps.todox.R
+import org.xapps.apps.todox.core.models.Task
+import org.xapps.apps.todox.core.utils.debug
+import org.xapps.apps.todox.core.utils.error
+import org.xapps.apps.todox.core.utils.info
 import org.xapps.apps.todox.databinding.FragmentCalendarBinding
 import org.xapps.apps.todox.databinding.ItemCalendarDayBinding
 import org.xapps.apps.todox.viewmodels.CalendarViewModel
+import org.xapps.apps.todox.viewmodels.Constants
+import org.xapps.apps.todox.views.adapters.TaskWithItemsAndCategoryAndNoHeaderAdapter
+import org.xapps.apps.todox.views.extensions.showError
+import org.xapps.apps.todox.views.popups.ConfirmPopup
+import org.xapps.apps.todox.views.utils.Message
 import java.time.DayOfWeek
 import java.time.LocalDate
 import java.time.YearMonth
@@ -32,9 +50,54 @@ class CalendarFragment @Inject constructor(): Fragment() {
 
     private val viewModel: CalendarViewModel by viewModels()
 
+    private var messageJob: Job? = null
+    private var paginationStatesJob: Job? = null
+    private var paginationJob: Job? = null
+
     private val today = LocalDate.now()
     private var selectedDate: LocalDate? = null
-    private val monthTitleFormatter = DateTimeFormatter.ofPattern("MMMM")
+    private val monthTitleFormatter = DateTimeFormatter.ofPattern(Constants.MONTH_PATTERN)
+
+    private lateinit var taskAdapter: TaskWithItemsAndCategoryAndNoHeaderAdapter
+
+    private val tasksItemListener = object: TaskWithItemsAndCategoryAndNoHeaderAdapter.ItemListener {
+        override fun clicked(task: Task) {
+            findNavController().navigate(CalendarFragmentDirections.actionCalendarFragmentToTaskDetailsFragment(task.id))
+        }
+
+        override fun taskUpdated(task: Task) {
+            viewModel.updateTask(task)
+        }
+
+        override fun requestEdit(task: Task) {
+            findNavController().navigate(CalendarFragmentDirections.actionCalendarFragmentToEditTaskFragment(task.id))
+        }
+
+        override fun requestDelete(task: Task) {
+            ConfirmPopup.showDialog(
+                parentFragmentManager,
+                getString(R.string.confirm_delete_task)
+            ) { _, data ->
+                val option = if (data.containsKey(ConfirmPopup.POPUP_OPTION)) {
+                    data.getInt(ConfirmPopup.POPUP_OPTION)
+                } else {
+                    -1
+                }
+                when(option) {
+                    ConfirmPopup.POPUP_YES -> {
+                        viewModel.deleteTask(task)
+                    }
+                    ConfirmPopup.POPUP_NO -> {
+                        info<CalendarFragment>("User has cancelled the delete operation")
+                    }
+                }
+            }
+        }
+
+        override fun requestComplete(task: Task) {
+            viewModel.completeTask(task)
+        }
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -47,6 +110,10 @@ class CalendarFragment @Inject constructor(): Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        bindings.lstTasks.layoutManager = LinearLayoutManager(requireContext(), RecyclerView.VERTICAL, false)
+        taskAdapter = TaskWithItemsAndCategoryAndNoHeaderAdapter(tasksItemListener)
+        bindings.lstTasks.adapter = taskAdapter
 
         bindings.btnBack.setOnClickListener {
             findNavController().navigateUp()
@@ -81,7 +148,7 @@ class CalendarFragment @Inject constructor(): Fragment() {
                         selectedDate = day.date
                         oldDate?.let { bindings.calendarView.notifyDateChanged(it) }
                         bindings.calendarView.notifyDateChanged(day.date)
-                        // Call updat in viewmodel
+                        viewModel.tasksByDate(day.date)
                     }
                 }
             }
@@ -119,6 +186,57 @@ class CalendarFragment @Inject constructor(): Fragment() {
             bindings.txvYear.text = it.yearMonth.year.toString()
             bindings.txvMonth.text = monthTitleFormatter.format(it.yearMonth)
         }
+
+        messageJob = lifecycleScope.launchWhenResumed {
+            viewModel.messageFlow.collect {
+                when (it) {
+                    is Message.Loading -> {
+                        bindings.progressbar.isVisible = true
+                    }
+                    is Message.Loaded -> {
+                        bindings.progressbar.isVisible = false
+                    }
+                    is Message.Success -> {
+                        bindings.progressbar.isVisible = false
+                    }
+                    is Message.Error -> {
+                        bindings.progressbar.isVisible = false
+                        error<CalendarFragment>("Error received: ${it.exception.localizedMessage}")
+                        showError(it.exception.message ?: getString(R.string.unknown_error))
+                    }
+                }
+            }
+        }
+
+        paginationStatesJob = lifecycleScope.launch {
+            taskAdapter.loadStateFlow.collectLatest { loadStates ->
+                bindings.progressbar.isVisible = (loadStates.refresh is LoadState.Loading)
+            }
+        }
+
+        paginationJob = lifecycleScope.launchWhenResumed {
+            viewModel.tasksFlow
+                .collectLatest {
+                    debug<CalendarFragment>("Pagination data received $it")
+                    taskAdapter.submitData(it)
+                }
+        }
+
+        viewModel.lastDateForTasks?.let {
+            viewModel.tasksByDate(it)
+        } ?: run {
+            viewModel.tasksByDate(LocalDate.now())
+        }
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        messageJob?.cancel()
+        messageJob = null
+        paginationStatesJob?.cancel()
+        paginationStatesJob = null
+        paginationJob?.cancel()
+        paginationJob = null
     }
 
 }
