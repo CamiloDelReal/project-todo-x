@@ -92,6 +92,10 @@ class AboutFragment @Inject constructor(): Fragment() {
             launchUri(getString(R.string.swipelayout_url))
         }
 
+        bindings.btnLinkFlowLayout.setOnClickListener {
+            launchUri(getString(R.string.flowlayout_url))
+        }
+
         bindings.btnLinkCalendarView.setOnClickListener {
             launchUri(getString(R.string.calendarview_url))
         }

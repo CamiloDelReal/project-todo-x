@@ -151,6 +151,8 @@
     <string name="swipelayout_url">https://github.com/rambler-digital-solutions/swipe-layout-android</string>
     <string name="calendarview">CalendarView</string>
     <string name="calendarview_url">https://github.com/kizitonwose/CalendarView</string>
+    <string name="flowlayout">FlowLayout</string>
+    <string name="flowlayout_url">https://github.com/nex3z/FlowLayout</string>
     <string name="unknown_error">Unknown error</string>
     <string name="open">Open</string>
     <string name="details">Details</string>

@@ -314,6 +314,17 @@
                     android:layout_height="@dimen/about_section_item_space" />
 
                 <org.xapps.apps.todox.views.custom.AboutReference
+                    android:id="@+id/btnLinkFlowLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:ar_link="@string/flowlayout_url"
+                    app:ar_text="@string/flowlayout" />
+
+                <Space
+                    android:layout_width="wrap_content"
+                    android:layout_height="@dimen/about_section_item_space" />
+
+                <org.xapps.apps.todox.views.custom.AboutReference
                     android:id="@+id/btnLinkCalendarView"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
