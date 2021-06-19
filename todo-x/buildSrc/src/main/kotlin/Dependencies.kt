@@ -21,8 +21,8 @@ object Build {
     const val BUILD_TOOLS_VERSION = "30.0.3"
     const val APPLICATION_ID = "org.xapps.apps.todox"
     const val APP_NAME = "ToDoX"
-    const val MAJOR_VERSION = 0
-    const val MINOR_VERSION = 9
+    const val MAJOR_VERSION = 1
+    const val MINOR_VERSION = 0
     const val PATH_VERSION = 0
     const val STATUS_VERSION = ""
 }
