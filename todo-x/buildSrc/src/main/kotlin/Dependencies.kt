@@ -165,6 +165,7 @@ object Libraries {
         private const val TOASTY_VERSION = "1.5.0"
         private const val SWIPE_REVEAL_LAYOUT_VERSION = "1.1.0"
         private const val CALENDAR_VIEW_VERSION = "1.0.4"
+        private const val FLOW_LAYOUT_VERSION = "1.2.4"
 
         const val CIRCULAR_PROGRESSBAR = "com.mikhaellopez:circularprogressbar:$CIRCULAR_PROGRESSBAR_VERSION"
         const val DRAWABLE_TOOLBOX = "com.github.duanhong169:drawabletoolbox:$DRAWABLE_TOOLBOX_VERSION"
@@ -172,6 +173,7 @@ object Libraries {
         const val TOASTY = "com.github.GrenderG:Toasty:$TOASTY_VERSION"
         const val SWIPE_REVEAL_LAYOUT = "ru.rambler.android:swipe-layout:$SWIPE_REVEAL_LAYOUT_VERSION"
         const val CALENDAR_VIEW = "com.github.kizitonwose:CalendarView:$CALENDAR_VIEW_VERSION"
+        const val FLOW_LAYOUT = "com.nex3z:flow-layout:$FLOW_LAYOUT_VERSION"
     }
 
     object Logger {

@@ -159,6 +159,7 @@ dependencies {
     implementation(Libraries.UI.TOASTY)
     implementation(Libraries.UI.SWIPE_REVEAL_LAYOUT)
     implementation(Libraries.UI.CALENDAR_VIEW)
+    implementation(Libraries.UI.FLOW_LAYOUT)
 
     // Logger
     implementation(Libraries.Logger.Timber.CORE)

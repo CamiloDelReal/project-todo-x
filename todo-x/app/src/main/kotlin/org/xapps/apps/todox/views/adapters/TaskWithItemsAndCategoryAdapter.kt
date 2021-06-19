@@ -83,6 +83,7 @@ class TaskWithItemsAndCategoryAdapter(
         private var task: TaskWithItemsAndCategory? = null
 
         init {
+            bindings.swipeRevealLayout.reset()
             bindings.rootLayout.setOnClickListener {
                 bindings.swipeRevealLayout.animateReset()
                 task?.task?.let {

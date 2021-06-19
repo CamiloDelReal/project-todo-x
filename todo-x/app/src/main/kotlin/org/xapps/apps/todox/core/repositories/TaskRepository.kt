@@ -10,6 +10,7 @@ import kotlinx.coroutines.withContext
 import org.xapps.apps.todox.core.local.ItemDao
 import org.xapps.apps.todox.core.local.TaskDao
 import org.xapps.apps.todox.core.models.Task
+import org.xapps.apps.todox.core.models.TaskAndCategory
 import org.xapps.apps.todox.core.models.TaskWithItems
 import org.xapps.apps.todox.core.models.TaskWithItemsAndCategory
 import org.xapps.apps.todox.core.repositories.failures.TaskFailure
@@ -236,17 +237,9 @@ class TaskRepository @Inject constructor(
         }.flow.flowOn(dispatcher)
     }
 
-    fun tasksInScheduleWithItemsAndCategoryByMonthPaginated(yearMonth: YearMonth): Flow<PagingData<TaskWithItemsAndCategory>> {
-        return Pager(
-            config = PagingConfig(
-                pageSize = 10,
-                enablePlaceholders = true,
-                maxSize = 50
-            )
-        ) {
-            debug<TaskRepository>("Formatting $yearMonth\n\t${yearMonth.parseToString(Constants.YEAR_MONTH_PATTERN)}")
-            taskDao.tasksInScheduleWithItemsAndCategoryByMonthPaginatedAsync(yearMonth.parseToString(Constants.YEAR_MONTH_PATTERN))
-        }.flow.flowOn(dispatcher)
+    fun tasksInScheduleAndCategoryByMonth(yearMonth: YearMonth): Flow<List<TaskAndCategory>> {
+        debug<TaskRepository>("Formatting $yearMonth\n\t${yearMonth.parseToString(Constants.YEAR_MONTH_PATTERN)}")
+        return taskDao.tasksInScheduleWithItemsAndCategoryByMonthPaginatedAsync(yearMonth.parseToString(Constants.YEAR_MONTH_PATTERN)).flowOn(dispatcher)
     }
 
     fun tasksInScheduleWithItemsAndCategoryByDatePaginated(date: LocalDate): Flow<PagingData<TaskWithItemsAndCategory>> {

@@ -1,15 +1,35 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools">
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <TextView
-        android:id="@+id/txvDay"
+    <RelativeLayout
+        android:id="@+id/rootLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:gravity="center"
-        android:layout_margin="5dp"
-        android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
-        android:textColor="?attr/colorOnSurface"
-        tools:text="22" />
+        android:clickable="true"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        android:padding="@dimen/item_calendar_day_padding">
+
+        <TextView
+            android:id="@+id/txvDay"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:layout_margin="@dimen/item_calendar_day_text_margin"
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
+            android:textColor="?attr/colorOnSurface"
+            tools:text="22" />
+
+        <com.nex3z.flowlayout.FlowLayout
+            android:id="@+id/categoriesLayout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            app:flChildSpacing="@dimen/item_category_dot_space"
+            app:flChildSpacingForLastRow="align" />
+
+    </RelativeLayout>
 
 </layout>

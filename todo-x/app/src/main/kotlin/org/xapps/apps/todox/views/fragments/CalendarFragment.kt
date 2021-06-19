@@ -1,10 +1,15 @@
 package org.xapps.apps.todox.views.fragments
 
+import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
 import androidx.activity.OnBackPressedCallback
+import androidx.core.content.res.ResourcesCompat
+import androidx.core.graphics.drawable.DrawableCompat
+import androidx.core.graphics.toColorInt
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -18,6 +23,7 @@ import com.kizitonwose.calendarview.model.DayOwner
 import com.kizitonwose.calendarview.ui.DayBinder
 import com.kizitonwose.calendarview.ui.ViewContainer
 import com.kizitonwose.calendarview.utils.yearMonth
+import com.nex3z.flowlayout.FlowLayout
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.collect
@@ -31,12 +37,14 @@ import org.xapps.apps.todox.core.utils.info
 import org.xapps.apps.todox.core.utils.parseToString
 import org.xapps.apps.todox.databinding.FragmentCalendarBinding
 import org.xapps.apps.todox.databinding.ItemCalendarDayBinding
+import org.xapps.apps.todox.databinding.ItemCategoryDotBinding
 import org.xapps.apps.todox.viewmodels.CalendarViewModel
 import org.xapps.apps.todox.viewmodels.Constants
 import org.xapps.apps.todox.views.adapters.TaskWithItemsAndCategoryAndNoHeaderAdapter
 import org.xapps.apps.todox.views.extensions.showError
 import org.xapps.apps.todox.views.popups.ConfirmPopup
 import org.xapps.apps.todox.views.utils.Message
+import top.defaults.drawabletoolbox.DrawableBuilder
 import java.time.DayOfWeek
 import java.time.LocalDate
 import java.time.YearMonth
@@ -56,6 +64,7 @@ class CalendarFragment @Inject constructor(): Fragment() {
     private var messageJob: Job? = null
     private var paginationStatesJob: Job? = null
     private var paginationJob: Job? = null
+    private var calendarTasksJob: Job? = null
 
     private val today = LocalDate.now()
     private var selectedDate: LocalDate? = null
@@ -162,17 +171,23 @@ class CalendarFragment @Inject constructor(): Fragment() {
             daysOfWeek = rhs + lhs
         }
 
-        val currentMonth = YearMonth.now()
-        val startMonth = currentMonth.minusMonths(10)
-        val endMonth = currentMonth.plusMonths(10)
+        viewModel.loadMonthTasks(YearMonth.now())
+        selectedDate = LocalDate.now()
+        val startMonth = viewModel.currentYearMonth!!.minusMonths(10)
+        val endMonth = viewModel.currentYearMonth!!.plusMonths(10)
         bindings.calendarView.setup(startMonth, endMonth, daysOfWeek.first())
-        bindings.calendarView.scrollToMonth(currentMonth)
+        bindings.calendarView.scrollToMonth(viewModel.currentYearMonth!!)
 
         class DayViewContainer(view: View) : ViewContainer(view) {
             lateinit var day: CalendarDay
-            val textView = ItemCalendarDayBinding.bind(view).txvDay
+            val textView: TextView
+            val categoriesLayout: FlowLayout
 
             init {
+                val itemBindings = ItemCalendarDayBinding.bind(view)
+                textView = itemBindings.txvDay
+                categoriesLayout = itemBindings.categoriesLayout
+
                 view.setOnClickListener {
                     if (selectedDate != day.date) {
                         val oldDate = selectedDate
@@ -191,26 +206,68 @@ class CalendarFragment @Inject constructor(): Fragment() {
             override fun create(view: View) = DayViewContainer(view)
             override fun bind(container: DayViewContainer, day: CalendarDay) {
                 container.day = day
-                val textView = container.textView
-                textView.text = day.date.dayOfMonth.toString()
+                container.textView.text = day.date.dayOfMonth.toString()
+                container.categoriesLayout.removeAllViews()
                 if (day.owner == DayOwner.THIS_MONTH) {
                     when (day.date) {
                         selectedDate -> {
-                            textView.setTextColor(resources.getColor(R.color.white, null))
-                            textView.setBackgroundResource(R.drawable.ic_bg_selected_day)
+                            container.textView.setTextColor(resources.getColor(R.color.white, null))
+                            container.textView.setBackgroundResource(R.drawable.ic_bg_selected_day)
+                            container.categoriesLayout.removeAllViews()
                         }
                         today -> {
-                            textView.setTextColor(resources.getColor(R.color.white, null))
-                            textView.setBackgroundResource(R.drawable.ic_bg_curent_day)
+                            container.textView.setTextColor(resources.getColor(R.color.text, null))
+                            container.textView.setBackgroundResource(R.drawable.ic_bg_curent_day)
                         }
                         else -> {
-                            textView.setTextColor(resources.getColor(R.color.text, null))
-                            textView.background = null
+                            container.textView.setTextColor(resources.getColor(R.color.text, null))
+                            container.textView.background = null
+                        }
+                    }
+
+                    var categories = viewModel.tasksCategoriesByDate(day.date)
+                    if(categories.isNotEmpty()) {
+                        val moreIndicator = categories.size > 5
+                        if(moreIndicator) {
+                            val countToDrop = categories.size - 4
+                            categories = categories.dropLast(countToDrop)
+                        }
+                        categories.forEach {
+                            val dotBindings = ItemCategoryDotBinding.inflate(layoutInflater)
+                            val params = ViewGroup.LayoutParams(
+                                view.context.resources.getDimension(R.dimen.item_category_dot_size).toInt(),
+                                view.context.resources.getDimension(R.dimen.item_category_dot_size).toInt()
+                            )
+                            dotBindings.root.layoutParams = params
+                            val radius = view.context.resources.getDimension(R.dimen.item_category_dot_radius).toInt()
+                            val drawable: Drawable = DrawableBuilder()
+                                .rectangle()
+                                .cornerRadius(radius)
+                                .solidColor(it.color.toColorInt())
+                                .build()
+                            dotBindings.dot.background = drawable
+                            container.categoriesLayout.addView(dotBindings.root)
+                        }
+                        if(moreIndicator) {
+                            val dotBindings = ItemCategoryDotBinding.inflate(layoutInflater)
+                            val params = ViewGroup.LayoutParams(
+                                view.context.resources.getDimension(R.dimen.item_category_dot_size).toInt(),
+                                view.context.resources.getDimension(R.dimen.item_category_dot_size).toInt()
+                            )
+                            dotBindings.root.layoutParams = params
+                            val drawable: Drawable = DrawableBuilder()
+                                .rectangle()
+                                .cornerRadius(view.context.resources.getDimension(R.dimen.item_category_dot_radius).toInt())
+                                .strokeColor(view.context.resources.getColor(R.color.blue_500, null))
+                                .strokeWidth(view.context.resources.getDimension(R.dimen.item_category_dot_stroke_width).toInt())
+                                .build()
+                            dotBindings.dot.background = drawable
+                            container.categoriesLayout.addView(dotBindings.root)
                         }
                     }
                 } else {
-                    textView.setTextColor(resources.getColor(R.color.textSecondary, null))
-                    textView.background = null
+                    container.textView.setTextColor(resources.getColor(R.color.textSecondary, null))
+                    container.textView.background = null
                 }
             }
         }
@@ -218,6 +275,7 @@ class CalendarFragment @Inject constructor(): Fragment() {
         bindings.calendarView.monthScrollListener = {
             bindings.txvYear.text = it.yearMonth.year.toString()
             bindings.txvMonth.text = monthTitleFormatter.format(it.yearMonth)
+            viewModel.loadMonthTasks(it.yearMonth)
         }
 
         messageJob = lifecycleScope.launchWhenResumed {
@@ -255,6 +313,14 @@ class CalendarFragment @Inject constructor(): Fragment() {
                 }
         }
 
+        calendarTasksJob = lifecycleScope.launchWhenResumed {
+            viewModel.tasksByMonthFlow
+                .collectLatest {
+                    debug<CalendarFragment>("Tasks by month received")
+                    bindings.calendarView.notifyCalendarChanged()
+                }
+        }
+
         viewModel.lastDateForTasks?.let {
             updateCurrentDay(it)
             viewModel.tasksByDate(it)
@@ -282,6 +348,8 @@ class CalendarFragment @Inject constructor(): Fragment() {
         paginationStatesJob = null
         paginationJob?.cancel()
         paginationJob = null
+        calendarTasksJob?.cancel()
+        calendarTasksJob = null
     }
 
 }

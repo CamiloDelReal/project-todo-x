@@ -87,6 +87,7 @@ class TaskWithItemsAdapter(
         private var task: TaskWithItems? = null
 
         init {
+            bindings.swipeRevealLayout.reset()
             bindings.rootLayout.setOnClickListener {
                 bindings.swipeRevealLayout.animateReset()
                 task?.task?.let {

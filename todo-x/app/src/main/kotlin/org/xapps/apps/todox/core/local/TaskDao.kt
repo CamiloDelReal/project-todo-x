@@ -115,7 +115,7 @@ interface TaskDao {
 
     @Transaction
     @Query("SELECT * FROM tasks WHERE done = 0 AND date LIKE :month||'%' ORDER BY date ASC")
-    fun tasksInScheduleWithItemsAndCategoryByMonthPaginatedAsync(month: String): PagingSource<Int, TaskWithItemsAndCategory>
+    fun tasksInScheduleWithItemsAndCategoryByMonthPaginatedAsync(month: String): Flow<List<TaskAndCategory>>
 
     @Transaction
     @Query("SELECT * FROM tasks WHERE done = 0 AND date = :date ORDER BY date ASC")

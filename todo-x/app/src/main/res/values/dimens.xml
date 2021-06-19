@@ -124,6 +124,14 @@
     <dimen name="item_category_progress_foreground_size">3dp</dimen>
     <dimen name="item_category_rounded_radius">24dp</dimen>
 
+    <dimen name="item_category_dot_radius">3dp</dimen>
+    <dimen name="item_category_dot_size">6dp</dimen>
+    <dimen name="item_category_dot_space">2dp</dimen>
+    <dimen name="item_category_dot_stroke_width">1dp</dimen>
+
+    <dimen name="item_calendar_day_text_margin">8dp</dimen>
+    <dimen name="item_calendar_day_padding">4dp</dimen>
+
     <dimen name="about_reference_padding">6dp</dimen>
     <dimen name="about_reference_icon_size">40dp</dimen>
     <dimen name="about_reference_content_space">12dp</dimen>
