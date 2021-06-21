@@ -53,5 +53,13 @@ Simple open source android application to create todos
 <img src="https://github.com/CamiloDelReal/project-todo-x/blob/develop/screenshots/details_light.jpg" width="30%" height="30%" />
 <img src="https://github.com/CamiloDelReal/project-todo-x/blob/develop/screenshots/list_light.jpg" width="30%" height="30%" />
 <img src="https://github.com/CamiloDelReal/project-todo-x/blob/develop/screenshots/calendar_light.jpg" width="30%" height="30%" />
+<img src="https://github.com/CamiloDelReal/project-todo-x/blob/develop/screenshots/home_dark.jpg" width="30%" height="30%" />
+<img src="https://github.com/CamiloDelReal/project-todo-x/blob/develop/screenshots/home_menu_dark.jpg" width="30%" height="30%" />
+<img src="https://github.com/CamiloDelReal/project-todo-x/blob/develop/screenshots/category_dark.jpg" width="30%" height="30%" />
+<img src="https://github.com/CamiloDelReal/project-todo-x/blob/develop/screenshots/category_menu_dark.jpg" width="30%" height="30%" />
+<img src="https://github.com/CamiloDelReal/project-todo-x/blob/develop/screenshots/create_dark.jpg" width="30%" height="30%" />
+<img src="https://github.com/CamiloDelReal/project-todo-x/blob/develop/screenshots/details_dark.jpg" width="30%" height="30%" />
+<img src="https://github.com/CamiloDelReal/project-todo-x/blob/develop/screenshots/list_dark.jpg" width="30%" height="30%" />
+<img src="https://github.com/CamiloDelReal/project-todo-x/blob/develop/screenshots/calendar_dark.jpg" width="30%" height="30%" />
 </p>
 
