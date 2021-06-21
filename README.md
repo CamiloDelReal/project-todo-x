@@ -46,5 +46,12 @@ Simple open source android application to create todos
 ### Screenshots
 <p float="left">
 <img src="https://github.com/CamiloDelReal/project-todo-x/blob/develop/screenshots/home_light.jpg" width="30%" height="30%" />
+<img src="https://github.com/CamiloDelReal/project-todo-x/blob/develop/screenshots/home_menu_light.jpg" width="30%" height="30%" />
+<img src="https://github.com/CamiloDelReal/project-todo-x/blob/develop/screenshots/category_light.jpg" width="30%" height="30%" />
+<img src="https://github.com/CamiloDelReal/project-todo-x/blob/develop/screenshots/category_menu_light.jpg" width="30%" height="30%" />
+<img src="https://github.com/CamiloDelReal/project-todo-x/blob/develop/screenshots/create_light.jpg" width="30%" height="30%" />
+<img src="https://github.com/CamiloDelReal/project-todo-x/blob/develop/screenshots/details_light.jpg" width="30%" height="30%" />
+<img src="https://github.com/CamiloDelReal/project-todo-x/blob/develop/screenshots/list_light.jpg" width="30%" height="30%" />
+<img src="https://github.com/CamiloDelReal/project-todo-x/blob/develop/screenshots/calendar_light.jpg" width="30%" height="30%" />
 </p>
 
