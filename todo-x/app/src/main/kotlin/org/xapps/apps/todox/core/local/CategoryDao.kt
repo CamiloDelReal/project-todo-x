@@ -37,7 +37,7 @@ interface CategoryDao {
     @Query("SELECT categories.id, categories.name, categories.color, COUNT(tasks.id) AS tasks_count, SUM(CASE WHEN tasks.done = 0 THEN 1 ELSE 0 END) AS pending_tasks_count, 0 AS today_tasks_count FROM categories LEFT JOIN tasks ON (categories.id = tasks.category_id) GROUP BY categories.id ORDER BY categories.name ASC")
     fun categoriesPaginatedAsync(): PagingSource<Int, Category>
 
-    @Query("SELECT categories.id, categories.name, categories.color, COUNT(tasks.id) AS tasks_count, SUM(CASE WHEN tasks.done = 0 THEN 1 ELSE 0 END) AS pending_tasks_count, SUM(CASE WHEN tasks.date = :date THEN 1 ELSE 0 END) AS today_tasks_count FROM categories LEFT JOIN tasks ON (categories.id = tasks.category_id) GROUP BY categories.id ORDER BY categories.name ASC")
+    @Query("SELECT categories.id, categories.name, categories.color, COUNT(tasks.id) AS tasks_count, SUM(CASE WHEN tasks.done = 0 THEN 1 ELSE 0 END) AS pending_tasks_count, SUM(CASE WHEN tasks.date = :date AND tasks.done = 0 THEN 1 ELSE 0 END) AS today_tasks_count FROM categories LEFT JOIN tasks ON (categories.id = tasks.category_id) GROUP BY categories.id ORDER BY categories.name ASC")
     fun categoriesWithDateCountPaginatedAsync(date: String): PagingSource<Int, Category>
 
     @Transaction
