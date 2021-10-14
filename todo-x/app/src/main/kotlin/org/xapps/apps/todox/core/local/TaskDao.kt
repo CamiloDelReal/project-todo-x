@@ -106,7 +106,7 @@ interface TaskDao {
     fun tasksWithItemsAndCategoryPaginatedAsync(): PagingSource<Int, TaskWithItemsAndCategory>
 
     @Transaction
-    @Query("SELECT * FROM tasks WHERE important = 1 ORDER BY date ASC")
+    @Query("SELECT * FROM tasks WHERE done = 0 AND important = 1 ORDER BY date ASC")
     fun tasksImportantWithItemsAndCategoryPaginatedAsync(): PagingSource<Int, TaskWithItemsAndCategory>
 
     @Transaction
