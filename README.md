@@ -21,6 +21,8 @@ Simple open source android application to create todos
 ### Future features
 - Online service to store tasks and categories
 - Background service to schedule alarms for tasks
+- ToDoS
+  * Unit and Instrumentation tests
 
 ### Services and Libraries
 - Fonts
